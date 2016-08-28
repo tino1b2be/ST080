@@ -1,3 +1,3 @@
-This has a rough kernel. Branch from this repo and start your work.
+This is the feature-kernel branch.
 
-DO NOT COMMIT TO MASTER BRANCH!!!
+for a new feature, branch from this branch and always pull changes (update) from this branch.
