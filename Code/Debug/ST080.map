@@ -83,8 +83,12 @@ xQueueRegistry      0x40              src\FreeRTOS\queue.o
 TIM_OCInitStructure
                     0x14              src\utils.o
 s8buff              0x6               src\mems.o
-delayQueue          0x4               src\main.o
+rackPins            0x90              src\main.o
+DAC_Buffer          0xc80             src\main.o
+samples             0x708             src\main.o
 NVIC_InitStructure  0x4               Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+sample              0x1               src\main.o
+status              0x1               src\main.o
 
 Discarded input sections
 
@@ -127,7 +131,7 @@ Discarded input sections
                 0x00000000       0x58 src\utils.o
  .debug_ranges  0x00000000       0x48 src\utils.o
  .debug_line    0x00000000      0x343 src\utils.o
- .debug_str     0x00000000      0xd35 src\utils.o
+ .debug_str     0x00000000      0xd34 src\utils.o
  .comment       0x00000000       0x83 src\utils.o
  .ARM.attributes
                 0x00000000       0x37 src\utils.o
@@ -178,7 +182,7 @@ Discarded input sections
                 0x00000000       0x78 src\stm32f4_discovery_lis302dl.o
  .debug_ranges  0x00000000       0x68 src\stm32f4_discovery_lis302dl.o
  .debug_line    0x00000000      0x3aa src\stm32f4_discovery_lis302dl.o
- .debug_str     0x00000000      0x7bd src\stm32f4_discovery_lis302dl.o
+ .debug_str     0x00000000      0x7bc src\stm32f4_discovery_lis302dl.o
  .comment       0x00000000       0x83 src\stm32f4_discovery_lis302dl.o
  .ARM.attributes
                 0x00000000       0x37 src\stm32f4_discovery_lis302dl.o
@@ -204,7 +208,7 @@ Discarded input sections
                 0x00000000       0x30 src\mems.o
  .debug_ranges  0x00000000       0x20 src\mems.o
  .debug_line    0x00000000      0x266 src\mems.o
- .debug_str     0x00000000      0x446 src\mems.o
+ .debug_str     0x00000000      0x445 src\mems.o
  .comment       0x00000000       0x83 src\mems.o
  .ARM.attributes
                 0x00000000       0x37 src\mems.o
@@ -213,13 +217,20 @@ Discarded input sections
  .text          0x00000000        0x0 src\main.o
  .data          0x00000000        0x0 src\main.o
  .bss           0x00000000        0x0 src\main.o
+ .text.vComposerTask
+                0x00000000       0x50 src\main.o
+ .text.configInterrupts
+                0x00000000        0xc src\main.o
+ .text.getSampleID
+                0x00000000       0x10 src\main.o
+ .text.addSamples
+                0x00000000       0x14 src\main.o
+ .text.refreshUI
+                0x00000000       0x14 src\main.o
  .bss.u64IdleTicks
                 0x00000000        0x8 src\main.o
  .bss.u16PWM1   0x00000000        0x2 src\main.o
- .data.tempo    0x00000000        0x4 src\main.o
- .data.averageTime
-                0x00000000        0x4 src\main.o
- COMMON         0x00000000        0x4 src\main.o
+ COMMON         0x00000000     0x141a src\main.o
  .text          0x00000000        0x0 src\debug.o
  .data          0x00000000        0x0 src\debug.o
  .bss           0x00000000        0x0 src\debug.o
@@ -242,12 +253,93 @@ Discarded input sections
                 0x00000000       0x48 src\debug.o
  .debug_ranges  0x00000000       0x38 src\debug.o
  .debug_line    0x00000000      0x355 src\debug.o
- .debug_str     0x00000000      0x330 src\debug.o
+ .debug_str     0x00000000      0x32f src\debug.o
  .comment       0x00000000       0x83 src\debug.o
  .ARM.attributes
                 0x00000000       0x37 src\debug.o
  .debug_frame   0x00000000       0xd0 src\debug.o
  COMMON         0x00000000        0x4 src\debug.o
+ .text          0x00000000        0x0 src\TM38\tm_stm32f4_gpio.o
+ .data          0x00000000        0x0 src\TM38\tm_stm32f4_gpio.o
+ .bss           0x00000000        0x0 src\TM38\tm_stm32f4_gpio.o
+ .bss.GPIO_UsedPins
+                0x00000000       0x18 src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_Init
+                0x00000000       0x38 src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_InitAlternate
+                0x00000000       0x98 src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_DeInit
+                0x00000000       0x7c src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_SetPinAsInput
+                0x00000000       0x50 src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_SetPinAsOutput
+                0x00000000       0x5c src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_SetPinAsAnalog
+                0x00000000       0x4c src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_SetPinAsAlternate
+                0x00000000       0x5c src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_SetPullResistor
+                0x00000000       0x60 src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_Lock
+                0x00000000       0x38 src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_GetPinSource
+                0x00000000       0x30 src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_GetPortSource
+                0x00000000       0x24 src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_INT_EnableClock
+                0x00000000       0x2c src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_INT_DisableClock
+                0x00000000       0x2c src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_INT_Init
+                0x00000000       0xfc src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_GetUsedPins
+                0x00000000       0x24 src\TM38\tm_stm32f4_gpio.o
+ .text.TM_GPIO_GetFreePins
+                0x00000000       0x28 src\TM38\tm_stm32f4_gpio.o
+ .debug_info    0x00000000      0x821 src\TM38\tm_stm32f4_gpio.o
+ .debug_abbrev  0x00000000      0x151 src\TM38\tm_stm32f4_gpio.o
+ .debug_aranges
+                0x00000000       0x98 src\TM38\tm_stm32f4_gpio.o
+ .debug_ranges  0x00000000       0x88 src\TM38\tm_stm32f4_gpio.o
+ .debug_line    0x00000000      0x340 src\TM38\tm_stm32f4_gpio.o
+ .debug_str     0x00000000      0x613 src\TM38\tm_stm32f4_gpio.o
+ .comment       0x00000000       0x83 src\TM38\tm_stm32f4_gpio.o
+ .ARM.attributes
+                0x00000000       0x37 src\TM38\tm_stm32f4_gpio.o
+ .debug_frame   0x00000000      0x1f8 src\TM38\tm_stm32f4_gpio.o
+ .text          0x00000000        0x0 src\TM38\tm_stm32f4_exti.o
+ .data          0x00000000        0x0 src\TM38\tm_stm32f4_exti.o
+ .bss           0x00000000        0x0 src\TM38\tm_stm32f4_exti.o
+ .text.TM_EXTI_Attach
+                0x00000000      0x284 src\TM38\tm_stm32f4_exti.o
+ .text.TM_EXTI_Detach
+                0x00000000       0x54 src\TM38\tm_stm32f4_exti.o
+ .text.TM_EXTI_DeInit
+                0x00000000       0x4c src\TM38\tm_stm32f4_exti.o
+ .text          0x00000000        0x0 src\TM38\tm_stm32f4_disco.o
+ .data          0x00000000        0x0 src\TM38\tm_stm32f4_disco.o
+ .bss           0x00000000        0x0 src\TM38\tm_stm32f4_disco.o
+ .bss.TM_INT_DISCO_ButtonPressed
+                0x00000000        0x1 src\TM38\tm_stm32f4_disco.o
+ .text.TM_DISCO_LedInit
+                0x00000000       0x2c src\TM38\tm_stm32f4_disco.o
+ .text.TM_DISCO_ButtonInit
+                0x00000000       0x24 src\TM38\tm_stm32f4_disco.o
+ .text.TM_DISCO_ButtonOnPressed
+                0x00000000       0x40 src\TM38\tm_stm32f4_disco.o
+ .text.TM_DISCO_ButtonOnReleased
+                0x00000000       0x40 src\TM38\tm_stm32f4_disco.o
+ .debug_info    0x00000000      0x267 src\TM38\tm_stm32f4_disco.o
+ .debug_abbrev  0x00000000       0xf0 src\TM38\tm_stm32f4_disco.o
+ .debug_aranges
+                0x00000000       0x38 src\TM38\tm_stm32f4_disco.o
+ .debug_ranges  0x00000000       0x28 src\TM38\tm_stm32f4_disco.o
+ .debug_line    0x00000000      0x1dd src\TM38\tm_stm32f4_disco.o
+ .debug_str     0x00000000      0x3a1 src\TM38\tm_stm32f4_disco.o
+ .comment       0x00000000       0x83 src\TM38\tm_stm32f4_disco.o
+ .ARM.attributes
+                0x00000000       0x37 src\TM38\tm_stm32f4_disco.o
+ .debug_frame   0x00000000       0x80 src\TM38\tm_stm32f4_disco.o
  .text          0x00000000        0x0 src\FreeRTOS\timers.o
  .data          0x00000000        0x0 src\FreeRTOS\timers.o
  .bss           0x00000000        0x0 src\FreeRTOS\timers.o
@@ -264,6 +356,8 @@ Discarded input sections
                 0x00000000       0x98 src\FreeRTOS\tasks.o
  .text.vTaskDelayUntil
                 0x00000000       0xb8 src\FreeRTOS\tasks.o
+ .text.vTaskDelay
+                0x00000000       0x50 src\FreeRTOS\tasks.o
  .text.uxTaskPriorityGet
                 0x00000000       0x34 src\FreeRTOS\tasks.o
  .text.vTaskPrioritySet
@@ -390,7 +484,7 @@ Discarded input sections
                 0x00000000       0x50 src\FreeRTOS\croutine.o
  .debug_ranges  0x00000000       0x40 src\FreeRTOS\croutine.o
  .debug_line    0x00000000      0x2ee src\FreeRTOS\croutine.o
- .debug_str     0x00000000      0x510 src\FreeRTOS\croutine.o
+ .debug_str     0x00000000      0x50f src\FreeRTOS\croutine.o
  .comment       0x00000000       0x83 src\FreeRTOS\croutine.o
  .ARM.attributes
                 0x00000000       0x37 src\FreeRTOS\croutine.o
@@ -420,7 +514,7 @@ Discarded input sections
                 0x00000000       0x58 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_wwdg.o
  .debug_ranges  0x00000000       0x48 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_wwdg.o
  .debug_line    0x00000000      0x232 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_wwdg.o
- .debug_str     0x00000000      0x2f9 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_wwdg.o
+ .debug_str     0x00000000      0x2f8 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_wwdg.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_wwdg.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_wwdg.o
@@ -676,7 +770,7 @@ Discarded input sections
                 0x00000000      0x2f8 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.o
  .debug_ranges  0x00000000      0x2e8 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.o
  .debug_line    0x00000000      0xa4f Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.o
- .debug_str     0x00000000      0xe52 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.o
+ .debug_str     0x00000000      0xe51 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.o
@@ -702,7 +796,7 @@ Discarded input sections
                 0x00000000       0x48 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_syscfg.o
  .debug_ranges  0x00000000       0x38 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_syscfg.o
  .debug_line    0x00000000      0x20f Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_syscfg.o
- .debug_str     0x00000000      0x376 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_syscfg.o
+ .debug_str     0x00000000      0x375 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_syscfg.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_syscfg.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_syscfg.o
@@ -764,7 +858,7 @@ Discarded input sections
                 0x00000000       0xe0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o
  .debug_ranges  0x00000000       0xd0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o
  .debug_line    0x00000000      0x43c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o
- .debug_str     0x00000000      0x70c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o
+ .debug_str     0x00000000      0x70b Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o
@@ -838,7 +932,7 @@ Discarded input sections
                 0x00000000      0x108 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_sdio.o
  .debug_ranges  0x00000000       0xf8 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_sdio.o
  .debug_line    0x00000000      0x42e Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_sdio.o
- .debug_str     0x00000000      0x6c2 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_sdio.o
+ .debug_str     0x00000000      0x6c1 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_sdio.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_sdio.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_sdio.o
@@ -966,7 +1060,7 @@ Discarded input sections
                 0x00000000      0x1e0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.o
  .debug_ranges  0x00000000      0x1d0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.o
  .debug_line    0x00000000      0x7f8 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.o
- .debug_str     0x00000000      0xbca Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.o
+ .debug_str     0x00000000      0xbc9 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.o
@@ -995,7 +1089,7 @@ Discarded input sections
                 0x00000000       0x58 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rng.o
  .debug_ranges  0x00000000       0x48 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rng.o
  .debug_line    0x00000000      0x233 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rng.o
- .debug_str     0x00000000      0x2fb Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rng.o
+ .debug_str     0x00000000      0x2fa Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rng.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rng.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rng.o
@@ -1053,6 +1147,8 @@ Discarded input sections
                 0x00000000       0x20 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
  .text.RCC_I2SCLKConfig
                 0x00000000       0x1c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .text.RCC_AHB1PeriphClockCmd
+                0x00000000       0x3c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
  .text.RCC_AHB2PeriphClockCmd
                 0x00000000       0x3c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
  .text.RCC_AHB3PeriphClockCmd
@@ -1091,6 +1187,17 @@ Discarded input sections
                 0x00000000       0x38 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
  .text.RCC_ClearITPendingBit
                 0x00000000       0x20 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_info    0x00000000      0xc51 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_abbrev  0x00000000      0x1e5 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_aranges
+                0x00000000      0x178 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_ranges  0x00000000      0x168 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_line    0x00000000      0x584 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_str     0x00000000      0x8d1 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .ARM.attributes
+                0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_frame   0x00000000      0x4d8 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
  .text          0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.o
  .data          0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.o
  .bss           0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.o
@@ -1124,7 +1231,7 @@ Discarded input sections
                 0x00000000       0x78 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.o
  .debug_ranges  0x00000000       0x68 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.o
  .debug_line    0x00000000      0x2ab Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.o
- .debug_str     0x00000000      0x3fc Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.o
+ .debug_str     0x00000000      0x3fb Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.o
@@ -1150,7 +1257,7 @@ Discarded input sections
                 0x00000000       0x48 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_iwdg.o
  .debug_ranges  0x00000000       0x38 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_iwdg.o
  .debug_line    0x00000000      0x207 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_iwdg.o
- .debug_str     0x00000000      0x2ee Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_iwdg.o
+ .debug_str     0x00000000      0x2ed Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_iwdg.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_iwdg.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_iwdg.o
@@ -1229,7 +1336,7 @@ Discarded input sections
                 0x00000000      0x120 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_i2c.o
  .debug_ranges  0x00000000      0x110 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_i2c.o
  .debug_line    0x00000000      0x4c5 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_i2c.o
- .debug_str     0x00000000      0x6e7 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_i2c.o
+ .debug_str     0x00000000      0x6e6 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_i2c.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_i2c.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_i2c.o
@@ -1247,7 +1354,7 @@ Discarded input sections
                 0x00000000       0x28 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_sha1.o
  .debug_ranges  0x00000000       0x18 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_sha1.o
  .debug_line    0x00000000      0x36b Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_sha1.o
- .debug_str     0x00000000      0x379 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_sha1.o
+ .debug_str     0x00000000      0x378 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_sha1.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_sha1.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_sha1.o
@@ -1265,7 +1372,7 @@ Discarded input sections
                 0x00000000       0x28 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_md5.o
  .debug_ranges  0x00000000       0x18 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_md5.o
  .debug_line    0x00000000      0x350 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_md5.o
- .debug_str     0x00000000      0x374 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_md5.o
+ .debug_str     0x00000000      0x373 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_md5.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_md5.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash_md5.o
@@ -1313,7 +1420,7 @@ Discarded input sections
                 0x00000000       0xa0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash.o
  .debug_ranges  0x00000000       0x90 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash.o
  .debug_line    0x00000000      0x359 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash.o
- .debug_str     0x00000000      0x4b4 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash.o
+ .debug_str     0x00000000      0x4b3 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_hash.o
@@ -1323,6 +1430,8 @@ Discarded input sections
  .bss           0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
  .text.GPIO_DeInit
                 0x00000000      0x120 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .text.GPIO_Init
+                0x00000000      0x11c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
  .text.GPIO_StructInit
                 0x00000000       0x34 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
  .text.GPIO_PinLockConfig
@@ -1347,6 +1456,17 @@ Discarded input sections
                 0x00000000       0x24 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
  .text.GPIO_PinAFConfig
                 0x00000000       0x8c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_info    0x00000000      0x606 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_abbrev  0x00000000      0x1a5 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_aranges
+                0x00000000       0x88 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_ranges  0x00000000       0x78 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_line    0x00000000      0x329 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_str     0x00000000      0x524 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .ARM.attributes
+                0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_frame   0x00000000      0x19c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
  .text          0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.o
  .data          0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.o
  .bss           0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.o
@@ -1394,7 +1514,7 @@ Discarded input sections
                 0x00000000       0xb0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.o
  .debug_ranges  0x00000000       0xa0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.o
  .debug_line    0x00000000      0x43e Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.o
- .debug_str     0x00000000      0x80c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.o
+ .debug_str     0x00000000      0x80b Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.o
@@ -1468,7 +1588,7 @@ Discarded input sections
                 0x00000000      0x108 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_flash.o
  .debug_ranges  0x00000000       0xf8 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_flash.o
  .debug_line    0x00000000      0x475 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_flash.o
- .debug_str     0x00000000      0x614 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_flash.o
+ .debug_str     0x00000000      0x613 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_flash.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_flash.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_flash.o
@@ -1488,6 +1608,21 @@ Discarded input sections
                 0x00000000       0x34 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
  .text.EXTI_ClearFlag
                 0x00000000       0x1c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+ .text.EXTI_GetITStatus
+                0x00000000       0x48 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+ .text.EXTI_ClearITPendingBit
+                0x00000000       0x1c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_info    0x00000000      0x34b Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_abbrev  0x00000000      0x1a7 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_aranges
+                0x00000000       0x58 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_ranges  0x00000000       0x48 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_line    0x00000000      0x28f Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_str     0x00000000      0x3da Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+ .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+ .ARM.attributes
+                0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_frame   0x00000000       0xec Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
  .text          0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.o
  .data          0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.o
  .bss           0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.o
@@ -1534,7 +1669,7 @@ Discarded input sections
                 0x00000000       0xb0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.o
  .debug_ranges  0x00000000       0xa0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.o
  .debug_line    0x00000000      0x3c6 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.o
- .debug_str     0x00000000      0x5c4 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.o
+ .debug_str     0x00000000      0x5c3 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.o
@@ -1578,7 +1713,7 @@ Discarded input sections
                 0x00000000       0x90 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dcmi.o
  .debug_ranges  0x00000000       0x80 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dcmi.o
  .debug_line    0x00000000      0x329 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dcmi.o
- .debug_str     0x00000000      0x55b Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dcmi.o
+ .debug_str     0x00000000      0x55a Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dcmi.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dcmi.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dcmi.o
@@ -1602,7 +1737,7 @@ Discarded input sections
                 0x00000000       0x40 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dbgmcu.o
  .debug_ranges  0x00000000       0x30 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dbgmcu.o
  .debug_line    0x00000000      0x1f7 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dbgmcu.o
- .debug_str     0x00000000      0x2c2 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dbgmcu.o
+ .debug_str     0x00000000      0x2c1 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dbgmcu.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dbgmcu.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dbgmcu.o
@@ -1649,7 +1784,7 @@ Discarded input sections
                 0x00000000       0xa0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dac.o
  .debug_ranges  0x00000000       0x90 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dac.o
  .debug_line    0x00000000      0x342 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dac.o
- .debug_str     0x00000000      0x4d5 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dac.o
+ .debug_str     0x00000000      0x4d4 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dac.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dac.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dac.o
@@ -1667,7 +1802,7 @@ Discarded input sections
                 0x00000000       0x28 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_tdes.o
  .debug_ranges  0x00000000       0x18 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_tdes.o
  .debug_line    0x00000000      0x35f Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_tdes.o
- .debug_str     0x00000000      0x45a Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_tdes.o
+ .debug_str     0x00000000      0x459 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_tdes.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_tdes.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_tdes.o
@@ -1685,7 +1820,7 @@ Discarded input sections
                 0x00000000       0x28 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_des.o
  .debug_ranges  0x00000000       0x18 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_des.o
  .debug_line    0x00000000      0x2e6 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_des.o
- .debug_str     0x00000000      0x454 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_des.o
+ .debug_str     0x00000000      0x453 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_des.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_des.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_des.o
@@ -1705,7 +1840,7 @@ Discarded input sections
                 0x00000000       0x30 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_aes.o
  .debug_ranges  0x00000000       0x20 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_aes.o
  .debug_line    0x00000000      0x6aa Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_aes.o
- .debug_str     0x00000000      0x469 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_aes.o
+ .debug_str     0x00000000      0x468 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_aes.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_aes.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_aes.o
@@ -1753,7 +1888,7 @@ Discarded input sections
                 0x00000000       0xa0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp.o
  .debug_ranges  0x00000000       0x90 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp.o
  .debug_line    0x00000000      0x37e Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp.o
- .debug_str     0x00000000      0x63f Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp.o
+ .debug_str     0x00000000      0x63e Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp.o
@@ -1779,7 +1914,7 @@ Discarded input sections
                 0x00000000       0x48 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_crc.o
  .debug_ranges  0x00000000       0x38 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_crc.o
  .debug_line    0x00000000      0x214 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_crc.o
- .debug_str     0x00000000      0x2cd Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_crc.o
+ .debug_str     0x00000000      0x2cc Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_crc.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_crc.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_crc.o
@@ -1843,7 +1978,7 @@ Discarded input sections
                 0x00000000       0xe0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_can.o
  .debug_ranges  0x00000000       0xd0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_can.o
  .debug_line    0x00000000      0x556 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_can.o
- .debug_str     0x00000000      0x7c0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_can.o
+ .debug_str     0x00000000      0x7bf Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_can.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_can.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_can.o
@@ -1932,7 +2067,7 @@ Discarded input sections
                 0x00000000      0x148 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_adc.o
  .debug_ranges  0x00000000      0x138 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_adc.o
  .debug_line    0x00000000      0x53c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_adc.o
- .debug_str     0x00000000      0x886 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_adc.o
+ .debug_str     0x00000000      0x885 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_adc.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_adc.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_adc.o
@@ -1940,6 +2075,12 @@ Discarded input sections
  .text          0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
  .data          0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
  .bss           0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .data.GPIO_PORT
+                0x00000000       0x10 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .rodata.GPIO_PIN
+                0x00000000        0x8 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .rodata.GPIO_CLK
+                0x00000000       0x10 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
  .data.BUTTON_PORT
                 0x00000000        0x4 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
  .rodata.BUTTON_PIN
@@ -1954,12 +2095,29 @@ Discarded input sections
                 0x00000000        0x4 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
  .rodata.BUTTON_IRQn
                 0x00000000        0x4 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .text.STM_EVAL_LEDInit
+                0x00000000       0x5c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
  .text.STM_EVAL_LEDOn
                 0x00000000       0x30 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .text.STM_EVAL_LEDOff
+                0x00000000       0x30 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .text.STM_EVAL_LEDToggle
+                0x00000000       0x3c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
  .text.STM_EVAL_PBInit
                 0x00000000       0x94 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
  .text.STM_EVAL_PBGetState
                 0x00000000       0x2c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .debug_info    0x00000000      0x88d Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .debug_abbrev  0x00000000      0x185 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .debug_aranges
+                0x00000000       0x48 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .debug_ranges  0x00000000       0x38 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .debug_line    0x00000000      0x292 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .debug_str     0x00000000      0xbb7 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .ARM.attributes
+                0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .debug_frame   0x00000000       0xc4 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
  COMMON         0x00000000        0x4 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
  .text          0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
  .data          0x00000000        0x0 Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
@@ -1980,7 +2138,7 @@ Discarded input sections
                 0x00000000       0x40 Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
  .debug_ranges  0x00000000       0x30 Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
  .debug_line    0x00000000      0x22f Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
- .debug_str     0x00000000      0x450 Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
+ .debug_str     0x00000000      0x44f Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
  .ARM.attributes
                 0x00000000       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
@@ -2374,6 +2532,9 @@ LOAD src\startup_stm32f4xx.o
 LOAD src\mems.o
 LOAD src\main.o
 LOAD src\debug.o
+LOAD src\TM38\tm_stm32f4_gpio.o
+LOAD src\TM38\tm_stm32f4_exti.o
+LOAD src\TM38\tm_stm32f4_disco.o
 LOAD src\FreeRTOS\timers.o
 LOAD src\FreeRTOS\tasks.o
 LOAD src\FreeRTOS\queue.o
@@ -2436,7 +2597,7 @@ LOAD c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib
                 0x08000000                g_pfnVectors
                 0x08000188                . = ALIGN (0x4)
 
-.text           0x08000188     0x226c
+.text           0x08000188     0x20f0
                 0x08000188                . = ALIGN (0x4)
  *(.text)
  .text          0x08000188       0x40 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtbegin.o
@@ -2474,7 +2635,6 @@ LOAD c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib
                 0x080003d0        0x4 src\startup_stm32f4xx.o
                 0x080003d0                RTC_Alarm_IRQHandler
                 0x080003d0                HASH_RNG_IRQHandler
-                0x080003d0                EXTI2_IRQHandler
                 0x080003d0                TIM8_CC_IRQHandler
                 0x080003d0                TIM1_CC_IRQHandler
                 0x080003d0                DMA2_Stream5_IRQHandler
@@ -2483,7 +2643,6 @@ LOAD c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib
                 0x080003d0                SDIO_IRQHandler
                 0x080003d0                TAMP_STAMP_IRQHandler
                 0x080003d0                CAN2_RX1_IRQHandler
-                0x080003d0                EXTI3_IRQHandler
                 0x080003d0                TIM8_TRG_COM_TIM14_IRQHandler
                 0x080003d0                TIM1_UP_TIM10_IRQHandler
                 0x080003d0                TIM8_UP_TIM13_IRQHandler
@@ -2516,7 +2675,6 @@ LOAD c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib
                 0x080003d0                RCC_IRQHandler
                 0x080003d0                TIM8_BRK_TIM12_IRQHandler
                 0x080003d0                Default_Handler
-                0x080003d0                EXTI15_10_IRQHandler
                 0x080003d0                ADC_IRQHandler
                 0x080003d0                DMA1_Stream7_IRQHandler
                 0x080003d0                TIM7_IRQHandler
@@ -2524,14 +2682,12 @@ LOAD c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib
                 0x080003d0                TIM5_IRQHandler
                 0x080003d0                DMA2_Stream7_IRQHandler
                 0x080003d0                I2C3_EV_IRQHandler
-                0x080003d0                EXTI9_5_IRQHandler
                 0x080003d0                RTC_WKUP_IRQHandler
                 0x080003d0                ETH_WKUP_IRQHandler
                 0x080003d0                SPI2_IRQHandler
                 0x080003d0                OTG_HS_EP1_IN_IRQHandler
                 0x080003d0                DMA1_Stream0_IRQHandler
                 0x080003d0                CAN1_TX_IRQHandler
-                0x080003d0                EXTI4_IRQHandler
                 0x080003d0                FSMC_IRQHandler
                 0x080003d0                ETH_IRQHandler
                 0x080003d0                OTG_HS_EP1_OUT_IRQHandler
@@ -2540,7 +2696,6 @@ LOAD c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib
                 0x080003d0                OTG_FS_WKUP_IRQHandler
                 0x080003d0                TIM1_TRG_COM_TIM11_IRQHandler
                 0x080003d0                OTG_HS_IRQHandler
-                0x080003d0                EXTI1_IRQHandler
                 0x080003d0                I2C2_ER_IRQHandler
                 0x080003d0                DMA2_Stream1_IRQHandler
                 0x080003d0                CAN1_SCE_IRQHandler
@@ -2553,292 +2708,277 @@ LOAD c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib
                 0x080003d0                I2C1_ER_IRQHandler
                 0x080003d0                DMA2_Stream6_IRQHandler
                 0x080003d0                DMA1_Stream3_IRQHandler
- .text.EXTI0_IRQHandler
-                0x080003d4       0x18 src\main.o
-                0x080003d4                EXTI0_IRQHandler
- .text.main     0x080003ec       0x30 src\main.o
-                0x080003ec                main
- .text.vLEDTask
-                0x0800041c       0x3c src\main.o
+ .text.main     0x080003d4        0xc src\main.o
+                0x080003d4                main
  .text.vApplicationTickHook
-                0x08000458       0x24 src\main.o
-                0x08000458                vApplicationTickHook
+                0x080003e0       0x24 src\main.o
+                0x080003e0                vApplicationTickHook
  .text.vApplicationIdleHook
-                0x0800047c       0x24 src\main.o
-                0x0800047c                vApplicationIdleHook
+                0x08000404       0x24 src\main.o
+                0x08000404                vApplicationIdleHook
  .text.vApplicationMallocFailedHook
-                0x080004a0       0x10 src\main.o
-                0x080004a0                vApplicationMallocFailedHook
+                0x08000428       0x10 src\main.o
+                0x08000428                vApplicationMallocFailedHook
+ .text.EXTI0_IRQHandler
+                0x08000438       0x24 src\TM38\tm_stm32f4_exti.o
+                0x08000438                EXTI0_IRQHandler
+ .text.EXTI1_IRQHandler
+                0x0800045c       0x24 src\TM38\tm_stm32f4_exti.o
+                0x0800045c                EXTI1_IRQHandler
+ .text.EXTI2_IRQHandler
+                0x08000480       0x24 src\TM38\tm_stm32f4_exti.o
+                0x08000480                EXTI2_IRQHandler
+ .text.EXTI3_IRQHandler
+                0x080004a4       0x24 src\TM38\tm_stm32f4_exti.o
+                0x080004a4                EXTI3_IRQHandler
+ .text.EXTI4_IRQHandler
+                0x080004c8       0x24 src\TM38\tm_stm32f4_exti.o
+                0x080004c8                EXTI4_IRQHandler
+ .text.EXTI9_5_IRQHandler
+                0x080004ec       0x8c src\TM38\tm_stm32f4_exti.o
+                0x080004ec                EXTI9_5_IRQHandler
+ .text.EXTI15_10_IRQHandler
+                0x08000578       0xb4 src\TM38\tm_stm32f4_exti.o
+                0x08000578                EXTI15_10_IRQHandler
  .text.xTimerCreateTimerTask
-                0x080004b0       0x5c src\FreeRTOS\timers.o
-                0x080004b0                xTimerCreateTimerTask
+                0x0800062c       0x5c src\FreeRTOS\timers.o
+                0x0800062c                xTimerCreateTimerTask
  .text.xTimerGenericCommand
-                0x0800050c       0x8c src\FreeRTOS\timers.o
-                0x0800050c                xTimerGenericCommand
+                0x08000688       0x8c src\FreeRTOS\timers.o
+                0x08000688                xTimerGenericCommand
  .text.prvProcessExpiredTimer
-                0x08000598       0x74 src\FreeRTOS\timers.o
+                0x08000714       0x74 src\FreeRTOS\timers.o
  .text.prvTimerTask
-                0x0800060c       0x24 src\FreeRTOS\timers.o
+                0x08000788       0x24 src\FreeRTOS\timers.o
  .text.prvProcessTimerOrBlockTask
-                0x08000630       0x6c src\FreeRTOS\timers.o
+                0x080007ac       0x6c src\FreeRTOS\timers.o
  .text.prvGetNextExpireTime
-                0x0800069c       0x48 src\FreeRTOS\timers.o
+                0x08000818       0x48 src\FreeRTOS\timers.o
  .text.prvSampleTimeNow
-                0x080006e4       0x44 src\FreeRTOS\timers.o
+                0x08000860       0x44 src\FreeRTOS\timers.o
  .text.prvInsertTimerInActiveList
-                0x08000728       0x84 src\FreeRTOS\timers.o
+                0x080008a4       0x84 src\FreeRTOS\timers.o
  .text.prvProcessReceivedCommands
-                0x080007ac      0x100 src\FreeRTOS\timers.o
+                0x08000928      0x100 src\FreeRTOS\timers.o
  .text.prvSwitchTimerLists
-                0x080008ac       0xb8 src\FreeRTOS\timers.o
+                0x08000a28       0xb8 src\FreeRTOS\timers.o
  .text.prvCheckForValidListAndQueue
-                0x08000964       0x54 src\FreeRTOS\timers.o
+                0x08000ae0       0x54 src\FreeRTOS\timers.o
  .text.xTaskGenericCreate
-                0x080009b8      0x18c src\FreeRTOS\tasks.o
-                0x080009b8                xTaskGenericCreate
- .text.vTaskDelay
-                0x08000b44       0x50 src\FreeRTOS\tasks.o
-                0x08000b44                vTaskDelay
+                0x08000b34      0x18c src\FreeRTOS\tasks.o
+                0x08000b34                xTaskGenericCreate
  .text.vTaskStartScheduler
-                0x08000b94       0x74 src\FreeRTOS\tasks.o
-                0x08000b94                vTaskStartScheduler
+                0x08000cc0       0x74 src\FreeRTOS\tasks.o
+                0x08000cc0                vTaskStartScheduler
  .text.vTaskSuspendAll
-                0x08000c08       0x1c src\FreeRTOS\tasks.o
-                0x08000c08                vTaskSuspendAll
+                0x08000d34       0x1c src\FreeRTOS\tasks.o
+                0x08000d34                vTaskSuspendAll
  .text.xTaskResumeAll
-                0x08000c24      0x108 src\FreeRTOS\tasks.o
-                0x08000c24                xTaskResumeAll
+                0x08000d50      0x108 src\FreeRTOS\tasks.o
+                0x08000d50                xTaskResumeAll
  .text.xTaskGetTickCount
-                0x08000d2c       0x24 src\FreeRTOS\tasks.o
-                0x08000d2c                xTaskGetTickCount
+                0x08000e58       0x24 src\FreeRTOS\tasks.o
+                0x08000e58                xTaskGetTickCount
  .text.vTaskIncrementTick
-                0x08000d50      0x150 src\FreeRTOS\tasks.o
-                0x08000d50                vTaskIncrementTick
+                0x08000e7c      0x150 src\FreeRTOS\tasks.o
+                0x08000e7c                vTaskIncrementTick
  .text.vTaskSwitchContext
-                0x08000ea0       0xa4 src\FreeRTOS\tasks.o
-                0x08000ea0                vTaskSwitchContext
+                0x08000fcc       0xa4 src\FreeRTOS\tasks.o
+                0x08000fcc                vTaskSwitchContext
  .text.vTaskPlaceOnEventList
-                0x08000f44       0x70 src\FreeRTOS\tasks.o
-                0x08000f44                vTaskPlaceOnEventList
+                0x08001070       0x70 src\FreeRTOS\tasks.o
+                0x08001070                vTaskPlaceOnEventList
  .text.vTaskPlaceOnEventListRestricted
-                0x08000fb4       0x54 src\FreeRTOS\tasks.o
-                0x08000fb4                vTaskPlaceOnEventListRestricted
+                0x080010e0       0x54 src\FreeRTOS\tasks.o
+                0x080010e0                vTaskPlaceOnEventListRestricted
  .text.xTaskRemoveFromEventList
-                0x08001008       0xb0 src\FreeRTOS\tasks.o
-                0x08001008                xTaskRemoveFromEventList
+                0x08001134       0xb0 src\FreeRTOS\tasks.o
+                0x08001134                xTaskRemoveFromEventList
  .text.vTaskSetTimeOutState
-                0x080010b8       0x3c src\FreeRTOS\tasks.o
-                0x080010b8                vTaskSetTimeOutState
+                0x080011e4       0x3c src\FreeRTOS\tasks.o
+                0x080011e4                vTaskSetTimeOutState
  .text.xTaskCheckForTimeOut
-                0x080010f4       0xa8 src\FreeRTOS\tasks.o
-                0x080010f4                xTaskCheckForTimeOut
+                0x08001220       0xa8 src\FreeRTOS\tasks.o
+                0x08001220                xTaskCheckForTimeOut
  .text.vTaskMissedYield
-                0x0800119c       0x18 src\FreeRTOS\tasks.o
-                0x0800119c                vTaskMissedYield
+                0x080012c8       0x18 src\FreeRTOS\tasks.o
+                0x080012c8                vTaskMissedYield
  .text.prvIdleTask
-                0x080011b4       0x24 src\FreeRTOS\tasks.o
+                0x080012e0       0x24 src\FreeRTOS\tasks.o
  .text.prvInitialiseTCBVariables
-                0x080011d8       0x6c src\FreeRTOS\tasks.o
+                0x08001304       0x6c src\FreeRTOS\tasks.o
  .text.prvInitialiseTaskLists
-                0x08001244       0x7c src\FreeRTOS\tasks.o
+                0x08001370       0x7c src\FreeRTOS\tasks.o
  .text.prvCheckTasksWaitingTermination
-                0x080012c0       0x74 src\FreeRTOS\tasks.o
+                0x080013ec       0x74 src\FreeRTOS\tasks.o
  .text.prvAddCurrentTaskToDelayedList
-                0x08001334       0x6c src\FreeRTOS\tasks.o
+                0x08001460       0x6c src\FreeRTOS\tasks.o
  .text.prvAllocateTCBAndStack
-                0x080013a0       0x64 src\FreeRTOS\tasks.o
+                0x080014cc       0x64 src\FreeRTOS\tasks.o
  .text.prvDeleteTCB
-                0x08001404       0x20 src\FreeRTOS\tasks.o
+                0x08001530       0x20 src\FreeRTOS\tasks.o
  .text.xTaskGetCurrentTaskHandle
-                0x08001424       0x20 src\FreeRTOS\tasks.o
-                0x08001424                xTaskGetCurrentTaskHandle
+                0x08001550       0x20 src\FreeRTOS\tasks.o
+                0x08001550                xTaskGetCurrentTaskHandle
  .text.xTaskGetSchedulerState
-                0x08001444       0x3c src\FreeRTOS\tasks.o
-                0x08001444                xTaskGetSchedulerState
+                0x08001570       0x3c src\FreeRTOS\tasks.o
+                0x08001570                xTaskGetSchedulerState
  .text.vTaskPriorityInherit
-                0x08001480       0xb4 src\FreeRTOS\tasks.o
-                0x08001480                vTaskPriorityInherit
+                0x080015ac       0xb4 src\FreeRTOS\tasks.o
+                0x080015ac                vTaskPriorityInherit
  .text.vTaskPriorityDisinherit
-                0x08001534       0x7c src\FreeRTOS\tasks.o
-                0x08001534                vTaskPriorityDisinherit
+                0x08001660       0x7c src\FreeRTOS\tasks.o
+                0x08001660                vTaskPriorityDisinherit
  .text.xQueueGenericCreate
-                0x080015b0       0xd8 src\FreeRTOS\queue.o
-                0x080015b0                xQueueGenericCreate
+                0x080016dc       0xd8 src\FreeRTOS\queue.o
+                0x080016dc                xQueueGenericCreate
  .text.xQueueGenericSend
-                0x08001688      0x140 src\FreeRTOS\queue.o
-                0x08001688                xQueueGenericSend
+                0x080017b4      0x140 src\FreeRTOS\queue.o
+                0x080017b4                xQueueGenericSend
  .text.xQueueGenericSendFromISR
-                0x080017c8       0xc4 src\FreeRTOS\queue.o
-                0x080017c8                xQueueGenericSendFromISR
+                0x080018f4       0xc4 src\FreeRTOS\queue.o
+                0x080018f4                xQueueGenericSendFromISR
  .text.xQueueGenericReceive
-                0x0800188c      0x1a0 src\FreeRTOS\queue.o
-                0x0800188c                xQueueGenericReceive
+                0x080019b8      0x1a0 src\FreeRTOS\queue.o
+                0x080019b8                xQueueGenericReceive
  .text.prvCopyDataToQueue
-                0x08001a2c       0xb8 src\FreeRTOS\queue.o
+                0x08001b58       0xb8 src\FreeRTOS\queue.o
  .text.prvCopyDataFromQueue
-                0x08001ae4       0x4c src\FreeRTOS\queue.o
+                0x08001c10       0x4c src\FreeRTOS\queue.o
  .text.prvUnlockQueue
-                0x08001b30       0x98 src\FreeRTOS\queue.o
+                0x08001c5c       0x98 src\FreeRTOS\queue.o
  .text.prvIsQueueEmpty
-                0x08001bc8       0x2c src\FreeRTOS\queue.o
+                0x08001cf4       0x2c src\FreeRTOS\queue.o
  .text.prvIsQueueFull
-                0x08001bf4       0x30 src\FreeRTOS\queue.o
+                0x08001d20       0x30 src\FreeRTOS\queue.o
  .text.vQueueWaitForMessageRestricted
-                0x08001c24       0x54 src\FreeRTOS\queue.o
-                0x08001c24                vQueueWaitForMessageRestricted
+                0x08001d50       0x54 src\FreeRTOS\queue.o
+                0x08001d50                vQueueWaitForMessageRestricted
  .text.pvPortMalloc
-                0x08001c78       0x78 src\FreeRTOS\portable\MemMang\heap_1.o
-                0x08001c78                pvPortMalloc
+                0x08001da4       0x78 src\FreeRTOS\portable\MemMang\heap_1.o
+                0x08001da4                pvPortMalloc
  .text.vPortFree
-                0x08001cf0       0x14 src\FreeRTOS\portable\MemMang\heap_1.o
-                0x08001cf0                vPortFree
+                0x08001e1c       0x14 src\FreeRTOS\portable\MemMang\heap_1.o
+                0x08001e1c                vPortFree
  .text.pxPortInitialiseStack
-                0x08001d04       0x5c src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08001d04                pxPortInitialiseStack
+                0x08001e30       0x5c src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08001e30                pxPortInitialiseStack
  .text.SVC_Handler
-                0x08001d60       0x20 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08001d60                SVC_Handler
+                0x08001e8c       0x20 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08001e8c                SVC_Handler
  .text.vPortStartFirstTask
-                0x08001d80       0x14 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08001d80                vPortStartFirstTask
+                0x08001eac       0x14 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08001eac                vPortStartFirstTask
  .text.xPortStartScheduler
-                0x08001d94       0x38 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08001d94                xPortStartScheduler
+                0x08001ec0       0x38 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08001ec0                xPortStartScheduler
  .text.vPortYieldFromISR
-                0x08001dcc       0x18 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08001dcc                vPortYieldFromISR
+                0x08001ef8       0x18 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08001ef8                vPortYieldFromISR
  .text.vPortEnterCritical
-                0x08001de4       0x24 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08001de4                vPortEnterCritical
+                0x08001f10       0x24 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08001f10                vPortEnterCritical
  .text.vPortExitCritical
-                0x08001e08       0x2c src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08001e08                vPortExitCritical
+                0x08001f34       0x2c src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08001f34                vPortExitCritical
  .text.PendSV_Handler
-                0x08001e34       0x58 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08001e34                PendSV_Handler
+                0x08001f60       0x58 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08001f60                PendSV_Handler
  .text.SysTick_Handler
-                0x08001e8c       0x30 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08001e8c                SysTick_Handler
+                0x08001fb8       0x30 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08001fb8                SysTick_Handler
  .text.prvSetupTimerInterrupt
-                0x08001ebc       0x34 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08001fe8       0x34 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
  .text.vListInitialise
-                0x08001ef0       0x40 src\FreeRTOS\list.o
-                0x08001ef0                vListInitialise
+                0x0800201c       0x40 src\FreeRTOS\list.o
+                0x0800201c                vListInitialise
  .text.vListInitialiseItem
-                0x08001f30       0x18 src\FreeRTOS\list.o
-                0x08001f30                vListInitialiseItem
+                0x0800205c       0x18 src\FreeRTOS\list.o
+                0x0800205c                vListInitialiseItem
  .text.vListInsertEnd
-                0x08001f48       0x50 src\FreeRTOS\list.o
-                0x08001f48                vListInsertEnd
+                0x08002074       0x50 src\FreeRTOS\list.o
+                0x08002074                vListInsertEnd
  .text.vListInsert
-                0x08001f98       0x70 src\FreeRTOS\list.o
-                0x08001f98                vListInsert
+                0x080020c4       0x70 src\FreeRTOS\list.o
+                0x080020c4                vListInsert
  .text.vListRemove
-                0x08002008       0x50 src\FreeRTOS\list.o
-                0x08002008                vListRemove
+                0x08002134       0x50 src\FreeRTOS\list.o
+                0x08002134                vListRemove
  .text.USART_ClearFlag
-                0x08002058       0x20 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
-                0x08002058                USART_ClearFlag
- .text.RCC_AHB1PeriphClockCmd
-                0x08002078       0x3c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
-                0x08002078                RCC_AHB1PeriphClockCmd
- .text.GPIO_Init
-                0x080020b4      0x11c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
-                0x080020b4                GPIO_Init
- .text.EXTI_GetITStatus
-                0x080021d0       0x48 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
-                0x080021d0                EXTI_GetITStatus
- .text.EXTI_ClearITPendingBit
-                0x08002218       0x1c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
-                0x08002218                EXTI_ClearITPendingBit
- .text.STM_EVAL_LEDInit
-                0x08002234       0x5c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                0x08002234                STM_EVAL_LEDInit
- .text.STM_EVAL_LEDOff
-                0x08002290       0x30 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                0x08002290                STM_EVAL_LEDOff
- .text.STM_EVAL_LEDToggle
-                0x080022c0       0x3c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                0x080022c0                STM_EVAL_LEDToggle
+                0x08002184       0x20 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
+                0x08002184                USART_ClearFlag
  .text.__libc_init_array
-                0x080022fc       0x4c c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-init.o)
-                0x080022fc                __libc_init_array
- .text.memcpy   0x08002348       0x12 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-memcpy-stub.o)
-                0x08002348                memcpy
- .text.memset   0x0800235a       0x10 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-memset.o)
-                0x0800235a                memset
- .text.strncpy  0x0800236a       0x24 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-strncpy.o)
-                0x0800236a                strncpy
+                0x080021a4       0x4c c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-init.o)
+                0x080021a4                __libc_init_array
+ .text.memcpy   0x080021f0       0x12 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-memcpy-stub.o)
+                0x080021f0                memcpy
+ .text.memset   0x08002202       0x10 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-memset.o)
+                0x08002202                memset
+ .text.strncpy  0x08002212       0x24 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-strncpy.o)
+                0x08002212                strncpy
  *(.rodata)
- *fill*         0x0800238e        0x2 
- .rodata        0x08002390        0xc src\main.o
- .rodata        0x0800239c        0x8 src\FreeRTOS\timers.o
- .rodata        0x080023a4       0x20 src\FreeRTOS\tasks.o
+ *fill*         0x08002236        0x2 
+ .rodata        0x08002238        0x8 src\FreeRTOS\timers.o
+ .rodata        0x08002240       0x20 src\FreeRTOS\tasks.o
  *(.rodata*)
- .rodata.GPIO_PIN
-                0x080023c4        0x8 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                0x080023c4                GPIO_PIN
- .rodata.GPIO_CLK
-                0x080023cc       0x10 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                0x080023cc                GPIO_CLK
  *(.glue_7)
  .glue_7        0x00000000        0x0 linker stubs
  *(.glue_7t)
  .glue_7t       0x00000000        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x080023dc        0x0 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtbegin.o
+ .eh_frame      0x08002260        0x0 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtbegin.o
  *(.init)
- .init          0x080023dc        0x4 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crti.o
-                0x080023dc                _init
- .init          0x080023e0        0x8 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtn.o
+ .init          0x08002260        0x4 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crti.o
+                0x08002260                _init
+ .init          0x08002264        0x8 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtn.o
  *(.fini)
- .fini          0x080023e8        0x4 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crti.o
-                0x080023e8                _fini
- .fini          0x080023ec        0x8 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtn.o
-                0x080023f4                . = ALIGN (0x4)
-                0x080023f4                _etext = .
+ .fini          0x0800226c        0x4 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crti.o
+                0x0800226c                _fini
+ .fini          0x08002270        0x8 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtn.o
+                0x08002278                . = ALIGN (0x4)
+                0x08002278                _etext = .
 
-.vfp11_veneer   0x080023f4        0x0
+.vfp11_veneer   0x08002278        0x0
  .vfp11_veneer  0x00000000        0x0 linker stubs
 
-.v4_bx          0x080023f4        0x0
+.v4_bx          0x08002278        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x080023f4        0x0
+.iplt           0x08002278        0x0
  .iplt          0x00000000        0x0 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtbegin.o
 
-.rel.dyn        0x080023f4        0x0
+.rel.dyn        0x08002278        0x0
  .rel.iplt      0x00000000        0x0 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtbegin.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x080023f4        0x0
-                0x080023f4                __exidx_start = .
+.ARM            0x08002278        0x0
+                0x08002278                __exidx_start = .
  *(.ARM.exidx*)
-                0x080023f4                __exidx_end = .
+                0x08002278                __exidx_end = .
 
-.preinit_array  0x080023f4        0x0
-                0x080023f4                PROVIDE (__preinit_array_start, .)
+.preinit_array  0x08002278        0x0
+                0x08002278                PROVIDE (__preinit_array_start, .)
  *(.preinit_array*)
-                0x080023f4                PROVIDE (__preinit_array_end, .)
+                0x08002278                PROVIDE (__preinit_array_end, .)
 
-.init_array     0x080023f4        0x4
-                0x080023f4                PROVIDE (__init_array_start, .)
+.init_array     0x08002278        0x4
+                0x08002278                PROVIDE (__init_array_start, .)
  *(SORT(.init_array.*))
  *(.init_array*)
- .init_array    0x080023f4        0x4 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtbegin.o
-                0x080023f8                PROVIDE (__init_array_end, .)
+ .init_array    0x08002278        0x4 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtbegin.o
+                0x0800227c                PROVIDE (__init_array_end, .)
 
-.fini_array     0x080023f8        0x4
-                0x080023f8                PROVIDE (__fini_array_start, .)
+.fini_array     0x0800227c        0x4
+                0x0800227c                PROVIDE (__fini_array_start, .)
  *(.fini_array*)
- .fini_array    0x080023f8        0x4 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtbegin.o
+ .fini_array    0x0800227c        0x4 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtbegin.o
  *(SORT(.fini_array.*))
-                0x080023fc                PROVIDE (__fini_array_end, .)
-                0x080023fc                _sidata = .
+                0x08002280                PROVIDE (__fini_array_end, .)
+                0x08002280                _sidata = .
 
-.data           0x20000000       0x1c load address 0x080023fc
+.data           0x20000000        0xc load address 0x08002280
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
@@ -2850,101 +2990,98 @@ LOAD c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib
                 0x20000004        0x4 src\FreeRTOS\tasks.o
  .data.uxCriticalNesting
                 0x20000008        0x4 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
- .data.GPIO_PORT
-                0x2000000c       0x10 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                0x2000000c                GPIO_PORT
-                0x2000001c                . = ALIGN (0x4)
-                0x2000001c                _edata = .
+                0x2000000c                . = ALIGN (0x4)
+                0x2000000c                _edata = .
 
-.igot.plt       0x2000001c        0x0 load address 0x08002418
+.igot.plt       0x2000000c        0x0 load address 0x0800228c
  .igot.plt      0x00000000        0x0 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtbegin.o
-                0x2000001c                . = ALIGN (0x4)
+                0x2000000c                . = ALIGN (0x4)
 
-.bss            0x20000020     0x156c load address 0x08002418
-                0x20000020                _sbss = .
-                0x20000020                __bss_start__ = _sbss
+.bss            0x20000010     0x156c load address 0x0800228c
+                0x20000010                _sbss = .
+                0x20000010                __bss_start__ = _sbss
  *(.bss)
- .bss           0x20000020       0x1c c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtbegin.o
+ .bss           0x20000010       0x1c c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtbegin.o
  *(.bss*)
  .bss.uart2_cnt
-                0x2000003c        0x2 src\stm32f4xx_it.o
-                0x2000003c                uart2_cnt
- *fill*         0x2000003e        0x2 
- .bss.tickTime  0x20000040        0x8 src\main.o
-                0x20000040                tickTime
+                0x2000002c        0x2 src\stm32f4xx_it.o
+                0x2000002c                uart2_cnt
+ *fill*         0x2000002e        0x2 
+ .bss.tickTime  0x20000030        0x8 src\main.o
+                0x20000030                tickTime
  .bss.u64IdleTicksCnt
-                0x20000048        0x8 src\main.o
-                0x20000048                u64IdleTicksCnt
+                0x20000038        0x8 src\main.o
+                0x20000038                u64IdleTicksCnt
  .bss.xActiveTimerList1
-                0x20000050       0x14 src\FreeRTOS\timers.o
+                0x20000040       0x14 src\FreeRTOS\timers.o
  .bss.xActiveTimerList2
-                0x20000064       0x14 src\FreeRTOS\timers.o
+                0x20000054       0x14 src\FreeRTOS\timers.o
  .bss.pxCurrentTimerList
-                0x20000078        0x4 src\FreeRTOS\timers.o
+                0x20000068        0x4 src\FreeRTOS\timers.o
  .bss.pxOverflowTimerList
-                0x2000007c        0x4 src\FreeRTOS\timers.o
+                0x2000006c        0x4 src\FreeRTOS\timers.o
  .bss.xTimerQueue
-                0x20000080        0x4 src\FreeRTOS\timers.o
+                0x20000070        0x4 src\FreeRTOS\timers.o
  .bss.xLastTime.7678
-                0x20000084        0x4 src\FreeRTOS\timers.o
+                0x20000074        0x4 src\FreeRTOS\timers.o
  .bss.pxCurrentTCB
-                0x20000088        0x4 src\FreeRTOS\tasks.o
-                0x20000088                pxCurrentTCB
+                0x20000078        0x4 src\FreeRTOS\tasks.o
+                0x20000078                pxCurrentTCB
  .bss.pxReadyTasksLists
-                0x2000008c       0x64 src\FreeRTOS\tasks.o
+                0x2000007c       0x64 src\FreeRTOS\tasks.o
  .bss.xDelayedTaskList1
-                0x200000f0       0x14 src\FreeRTOS\tasks.o
+                0x200000e0       0x14 src\FreeRTOS\tasks.o
  .bss.xDelayedTaskList2
-                0x20000104       0x14 src\FreeRTOS\tasks.o
+                0x200000f4       0x14 src\FreeRTOS\tasks.o
  .bss.pxDelayedTaskList
-                0x20000118        0x4 src\FreeRTOS\tasks.o
+                0x20000108        0x4 src\FreeRTOS\tasks.o
  .bss.pxOverflowDelayedTaskList
-                0x2000011c        0x4 src\FreeRTOS\tasks.o
+                0x2000010c        0x4 src\FreeRTOS\tasks.o
  .bss.xPendingReadyList
-                0x20000120       0x14 src\FreeRTOS\tasks.o
+                0x20000110       0x14 src\FreeRTOS\tasks.o
  .bss.xTasksWaitingTermination
-                0x20000134       0x14 src\FreeRTOS\tasks.o
+                0x20000124       0x14 src\FreeRTOS\tasks.o
  .bss.uxTasksDeleted
-                0x20000148        0x4 src\FreeRTOS\tasks.o
+                0x20000138        0x4 src\FreeRTOS\tasks.o
  .bss.xSuspendedTaskList
-                0x2000014c       0x14 src\FreeRTOS\tasks.o
+                0x2000013c       0x14 src\FreeRTOS\tasks.o
  .bss.uxCurrentNumberOfTasks
-                0x20000160        0x4 src\FreeRTOS\tasks.o
+                0x20000150        0x4 src\FreeRTOS\tasks.o
  .bss.xTickCount
-                0x20000164        0x4 src\FreeRTOS\tasks.o
+                0x20000154        0x4 src\FreeRTOS\tasks.o
  .bss.uxTopUsedPriority
-                0x20000168        0x4 src\FreeRTOS\tasks.o
+                0x20000158        0x4 src\FreeRTOS\tasks.o
  .bss.uxTopReadyPriority
-                0x2000016c        0x4 src\FreeRTOS\tasks.o
+                0x2000015c        0x4 src\FreeRTOS\tasks.o
  .bss.xSchedulerRunning
-                0x20000170        0x4 src\FreeRTOS\tasks.o
+                0x20000160        0x4 src\FreeRTOS\tasks.o
  .bss.uxSchedulerSuspended
-                0x20000174        0x4 src\FreeRTOS\tasks.o
+                0x20000164        0x4 src\FreeRTOS\tasks.o
  .bss.uxMissedTicks
-                0x20000178        0x4 src\FreeRTOS\tasks.o
+                0x20000168        0x4 src\FreeRTOS\tasks.o
  .bss.xMissedYield
-                0x2000017c        0x4 src\FreeRTOS\tasks.o
+                0x2000016c        0x4 src\FreeRTOS\tasks.o
  .bss.xNumOfOverflows
-                0x20000180        0x4 src\FreeRTOS\tasks.o
+                0x20000170        0x4 src\FreeRTOS\tasks.o
  .bss.uxTCBNumber
-                0x20000184        0x4 src\FreeRTOS\tasks.o
- .bss.xHeap     0x20000188     0x1400 src\FreeRTOS\portable\MemMang\heap_1.o
+                0x20000174        0x4 src\FreeRTOS\tasks.o
+ .bss.xHeap     0x20000178     0x1400 src\FreeRTOS\portable\MemMang\heap_1.o
  .bss.xNextFreeByte
-                0x20001588        0x4 src\FreeRTOS\portable\MemMang\heap_1.o
+                0x20001578        0x4 src\FreeRTOS\portable\MemMang\heap_1.o
  *(COMMON)
-                0x2000158c                . = ALIGN (0x4)
-                0x2000158c                _ebss = .
-                0x2000158c                __bss_end__ = _ebss
+                0x2000157c                . = ALIGN (0x4)
+                0x2000157c                _ebss = .
+                0x2000157c                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x2000158c      0x400 load address 0x08002418
-                0x2000158c                . = ALIGN (0x4)
-                0x2000158c                PROVIDE (end, .)
-                0x2000158c                PROVIDE (_end, .)
-                0x2000158c                . = (. + _Min_Heap_Size)
-                0x2000198c                . = (. + _Min_Stack_Size)
- *fill*         0x2000158c      0x400 
-                0x2000198c                . = ALIGN (0x4)
+                0x2000157c      0x400 load address 0x0800228c
+                0x2000157c                . = ALIGN (0x4)
+                0x2000157c                PROVIDE (end, .)
+                0x2000157c                PROVIDE (_end, .)
+                0x2000157c                . = (. + _Min_Heap_Size)
+                0x2000197c                . = (. + _Min_Stack_Size)
+ *fill*         0x2000157c      0x400 
+                0x2000197c                . = ALIGN (0x4)
 
 .memory_b1_text
  *(.mb1text)
@@ -2973,74 +3110,62 @@ LOAD c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib
  .ARM.attributes
                 0x000000e3       0x37 src\main.o
  .ARM.attributes
-                0x0000011a       0x37 src\FreeRTOS\timers.o
+                0x0000011a       0x37 src\TM38\tm_stm32f4_exti.o
  .ARM.attributes
-                0x00000151       0x37 src\FreeRTOS\tasks.o
+                0x00000151       0x37 src\FreeRTOS\timers.o
  .ARM.attributes
-                0x00000188       0x37 src\FreeRTOS\queue.o
+                0x00000188       0x37 src\FreeRTOS\tasks.o
  .ARM.attributes
-                0x000001bf       0x37 src\FreeRTOS\portable\MemMang\heap_1.o
+                0x000001bf       0x37 src\FreeRTOS\queue.o
  .ARM.attributes
-                0x000001f6       0x37 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x000001f6       0x37 src\FreeRTOS\portable\MemMang\heap_1.o
  .ARM.attributes
-                0x0000022d       0x37 src\FreeRTOS\list.o
+                0x0000022d       0x37 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
  .ARM.attributes
-                0x00000264       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
+                0x00000264       0x37 src\FreeRTOS\list.o
  .ARM.attributes
-                0x0000029b       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
+                0x0000029b       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
  .ARM.attributes
-                0x000002d2       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
+                0x000002d2       0x32 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-init.o)
  .ARM.attributes
-                0x00000309       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+                0x00000304       0x32 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-memcpy-stub.o)
  .ARM.attributes
-                0x00000340       0x37 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+                0x00000336       0x32 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-memset.o)
  .ARM.attributes
-                0x00000377       0x32 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-init.o)
+                0x00000368       0x32 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-strncpy.o)
  .ARM.attributes
-                0x000003a9       0x32 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-memcpy-stub.o)
- .ARM.attributes
-                0x000003db       0x32 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-memset.o)
- .ARM.attributes
-                0x0000040d       0x32 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-strncpy.o)
- .ARM.attributes
-                0x0000043f       0x22 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtn.o
+                0x0000039a       0x22 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/armv7e-m/softfp/crtn.o
 OUTPUT(ST080.elf elf32-littlearm)
 
-.debug_info     0x00000000     0x58f0
+.debug_info     0x00000000     0x4402
  .debug_info    0x00000000      0x596 src\system_stm32f4xx.o
  .debug_info    0x00000596      0x21d src\stm32f4xx_it.o
- .debug_info    0x000007b3       0x8e src\startup_stm32f4xx.o
- .debug_info    0x00000841      0x22d src\main.o
- .debug_info    0x00000a6e      0x71f src\FreeRTOS\timers.o
- .debug_info    0x0000118d      0xf59 src\FreeRTOS\tasks.o
- .debug_info    0x000020e6      0x9ad src\FreeRTOS\queue.o
- .debug_info    0x00002a93      0x1a1 src\FreeRTOS\portable\MemMang\heap_1.o
- .debug_info    0x00002c34      0x219 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
- .debug_info    0x00002e4d      0x2ae src\FreeRTOS\list.o
- .debug_info    0x000030fb      0x9c6 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
- .debug_info    0x00003ac1      0xc51 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
- .debug_info    0x00004712      0x606 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
- .debug_info    0x00004d18      0x34b Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
- .debug_info    0x00005063      0x88d Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .debug_info    0x000007b3       0x8d src\startup_stm32f4xx.o
+ .debug_info    0x00000840      0x2b7 src\main.o
+ .debug_info    0x00000af7      0x8b8 src\TM38\tm_stm32f4_exti.o
+ .debug_info    0x000013af      0x71f src\FreeRTOS\timers.o
+ .debug_info    0x00001ace      0xf59 src\FreeRTOS\tasks.o
+ .debug_info    0x00002a27      0x9ad src\FreeRTOS\queue.o
+ .debug_info    0x000033d4      0x1a1 src\FreeRTOS\portable\MemMang\heap_1.o
+ .debug_info    0x00003575      0x219 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+ .debug_info    0x0000378e      0x2ae src\FreeRTOS\list.o
+ .debug_info    0x00003a3c      0x9c6 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
 
-.debug_abbrev   0x00000000     0x137d
+.debug_abbrev   0x00000000      0xea1
  .debug_abbrev  0x00000000      0x138 src\system_stm32f4xx.o
  .debug_abbrev  0x00000138       0xc8 src\stm32f4xx_it.o
  .debug_abbrev  0x00000200       0x12 src\startup_stm32f4xx.o
- .debug_abbrev  0x00000212      0x113 src\main.o
- .debug_abbrev  0x00000325      0x186 src\FreeRTOS\timers.o
- .debug_abbrev  0x000004ab      0x20b src\FreeRTOS\tasks.o
- .debug_abbrev  0x000006b6      0x18f src\FreeRTOS\queue.o
- .debug_abbrev  0x00000845      0x133 src\FreeRTOS\portable\MemMang\heap_1.o
- .debug_abbrev  0x00000978      0x143 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
- .debug_abbrev  0x00000abb       0xb5 src\FreeRTOS\list.o
- .debug_abbrev  0x00000b70      0x157 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
- .debug_abbrev  0x00000cc7      0x1e5 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
- .debug_abbrev  0x00000eac      0x1a5 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
- .debug_abbrev  0x00001051      0x1a7 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
- .debug_abbrev  0x000011f8      0x185 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .debug_abbrev  0x00000212      0x147 src\main.o
+ .debug_abbrev  0x00000359      0x1a6 src\TM38\tm_stm32f4_exti.o
+ .debug_abbrev  0x000004ff      0x186 src\FreeRTOS\timers.o
+ .debug_abbrev  0x00000685      0x20b src\FreeRTOS\tasks.o
+ .debug_abbrev  0x00000890      0x18f src\FreeRTOS\queue.o
+ .debug_abbrev  0x00000a1f      0x133 src\FreeRTOS\portable\MemMang\heap_1.o
+ .debug_abbrev  0x00000b52      0x143 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+ .debug_abbrev  0x00000c95       0xb5 src\FreeRTOS\list.o
+ .debug_abbrev  0x00000d4a      0x157 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
 
-.debug_aranges  0x00000000      0x840
+.debug_aranges  0x00000000      0x620
  .debug_aranges
                 0x00000000       0x30 src\system_stm32f4xx.o
  .debug_aranges
@@ -3048,99 +3173,82 @@ OUTPUT(ST080.elf elf32-littlearm)
  .debug_aranges
                 0x00000080       0x28 src\startup_stm32f4xx.o
  .debug_aranges
-                0x000000a8       0x48 src\main.o
+                0x000000a8       0x60 src\main.o
  .debug_aranges
-                0x000000f0       0x88 src\FreeRTOS\timers.o
+                0x00000108       0x68 src\TM38\tm_stm32f4_exti.o
  .debug_aranges
-                0x00000178      0x160 src\FreeRTOS\tasks.o
+                0x00000170       0x88 src\FreeRTOS\timers.o
  .debug_aranges
-                0x000002d8       0xe0 src\FreeRTOS\queue.o
+                0x000001f8      0x160 src\FreeRTOS\tasks.o
  .debug_aranges
-                0x000003b8       0x38 src\FreeRTOS\portable\MemMang\heap_1.o
+                0x00000358       0xe0 src\FreeRTOS\queue.o
  .debug_aranges
-                0x000003f0       0x70 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x00000438       0x38 src\FreeRTOS\portable\MemMang\heap_1.o
  .debug_aranges
-                0x00000460       0x40 src\FreeRTOS\list.o
+                0x00000470       0x70 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
  .debug_aranges
-                0x000004a0      0x100 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
+                0x000004e0       0x40 src\FreeRTOS\list.o
  .debug_aranges
-                0x000005a0      0x178 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
- .debug_aranges
-                0x00000718       0x88 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
- .debug_aranges
-                0x000007a0       0x58 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
- .debug_aranges
-                0x000007f8       0x48 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+                0x00000520      0x100 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
 
-.debug_ranges   0x00000000      0x758
+.debug_ranges   0x00000000      0x568
  .debug_ranges  0x00000000       0x20 src\system_stm32f4xx.o
  .debug_ranges  0x00000020       0x40 src\stm32f4xx_it.o
  .debug_ranges  0x00000060       0x20 src\startup_stm32f4xx.o
- .debug_ranges  0x00000080       0x38 src\main.o
- .debug_ranges  0x000000b8       0x78 src\FreeRTOS\timers.o
- .debug_ranges  0x00000130      0x150 src\FreeRTOS\tasks.o
- .debug_ranges  0x00000280       0xd0 src\FreeRTOS\queue.o
- .debug_ranges  0x00000350       0x28 src\FreeRTOS\portable\MemMang\heap_1.o
- .debug_ranges  0x00000378       0x60 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
- .debug_ranges  0x000003d8       0x30 src\FreeRTOS\list.o
- .debug_ranges  0x00000408       0xf0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
- .debug_ranges  0x000004f8      0x168 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
- .debug_ranges  0x00000660       0x78 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
- .debug_ranges  0x000006d8       0x48 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
- .debug_ranges  0x00000720       0x38 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .debug_ranges  0x00000080       0x50 src\main.o
+ .debug_ranges  0x000000d0       0x58 src\TM38\tm_stm32f4_exti.o
+ .debug_ranges  0x00000128       0x78 src\FreeRTOS\timers.o
+ .debug_ranges  0x000001a0      0x150 src\FreeRTOS\tasks.o
+ .debug_ranges  0x000002f0       0xd0 src\FreeRTOS\queue.o
+ .debug_ranges  0x000003c0       0x28 src\FreeRTOS\portable\MemMang\heap_1.o
+ .debug_ranges  0x000003e8       0x60 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+ .debug_ranges  0x00000448       0x30 src\FreeRTOS\list.o
+ .debug_ranges  0x00000478       0xf0 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
 
-.debug_line     0x00000000     0x3305
+.debug_line     0x00000000     0x279d
  .debug_line    0x00000000      0x1f3 src\system_stm32f4xx.o
  .debug_line    0x000001f3      0x1f7 src\stm32f4xx_it.o
  .debug_line    0x000003ea       0x7c src\startup_stm32f4xx.o
- .debug_line    0x00000466      0x2a7 src\main.o
- .debug_line    0x0000070d      0x393 src\FreeRTOS\timers.o
- .debug_line    0x00000aa0      0x8b0 src\FreeRTOS\tasks.o
- .debug_line    0x00001350      0x635 src\FreeRTOS\queue.o
- .debug_line    0x00001985      0x21e src\FreeRTOS\portable\MemMang\heap_1.o
- .debug_line    0x00001ba3      0x2db src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
- .debug_line    0x00001e7e      0x22d src\FreeRTOS\list.o
- .debug_line    0x000020ab      0x48c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
- .debug_line    0x00002537      0x584 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
- .debug_line    0x00002abb      0x329 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
- .debug_line    0x00002de4      0x28f Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
- .debug_line    0x00003073      0x292 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+ .debug_line    0x00000466      0x206 src\main.o
+ .debug_line    0x0000066c      0x307 src\TM38\tm_stm32f4_exti.o
+ .debug_line    0x00000973      0x393 src\FreeRTOS\timers.o
+ .debug_line    0x00000d06      0x8b0 src\FreeRTOS\tasks.o
+ .debug_line    0x000015b6      0x635 src\FreeRTOS\queue.o
+ .debug_line    0x00001beb      0x21e src\FreeRTOS\portable\MemMang\heap_1.o
+ .debug_line    0x00001e09      0x2db src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+ .debug_line    0x000020e4      0x22d src\FreeRTOS\list.o
+ .debug_line    0x00002311      0x48c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
 
-.debug_str      0x00000000     0x2d8f
- .debug_str     0x00000000      0x399 src\system_stm32f4xx.o
-                                0x40d (size before relaxing)
- .debug_str     0x00000399       0xaa src\stm32f4xx_it.o
-                                0x2cf (size before relaxing)
- .debug_str     0x00000443      0x10e src\main.o
-                                0x2fc (size before relaxing)
- .debug_str     0x00000551      0x402 src\FreeRTOS\timers.o
-                                0x60e (size before relaxing)
- .debug_str     0x00000953      0x7f1 src\FreeRTOS\tasks.o
-                                0xa8f (size before relaxing)
- .debug_str     0x00001144      0x3fa src\FreeRTOS\queue.o
+.debug_str      0x00000000     0x2523
+ .debug_str     0x00000000      0x3ac src\system_stm32f4xx.o
+                                0x40c (size before relaxing)
+ .debug_str     0x000003ac       0xaa src\stm32f4xx_it.o
+                                0x2ce (size before relaxing)
+ .debug_str     0x00000456      0x112 src\main.o
+                                0x305 (size before relaxing)
+ .debug_str     0x00000568      0x8b1 src\TM38\tm_stm32f4_exti.o
+                                0xba2 (size before relaxing)
+ .debug_str     0x00000e19      0x41c src\FreeRTOS\timers.o
+                                0x60d (size before relaxing)
+ .debug_str     0x00001235      0x7f1 src\FreeRTOS\tasks.o
+                                0xa8e (size before relaxing)
+ .debug_str     0x00001a26      0x3fa src\FreeRTOS\queue.o
+                                0x70f (size before relaxing)
+ .debug_str     0x00001e20       0xb5 src\FreeRTOS\portable\MemMang\heap_1.o
+                                0x294 (size before relaxing)
+ .debug_str     0x00001ed5      0x128 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                                0x335 (size before relaxing)
+ .debug_str     0x00001ffd       0xa3 src\FreeRTOS\list.o
+                                0x303 (size before relaxing)
+ .debug_str     0x000020a0      0x483 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
                                 0x710 (size before relaxing)
- .debug_str     0x0000153e       0xb5 src\FreeRTOS\portable\MemMang\heap_1.o
-                                0x295 (size before relaxing)
- .debug_str     0x000015f3      0x128 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                                0x336 (size before relaxing)
- .debug_str     0x0000171b       0xa3 src\FreeRTOS\list.o
-                                0x304 (size before relaxing)
- .debug_str     0x000017be      0x4a2 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
-                                0x711 (size before relaxing)
- .debug_str     0x00001c60      0x50a Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
-                                0x8d2 (size before relaxing)
- .debug_str     0x0000216a      0x31b Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
-                                0x525 (size before relaxing)
- .debug_str     0x00002485      0x1cd Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
-                                0x3db (size before relaxing)
- .debug_str     0x00002652      0x73d Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                                0xbb8 (size before relaxing)
 
 .comment        0x00000000       0x82
  .comment       0x00000000       0x82 src\system_stm32f4xx.o
                                  0x83 (size before relaxing)
  .comment       0x00000000       0x83 src\stm32f4xx_it.o
  .comment       0x00000000       0x83 src\main.o
+ .comment       0x00000000       0x83 src\TM38\tm_stm32f4_exti.o
  .comment       0x00000000       0x83 src\FreeRTOS\timers.o
  .comment       0x00000000       0x83 src\FreeRTOS\tasks.o
  .comment       0x00000000       0x83 src\FreeRTOS\queue.o
@@ -3148,30 +3256,23 @@ OUTPUT(ST080.elf elf32-littlearm)
  .comment       0x00000000       0x83 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
  .comment       0x00000000       0x83 src\FreeRTOS\list.o
  .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
- .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
- .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
- .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
- .comment       0x00000000       0x83 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
 
-.debug_frame    0x00000000     0x19c8
+.debug_frame    0x00000000     0x1314
  .debug_frame   0x00000000       0x64 src\system_stm32f4xx.o
  .debug_frame   0x00000064       0xbc src\stm32f4xx_it.o
- .debug_frame   0x00000120       0xb4 src\main.o
- .debug_frame   0x000001d4      0x1c4 src\FreeRTOS\timers.o
- .debug_frame   0x00000398      0x4f4 src\FreeRTOS\tasks.o
- .debug_frame   0x0000088c      0x310 src\FreeRTOS\queue.o
- .debug_frame   0x00000b9c       0x7c src\FreeRTOS\portable\MemMang\heap_1.o
- .debug_frame   0x00000c18      0x110 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
- .debug_frame   0x00000d28       0x9c src\FreeRTOS\list.o
- .debug_frame   0x00000dc4      0x344 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
- .debug_frame   0x00001108      0x4d8 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
- .debug_frame   0x000015e0      0x19c Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
- .debug_frame   0x0000177c       0xec Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
- .debug_frame   0x00001868       0xc4 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
- .debug_frame   0x0000192c       0x2c c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-init.o)
- .debug_frame   0x00001958       0x28 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-memcpy-stub.o)
- .debug_frame   0x00001980       0x20 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-memset.o)
- .debug_frame   0x000019a0       0x28 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-strncpy.o)
+ .debug_frame   0x00000120       0xfc src\main.o
+ .debug_frame   0x0000021c      0x128 src\TM38\tm_stm32f4_exti.o
+ .debug_frame   0x00000344      0x1c4 src\FreeRTOS\timers.o
+ .debug_frame   0x00000508      0x4f4 src\FreeRTOS\tasks.o
+ .debug_frame   0x000009fc      0x310 src\FreeRTOS\queue.o
+ .debug_frame   0x00000d0c       0x7c src\FreeRTOS\portable\MemMang\heap_1.o
+ .debug_frame   0x00000d88      0x110 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+ .debug_frame   0x00000e98       0x9c src\FreeRTOS\list.o
+ .debug_frame   0x00000f34      0x344 Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
+ .debug_frame   0x00001278       0x2c c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-init.o)
+ .debug_frame   0x000012a4       0x28 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-memcpy-stub.o)
+ .debug_frame   0x000012cc       0x20 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-memset.o)
+ .debug_frame   0x000012ec       0x28 c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-strncpy.o)
 
 Cross Reference Table
 
@@ -3318,6 +3419,7 @@ CRYP_SaveContext                                  Libraries\STM32F4xx_StdPeriph_
 CRYP_StructInit                                   Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp.o
 CRYP_TDES_CBC                                     Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_tdes.o
 CRYP_TDES_ECB                                     Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_cryp_tdes.o
+DAC_Buffer                                        src\main.o
 DAC_ClearFlag                                     Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dac.o
 DAC_ClearITPendingBit                             Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dac.o
 DAC_Cmd                                           Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dac.o
@@ -3395,22 +3497,26 @@ DebugMon_Handler                                  src\stm32f4xx_it.o
 Default_Handler                                   src\startup_stm32f4xx.o
 ETH_IRQHandler                                    src\startup_stm32f4xx.o
 ETH_WKUP_IRQHandler                               src\startup_stm32f4xx.o
-EXTI0_IRQHandler                                  src\main.o
+EXTI0_IRQHandler                                  src\TM38\tm_stm32f4_exti.o
                                                   src\startup_stm32f4xx.o
-EXTI15_10_IRQHandler                              src\startup_stm32f4xx.o
-EXTI1_IRQHandler                                  src\startup_stm32f4xx.o
-EXTI2_IRQHandler                                  src\startup_stm32f4xx.o
-EXTI3_IRQHandler                                  src\startup_stm32f4xx.o
-EXTI4_IRQHandler                                  src\startup_stm32f4xx.o
-EXTI9_5_IRQHandler                                src\startup_stm32f4xx.o
+EXTI15_10_IRQHandler                              src\TM38\tm_stm32f4_exti.o
+                                                  src\startup_stm32f4xx.o
+EXTI1_IRQHandler                                  src\TM38\tm_stm32f4_exti.o
+                                                  src\startup_stm32f4xx.o
+EXTI2_IRQHandler                                  src\TM38\tm_stm32f4_exti.o
+                                                  src\startup_stm32f4xx.o
+EXTI3_IRQHandler                                  src\TM38\tm_stm32f4_exti.o
+                                                  src\startup_stm32f4xx.o
+EXTI4_IRQHandler                                  src\TM38\tm_stm32f4_exti.o
+                                                  src\startup_stm32f4xx.o
+EXTI9_5_IRQHandler                                src\TM38\tm_stm32f4_exti.o
+                                                  src\startup_stm32f4xx.o
 EXTI_ClearFlag                                    Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
 EXTI_ClearITPendingBit                            Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
-                                                  src\main.o
 EXTI_DeInit                                       Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
 EXTI_GenerateSWInterrupt                          Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
 EXTI_GetFlagStatus                                Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
 EXTI_GetITStatus                                  Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
-                                                  src\main.o
 EXTI_Init                                         Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
                                                   Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
 EXTI_StructInit                                   Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
@@ -3599,6 +3705,7 @@ MemManage_Handler                                 src\stm32f4xx_it.o
 NMI_Handler                                       src\stm32f4xx_it.o
 NVIC_Init                                         Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
                                                   Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
+                                                  src\TM38\tm_stm32f4_exti.o
 NVIC_InitStructure                                Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
 NVIC_PriorityGroupConfig                          Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
 NVIC_SetVectorTable                               Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
@@ -3826,14 +3933,11 @@ SPI_StructInit                                    Libraries\STM32F4xx_StdPeriph_
 SPI_TIModeCmd                                     Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o
 SPI_TransmitCRC                                   Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o
 STM_EVAL_LEDInit                                  Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                                                  src\main.o
                                                   src\utils.o
 STM_EVAL_LEDOff                                   Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                                                  src\main.o
 STM_EVAL_LEDOn                                    Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
                                                   src\utils.o
 STM_EVAL_LEDToggle                                Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                                                  src\main.o
 STM_EVAL_PBGetState                               Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
 STM_EVAL_PBInit                                   Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
 SVC_Handler                                       src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
@@ -3975,6 +4079,34 @@ TIM_TimeBaseStructInit                            Libraries\STM32F4xx_StdPeriph_
 TIM_TimeBaseStructure                             src\utils.o
 TIM_UpdateDisableConfig                           Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.o
 TIM_UpdateRequestConfig                           Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.o
+TM_DISCO_ButtonInit                               src\TM38\tm_stm32f4_disco.o
+TM_DISCO_ButtonOnPressed                          src\TM38\tm_stm32f4_disco.o
+TM_DISCO_ButtonOnReleased                         src\TM38\tm_stm32f4_disco.o
+TM_DISCO_LedInit                                  src\TM38\tm_stm32f4_disco.o
+TM_EXTI_Attach                                    src\TM38\tm_stm32f4_exti.o
+TM_EXTI_DeInit                                    src\TM38\tm_stm32f4_exti.o
+TM_EXTI_Detach                                    src\TM38\tm_stm32f4_exti.o
+TM_EXTI_Handler                                   src\TM38\tm_stm32f4_exti.o
+TM_GPIO_DeInit                                    src\TM38\tm_stm32f4_gpio.o
+TM_GPIO_GetFreePins                               src\TM38\tm_stm32f4_gpio.o
+TM_GPIO_GetPinSource                              src\TM38\tm_stm32f4_gpio.o
+                                                  src\TM38\tm_stm32f4_exti.o
+TM_GPIO_GetPortSource                             src\TM38\tm_stm32f4_gpio.o
+                                                  src\TM38\tm_stm32f4_exti.o
+TM_GPIO_GetUsedPins                               src\TM38\tm_stm32f4_gpio.o
+TM_GPIO_INT_DisableClock                          src\TM38\tm_stm32f4_gpio.o
+TM_GPIO_INT_EnableClock                           src\TM38\tm_stm32f4_gpio.o
+TM_GPIO_INT_Init                                  src\TM38\tm_stm32f4_gpio.o
+TM_GPIO_Init                                      src\TM38\tm_stm32f4_gpio.o
+                                                  src\TM38\tm_stm32f4_disco.o
+                                                  src\TM38\tm_stm32f4_exti.o
+TM_GPIO_InitAlternate                             src\TM38\tm_stm32f4_gpio.o
+TM_GPIO_Lock                                      src\TM38\tm_stm32f4_gpio.o
+TM_GPIO_SetPinAsAlternate                         src\TM38\tm_stm32f4_gpio.o
+TM_GPIO_SetPinAsAnalog                            src\TM38\tm_stm32f4_gpio.o
+TM_GPIO_SetPinAsInput                             src\TM38\tm_stm32f4_gpio.o
+TM_GPIO_SetPinAsOutput                            src\TM38\tm_stm32f4_gpio.o
+TM_GPIO_SetPullResistor                           src\TM38\tm_stm32f4_gpio.o
 UART4_IRQHandler                                  src\startup_stm32f4xx.o
 UART5_IRQHandler                                  src\startup_stm32f4xx.o
 USART1_IRQHandler                                 src\startup_stm32f4xx.o
@@ -4240,9 +4372,9 @@ _unlink                                           c:/program files (x86)/atollic
 _wait                                             c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-syscalls.o)
 _write                                            c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-syscalls.o)
 accel                                             src\mems.o
-averageTime                                       src\main.o
+addSamples                                        src\main.o
 cleanup_glue                                      c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-reent.o)
-delayQueue                                        src\main.o
+configInterrupts                                  src\main.o
 end                                               c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-syscalls.o)
 environ                                           c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-syscalls.o)
 errno                                             c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-reent.o)
@@ -4251,6 +4383,7 @@ errno                                             c:/program files (x86)/atollic
 fMems_Debug                                       src\mems.o
 free                                              c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-malloc.o)
 g_pfnVectors                                      src\startup_stm32f4xx.o
+getSampleID                                       src\main.o
 initialise_monitor_handles                        c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-syscalls.o)
 localeconv                                        c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-locale.o)
 main                                              src\main.o
@@ -4287,10 +4420,15 @@ pxCurrentTCB                                      src\FreeRTOS\tasks.o
                                                   src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
 pxPortInitialiseStack                             src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
                                                   src\FreeRTOS\tasks.o
+rackPins                                          src\main.o
+refreshUI                                         src\main.o
 s8buff                                            src\mems.o
+sample                                            src\main.o
+samples                                           src\main.o
 setlocale                                         c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-locale.o)
 sprintf                                           c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-sprintf.o)
                                                   src\FreeRTOS\tasks.o
+status                                            src\main.o
 strcat                                            c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-strcat.o)
                                                   src\FreeRTOS\tasks.o
 strcmp                                            c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-strcmp.o)
@@ -4301,7 +4439,6 @@ strlen                                            c:/program files (x86)/atollic
                                                   src\FreeRTOS\tasks.o
 strncpy                                           c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-strncpy.o)
                                                   src\FreeRTOS\tasks.o
-tempo                                             src\main.o
 tickTime                                          src\main.o
 u16PWM1                                           src\main.o
 u64IdleTicks                                      src\main.o
@@ -4324,6 +4461,7 @@ vApplicationTickHook                              src\main.o
                                                   src\FreeRTOS\tasks.o
 vCoRoutineAddToDelayedList                        src\FreeRTOS\croutine.o
 vCoRoutineSchedule                                src\FreeRTOS\croutine.o
+vComposerTask                                     src\main.o
 vDebugInitQueue                                   src\debug.o
 vDebugPrintResetType                              src\debug.o
 vDebugPrintf                                      src\debug.o
@@ -4383,7 +4521,6 @@ vQueueWaitForMessageRestricted                    src\FreeRTOS\queue.o
 vSetMemsDump                                      src\mems.o
                                                   src\debug.o
 vTaskDelay                                        src\FreeRTOS\tasks.o
-                                                  src\main.o
                                                   src\mems.o
 vTaskDelayUntil                                   src\FreeRTOS\tasks.o
 vTaskDelete                                       src\FreeRTOS\tasks.o
@@ -4445,7 +4582,6 @@ xTaskCheckForTimeOut                              src\FreeRTOS\tasks.o
                                                   src\FreeRTOS\queue.o
 xTaskGenericCreate                                src\FreeRTOS\tasks.o
                                                   src\FreeRTOS\timers.o
-                                                  src\main.o
 xTaskGetCurrentTaskHandle                         src\FreeRTOS\tasks.o
                                                   src\FreeRTOS\queue.o
 xTaskGetSchedulerState                            src\FreeRTOS\tasks.o
