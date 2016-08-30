@@ -1,0 +1,107 @@
+// format of the composing keyboard
+// 			[ * * * * | * * * * | * *  *  *  | *  *  *  * ]
+// indexes:	[ 0 1 2 3 | 4 6 7 8 | 9 11 12 13 | 14 15 16 17]
+
+// static variables
+
+uint16_t samples[8][size1];			// samples sounds for each of the 8 instruments
+uint16_t DAC_Buffer[16 * size1];	// DAC buffer to send to the speaker output
+bool composerPins[8][16];			// Array showing status of the pins on the composer board (the 16 buttons) for each of the samples (8 samples).
+bool status;						// status bit to check if it is necessary to check pin statuses and add samples. This is set high when a pin status has changed.
+uint8_t sample;						// variable indicating which instrument has been selected for the composition. Selected by the user amoungst the 8 available instruments.
+
+// method declarations. Methods explain at the end in detail
+
+int getSampleID(void)
+void addSamples(int i)
+void refreshUI(int sample)
+void GPIO_Interrupt_Handler()
+
+// +++++++ ********* this code will run within the composer mode of the system ********* ++++++++++
+
+while (1)
+{	
+	sample = getSampleID();
+	if (status || sample != previous_sample)	// if a pin has changed or is the sample has been changed, this is to make sure we don't update the DAC array when it is not necessary
+	{
+		for (int i = 0; i < 16; ++i)
+		{
+			addSamples(i);
+		}
+		status = false;
+		previous_sample = sample;
+	}
+	previous_sample = sample;
+	refreshUI(sample);
+}
+
+int getSampleID(void)
+{
+	/**
+	 * read the GPIO pin for sample selection
+	 * determine the index of chosen sample based on the value read from the GPIO pin
+	 * @return The index of the sample being edited.
+	 */
+}
+
+void addSamples(int i)
+{
+	/**
+	 * Go through the samples composerPins array (for loop for the 8 samples)
+	 * check status of pin "i" in each of those arrays
+	 * if pin "i" is set, add the audio for that sample to the DAC_Buffer
+	 * if pin "i" is low, do not add anything to the DAC_Buffer
+	 * Do this for each of the 8 samples
+	 */
+}
+
+void refreshUI(int sample)
+{
+	/**
+	 * This method lights up the corresponding LEDs for the pins on the composer keyboard
+	 * optinally, could also update an LCD display if being used
+	 */
+}
+
+void GPIO_Interrupt_Handler()
+{
+	// this is the interrupt handler that is called when a pin on the composer keyboard is pressed {one of the 16 pins on the composer keyboard}
+	// check which pin has been pressed
+	// toggle the status of the corresponding flag in the composerPins[][] array (for the chosen sample)
+	// eg...
+
+	if (keyboardPin0 is pressed)
+	{
+		composerPins[sample][0] = composerPins[sample][0] == true ? false : true; // if the current status is true, change it to false, and vice versa
+	} else if (keyboardPin1 is pressed)
+	{
+		composerPins[sample][1] = composerPins[sample][1] == true ? false : true; // if the current status is true, change it to false, and vice versa
+	} else if (keyboardPin2 is pressed)
+	{
+		composerPins[sample][2] = composerPins[sample][2] == true ? false : true; // if the current status is true, change it to false, and vice versa
+	}
+
+	// ... and so on for the rest of the 16 pins on the composer keyboard
+}
+
+Composer Mode
+*http://code2flow.com*;
+while (in composer mode?)
+{	
+	sample = getSampleID();
+	// if a pin has changed or is the sample has been changed, this is to make sure we don't update the DAC array when it is not necessary
+	if (status == true
+	OR
+	sample != previous_sample)	
+	{
+	  for (each pin)
+		{
+			addSamples(i);
+		}
+		status = false;
+		previous_sample = sample;
+	}
+	previous_sample = sample;
+	refreshUI(sample)
+}
+exit composer mode
