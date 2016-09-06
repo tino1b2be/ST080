@@ -8,11 +8,10 @@
 #ifndef COMPOSER_H_
 #define COMPOSER_H_
 
-#include <stdbool.h>
-
 #include "TM38/defines.h"
 #include "TM38/tm_stm32f4_disco.h"
 #include "TM38/tm_stm32f4_exti.h"
+ 
 #include "ST080Utils.h"
 
 // constansts declarations
