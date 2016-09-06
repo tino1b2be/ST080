@@ -1,13 +1,3 @@
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
-#include "semphr.h"
-
-#include "stm32f4xx.h"
-#include "stm32f4_discovery.h"
-#include "debug.h"
-#include "mems.h"
-
 #include "ST080Utils.h"	// this is where the FreeRTOS stuff (functions and variable are too)
 #include "composer.h"
 
