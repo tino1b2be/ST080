@@ -1,3 +1,3 @@
-This is the feature-kernel branch.
+This is the feature-freestyle branch.
 
-for a new feature, branch from this branch and always pull changes (update) from this branch.
+branched from the kernel branch
