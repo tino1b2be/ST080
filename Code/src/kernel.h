@@ -13,9 +13,19 @@
 #include "TM38/tm_stm32f4_exti.h"
 
 #include "ST080Utils.h"	// this is where the FreeRTOS stuff (functions and variable are too)
+#include "task.h"
 #include "composer.h"	//composer mode functionalities
 //#include "freestyle.h" //freestyle mode functionalities not yet implemented
 //#include "playback.h"  //playback mode functionalities not yet implemented
+
+//function prototypes
+void vTaskSuspend( xTaskHandle xTaskToSuspend );
+void vTaskResumeFromISR( xTaskHandle xTaskToSuspend );
+void detachLine(void);
+void kernelInit(void);
+void InterruptConfig(void);
+void vKernelTask(void *pvparameters);
+void InterruptReconfig(void);
 
 // define task priorities
 #define COMPOSER_TASK_PRIORITY 2
@@ -60,28 +70,23 @@ void InterruptConfig(void)
 
 };
 
-void InterruptReconfig(void) {
-	detachLine();
-	InterruptConfig();
-};
-
 //	handles for controlling tasks
-static TaskHandle_t composer_Handle;
-static TaskHandle_t playback_Handle;
-static TaskHandle_t freestyle_Handle;
-static reconfig_flag = 0;
+static xTaskHandle composer_Handle;
+static xTaskHandle playback_Handle;
+static xTaskHandle freestyle_Handle;
+static int reconfig_flag = 0;
 
-static void vKernelTask(void *pvparameters) {
+void vKernelTask(void *pvparameters) {
 
 	//Create Tasks storing handles
 	xTaskCreate(vComposerTask, (signed char * ) "Composer Task", COMPOSER_STACK_SIZE, NULL,
-			COMPOSER_TASK_PRIORITY, composer_Handle);
+			COMPOSER_TASK_PRIORITY, &composer_Handle);
 
 //	xTaskCreate(vPlaybackTask, (signed char * ) "Playback Task", PLAYBACK_STACK_SIZE,
-//						NULL, PLAYBACK_TASK_PRIORITY, playback_Handle);
+//						NULL, PLAYBACK_TASK_PRIORITY, &playback_Handle);
 //
 //	xTaskCreate(vFreestyleTask, (signed char * ) "Freestyle Task", FREESTYLE_STACK_SIZE,
-//				NULL, FREESTYLE_TASK_PRIORITY, freestyle_Handle);
+//				NULL, FREESTYLE_TASK_PRIORITY, &freestyle_Handle);
 
 	// Use the handle to suspend the created tasks
 	vTaskSuspend(composer_Handle);
@@ -99,11 +104,16 @@ static void vKernelTask(void *pvparameters) {
 	}
 };
 
-void detachLine(){
+void detachLine(void){
 	//	detach the external interrupt for all GPIO_Pins in used
 	TM_EXTI_Detach(GPIO_Pin_0);
 	TM_EXTI_Detach(GPIO_Pin_1);
 	TM_EXTI_Detach(GPIO_Pin_2);
+};
+
+void InterruptReconfig(void) {
+	detachLine();
+	InterruptConfig();
 };
 
 /**
@@ -125,7 +135,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
     	/*Turn on Composer led */
 
     	 //Resume composer task
-    	 vTaskResume(composer_Handle);
+    	 vTaskResumeFromISR(composer_Handle);
     	 break;
 
     /* Resume the playback mode */
@@ -133,14 +143,14 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
        	/*Turn on Composer led */
 
        	 //Resume playback task
-       	 vTaskResume(playback_Handle);
+       	 vTaskResumeFromISR(playback_Handle);
        	 break;
 
     case GPIO_Pin_2:
        	/*Turn on freestyle led */
 
        	 //Resume playback task
-       	 vTaskResume(freestyle_Handle);
+       	 vTaskResumeFromISR(freestyle_Handle);
        	 break;
     }
 };
