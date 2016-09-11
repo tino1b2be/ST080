@@ -15,8 +15,8 @@
 // ============================================================================
 int main(void) {
 	//Create kernel Task
-	xTaskCreate(vComposerTask, (signed char * ) "Kernel Task", KERNEL_STACK_SIZE, NULL,
-			COMPOSER_TASK_PRIORITY, NULL);
+	xTaskCreate(vComposerTask, (signed char * ) "Kernel Task", COMPOSER_STACK_SIZE, NULL,
+			COMPOSER_TASK_PRIORITY, composer_Handle);
 
 	vTaskStartScheduler(); // This should never return.
 	// Will only get here if there was insufficient memory to create

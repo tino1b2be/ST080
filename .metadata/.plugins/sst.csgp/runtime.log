@@ -1,0 +1,12 @@
+
+------------------------------------
+  Logging start.  ## CURRENT TIME  : [9/11, 2016   18:10  44.76]  ## COMMAND LINE  : 
+cmd /C "gen_csini.exe"
+------------------------------------
+[STD-ERR] : 'C:\School\EEE3074W' is not recognized as an internal or external command,
+[STD-ERR] : operable program or batch file.
+[STD-IN] : C:\School\EEE3074W,2016\Project\Kernel\ST080\.metadata\.plugins\sst.csgp\bin\env_vars.txt
+GUI is waiting for subprocess to be done...
+Execution done. EXIT CODE = -1
+  Logging finished.  ## CURRENT TIME  : [9/11, 2016   18:10  45.279]
+------------------------------------

@@ -7,16 +7,23 @@
 //#define FREESTYLE_TASK_PRIORITY 2
 //
 //// define task stack sizes
-#define KERNEL_STACK_SIZE 128
 //#define COMPOSER_STACK_SIZE 128
 //#define PLAYBACK_STACK_SIZE 128
 //#define FREESTYLE_STACK_SIZE 128
 
+//volatile struct booleans {
+//	volatile int composer = 0;
+//	volatile int playback = 0;
+//	volatile int freestyle = 0;
+//};
+
 // ============================================================================
 int main(void) {
-	//Create kernel Task
-	xTaskCreate(vComposerTask, (signed char * ) "Kernel Task", KERNEL_STACK_SIZE, NULL,
-			COMPOSER_TASK_PRIORITY, NULL);
+
+
+	booleans * mode = {0, 0, 0};
+
+
 
 	vTaskStartScheduler(); // This should never return.
 	// Will only get here if there was insufficient memory to create
