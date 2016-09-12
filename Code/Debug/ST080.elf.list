@@ -19,21 +19,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   7 .ARM.attributes 0000002e  00000000  00000000  0001000c  2**0
                   CONTENTS, READONLY
-  8 .debug_info   000046d8  00000000  00000000  0001003a  2**0
+  8 .debug_info   00004402  00000000  00000000  0001003a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_abbrev 00000f5c  00000000  00000000  00014712  2**0
+  9 .debug_abbrev 00000ea1  00000000  00000000  0001443c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_aranges 00000640  00000000  00000000  00015670  2**3
+ 10 .debug_aranges 00000620  00000000  00000000  000152e0  2**3
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000588  00000000  00000000  00015cb0  2**3
+ 11 .debug_ranges 00000568  00000000  00000000  00015900  2**3
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_line   00002914  00000000  00000000  00016238  2**0
+ 12 .debug_line   0000279d  00000000  00000000  00015e68  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_str    00002641  00000000  00000000  00018b4c  2**0
+ 13 .debug_str    00002523  00000000  00000000  00018605  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .comment      00000082  00000000  00000000  0001b18d  2**0
+ 14 .comment      00000082  00000000  00000000  0001ab28  2**0
                   CONTENTS, READONLY
- 15 .debug_frame  00001398  00000000  00000000  0001b210  2**2
+ 15 .debug_frame  00001314  00000000  00000000  0001abac  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -514,7 +514,7 @@ LoopFillZerobss:
  80003ac:	f001 fefa 	bl	80021a4 <__libc_init_array>
 /* Call the application's entry point.*/
   bl  main
- 80003b0:	f000 f83c 	bl	800042c <main>
+ 80003b0:	f000 f810 	bl	80003d4 <main>
   bx  lr    
  80003b4:	4770      	bx	lr
  80003b6:	0000      	.short	0x0000
@@ -563,80 +563,80 @@ Infinite_Loop:
   b  Infinite_Loop
  80003d0:	f7ff bffe 	b.w	80003d0 <ADC_IRQHandler>
 
-080003d4 <vApplicationTickHook>:
-uint64_t u64IdleTicksCnt = 0; // Counts when the OS has no task to execute.
+080003d4 <main>:
 uint16_t u16PWM1 = 0;
+
+
+
+// ============================================================================
+int main(void) {
+ 80003d4:	b580      	push	{r7, lr}
+ 80003d6:	af00      	add	r7, sp, #0
+
+	vTaskStartScheduler(); // This should never return.
+ 80003d8:	f000 fc72 	bl	8000cc0 <vTaskStartScheduler>
+	// Will only get here if there was insufficient memory to create
+	// the idle task.
+	while(1);
+ 80003dc:	e7fe      	b.n	80003dc <main+0x8>
+ 80003de:	bf00      	nop
+
+080003e0 <vApplicationTickHook>:
+}
+
 
 // This FreeRTOS callback function gets called once per tick (default = 1000Hz).
 // ----------------------------------------------------------------------------
 void vApplicationTickHook(void) {
- 80003d4:	b480      	push	{r7}
- 80003d6:	af00      	add	r7, sp, #0
+ 80003e0:	b480      	push	{r7}
+ 80003e2:	af00      	add	r7, sp, #0
 	++tickTime;
- 80003d8:	4b06      	ldr	r3, [pc, #24]	; (80003f4 <vApplicationTickHook+0x20>)
- 80003da:	e9d3 2300 	ldrd	r2, r3, [r3]
- 80003de:	3201      	adds	r2, #1
- 80003e0:	f143 0300 	adc.w	r3, r3, #0
- 80003e4:	4903      	ldr	r1, [pc, #12]	; (80003f4 <vApplicationTickHook+0x20>)
- 80003e6:	e9c1 2300 	strd	r2, r3, [r1]
+ 80003e4:	4b06      	ldr	r3, [pc, #24]	; (8000400 <vApplicationTickHook+0x20>)
+ 80003e6:	e9d3 2300 	ldrd	r2, r3, [r3]
+ 80003ea:	3201      	adds	r2, #1
+ 80003ec:	f143 0300 	adc.w	r3, r3, #0
+ 80003f0:	4903      	ldr	r1, [pc, #12]	; (8000400 <vApplicationTickHook+0x20>)
+ 80003f2:	e9c1 2300 	strd	r2, r3, [r1]
 }
- 80003ea:	46bd      	mov	sp, r7
- 80003ec:	f85d 7b04 	ldr.w	r7, [sp], #4
- 80003f0:	4770      	bx	lr
- 80003f2:	bf00      	nop
- 80003f4:	20000030 	.word	0x20000030
+ 80003f6:	46bd      	mov	sp, r7
+ 80003f8:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 80003fc:	4770      	bx	lr
+ 80003fe:	bf00      	nop
+ 8000400:	20000030 	.word	0x20000030
 
-080003f8 <vApplicationIdleHook>:
+08000404 <vApplicationIdleHook>:
 
 // This FreeRTOS call-back function gets when no other task is ready to execute.
 // On a completely unloaded system this is getting called at over 2.5MHz!
 // ----------------------------------------------------------------------------
 void vApplicationIdleHook(void) {
- 80003f8:	b480      	push	{r7}
- 80003fa:	af00      	add	r7, sp, #0
+ 8000404:	b480      	push	{r7}
+ 8000406:	af00      	add	r7, sp, #0
 	++u64IdleTicksCnt;
- 80003fc:	4b06      	ldr	r3, [pc, #24]	; (8000418 <vApplicationIdleHook+0x20>)
- 80003fe:	e9d3 2300 	ldrd	r2, r3, [r3]
- 8000402:	3201      	adds	r2, #1
- 8000404:	f143 0300 	adc.w	r3, r3, #0
- 8000408:	4903      	ldr	r1, [pc, #12]	; (8000418 <vApplicationIdleHook+0x20>)
- 800040a:	e9c1 2300 	strd	r2, r3, [r1]
+ 8000408:	4b06      	ldr	r3, [pc, #24]	; (8000424 <vApplicationIdleHook+0x20>)
+ 800040a:	e9d3 2300 	ldrd	r2, r3, [r3]
+ 800040e:	3201      	adds	r2, #1
+ 8000410:	f143 0300 	adc.w	r3, r3, #0
+ 8000414:	4903      	ldr	r1, [pc, #12]	; (8000424 <vApplicationIdleHook+0x20>)
+ 8000416:	e9c1 2300 	strd	r2, r3, [r1]
 }
- 800040e:	46bd      	mov	sp, r7
- 8000410:	f85d 7b04 	ldr.w	r7, [sp], #4
- 8000414:	4770      	bx	lr
- 8000416:	bf00      	nop
- 8000418:	20000038 	.word	0x20000038
+ 800041a:	46bd      	mov	sp, r7
+ 800041c:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8000420:	4770      	bx	lr
+ 8000422:	bf00      	nop
+ 8000424:	20000038 	.word	0x20000038
 
-0800041c <vApplicationMallocFailedHook>:
+08000428 <vApplicationMallocFailedHook>:
 
 // A required FreeRTOS function.
 // ----------------------------------------------------------------------------
 void vApplicationMallocFailedHook(void) {
- 800041c:	b480      	push	{r7}
- 800041e:	af00      	add	r7, sp, #0
+ 8000428:	b480      	push	{r7}
+ 800042a:	af00      	add	r7, sp, #0
 	configASSERT(0);  // Latch on any failure / error.
- 8000420:	f04f 0050 	mov.w	r0, #80	; 0x50
- 8000424:	f380 8811 	msr	BASEPRI, r0
- 8000428:	e7fe      	b.n	8000428 <vApplicationMallocFailedHook+0xc>
- 800042a:	bf00      	nop
-
-0800042c <main>:
-// define task stack sizes
-#define COMPOSER_STACK_SIZE 128
-
-
-// ============================================================================
-int main(void) {
- 800042c:	b580      	push	{r7, lr}
- 800042e:	af00      	add	r7, sp, #0
-
-	vTaskStartScheduler(); // This should never return.
- 8000430:	f000 fc46 	bl	8000cc0 <vTaskStartScheduler>
-	// Will only get here if there was insufficient memory to create
-	// the idle task.
-	while(1);
- 8000434:	e7fe      	b.n	8000434 <main+0x8>
+ 800042c:	f04f 0050 	mov.w	r0, #80	; 0x50
+ 8000430:	f380 8811 	msr	BASEPRI, r0
+ 8000434:	e7fe      	b.n	8000434 <vApplicationMallocFailedHook+0xc>
  8000436:	bf00      	nop
 
 08000438 <EXTI0_IRQHandler>:
@@ -2830,7 +2830,7 @@ tskTCB * pxTCB;
 		#if ( configUSE_TICK_HOOK == 1 )
 		{
 			vApplicationTickHook();
- 8000f90:	f7ff fa20 	bl	80003d4 <vApplicationTickHook>
+ 8000f90:	f7ff fa26 	bl	80003e0 <vApplicationTickHook>
 
 	#if ( configUSE_TICK_HOOK == 1 )
 	{
@@ -2843,7 +2843,7 @@ tskTCB * pxTCB;
  8000f9a:	d101      	bne.n	8000fa0 <vTaskIncrementTick+0x124>
 		{
 			vApplicationTickHook();
- 8000f9c:	f7ff fa1a 	bl	80003d4 <vApplicationTickHook>
+ 8000f9c:	f7ff fa20 	bl	80003e0 <vApplicationTickHook>
 		}
 	}
 	#endif
@@ -3461,7 +3461,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 			NOTE: vApplicationIdleHook() MUST NOT, UNDER ANY CIRCUMSTANCES,
 			CALL A FUNCTION THAT MIGHT BLOCK. */
 			vApplicationIdleHook();
- 80012f8:	f7ff f87e 	bl	80003f8 <vApplicationIdleHook>
+ 80012f8:	f7ff f884 	bl	8000404 <vApplicationIdleHook>
 		}
 		#endif
 	}
@@ -5646,7 +5646,7 @@ void *pvReturn = NULL;
 		{
 			extern void vApplicationMallocFailedHook( void );
 			vApplicationMallocFailedHook();
- 8001e06:	f7fe fb09 	bl	800041c <vApplicationMallocFailedHook>
+ 8001e06:	f7fe fb0f 	bl	8000428 <vApplicationMallocFailedHook>
 		}
 	}
 	#endif	
