@@ -11,18 +11,14 @@
 #include "TM38/defines.h"
 #include "TM38/tm_stm32f4_disco.h"
 #include "TM38/tm_stm32f4_exti.h"
- 
-#include "ST080Utils.h"
 
-// constansts declarations
-#define SAMPLE_SIZE 100
-#define NUM_INSTR 9
+#include "ST080Utils.h"
 
 #define CHECKINSTR_STACK_SIZE 128 	// may be smaller than this
 #define CHECKINSTR_PRIORITY 4		// must be higher than the priority of main task??
 
 // variable declarations
-uint16_t samples[NUM_INSTR][SAMPLE_SIZE]; // 2D array of the samples to be used (current drumkit)
+
 uint16_t DAC_Buffer[16 * SAMPLE_SIZE];	// The DAC buffer to be used for output
 bool rackPins[NUM_INSTR][16];// array representing the scores on the channel rack for each instrument
 bool status;// This variable is set everytime the sample changes (or a score is chaged)
@@ -37,7 +33,7 @@ void configInterrupts(void);// function to configure the GPIO interrupts to be u
 void configInstrPins(void);	// function to configure the 9 buttons from the freestyle mode to select the instr to be modified in the channel rack.
 int getInstrID(void);// Function to obtain the instrument being edited on the rack
 void debugLED_init();
-void addSamples(int s);
+void addSamples();
 void refreshUI(int sample);
 void vComposerTask(void *pvparameters);	// task to perform the main computations for the rhythm composer
 void vCheckCurrentSample(void *pvparameters);// task to cycle through the 9-GPIO pins to check which instrument is supposed to be on the channel rack
@@ -67,10 +63,7 @@ void vComposerTask(void * pvparameters) {
 		}
 
 		if (status || sample != previous_sample) {
-			int i;
-			for (i = 0; i < 16; ++i) {
-				addSamples(i);
-			}
+			addSamples();
 		}
 		previous_sample = sample;
 		vTaskDelay(10);
@@ -296,7 +289,8 @@ int getInstrID(void) {
  * if pin "i" is low, do not add anything to the DAC_Buffer
  * Do this for each of the 8 samples
  */
-void addSamples(int i) {
+void addSamples() {
+
 
 	return;
 }
