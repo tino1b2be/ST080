@@ -1,0 +1,85 @@
+/*
+ * kernel.h
+ *
+ *  Created on: Sep 11, 2016
+ *      Author: KSSKOU001: Hermann
+ */
+
+#ifndef KERNEL_H_
+#define KERNEL_H_
+
+
+/*
+ * Kernel initial configuration
+ */
+void kernelInit(void) {
+
+    GPIO_Config();
+
+	/* Enable the clock for port B*/
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+
+	GPIO_InitTypeDef GPIO_InitStructure;
+
+	/* Configure Button pin as input */
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;		// Input mode
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;		// Push - Pull
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;	// To detect a logic high
+
+	// Pins 0-8 on port B (9 in total)
+	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_0
+			| GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3
+			| GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6
+			| GPIO_PIN_7	| GPIO_PIN_8;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+};
+
+
+/*
+ * Associate 3 GPIO_Pins to Three Interrupts
+ * Template Taken from Tino composer
+ */
+void InterruptConfig(void)
+{
+	// pins being used for kernel
+	// PD0, PD1, PD2
+	bool fail = false;
+	if (TM_EXTI_Attach(GPIOD, GPIO_Pin_0, TM_EXTI_Trigger_Rising) != TM_EXTI_Result_Ok){
+		// PA0
+		fail = true;
+	} else if (TM_EXTI_Attach(GPIOD, GPIO_Pin_1, TM_EXTI_Trigger_Rising) != TM_EXTI_Result_Ok){
+		// PA1
+		fail = true;
+	} else if (TM_EXTI_Attach(GPIOD, GPIO_Pin_2, TM_EXTI_Trigger_Rising) != TM_EXTI_Result_Ok){
+		// PA2
+		fail = true;
+
+	if (fail){
+		// TODO failed configuring interrupts. (FLASH LEDs or something)
+	}
+
+};
+static void vKernelTask(void *pvparameters) {
+
+	InterruptConfig(void);
+
+	uint32_t LEDdelay = 1000; /* Delay in ticks */
+
+	STM_EVAL_LEDInit(LED4);
+	STM_EVAL_LEDOff(LED4);
+	STM_EVAL_LEDInit(LED5);
+	STM_EVAL_LEDOff(LED5);
+
+	for (;;) {
+		STM_EVAL_LEDToggle(LED4);
+		STM_EVAL_LEDToggle(LED5);
+
+		xQueueReceive(avgQ, &(averageTime), (portTickType ) 10);
+		vTaskDelay(averageTime);
+	}
+}
+
+
+
+#endif /* KERNEL_H_ */
