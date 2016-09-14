@@ -1,4 +1,3 @@
-*.list
-Code/Debug/ST080.elf
+Code/Debug
 *.o
-*.o
+*.idea
