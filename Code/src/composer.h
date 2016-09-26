@@ -40,6 +40,7 @@ void vCheckCurrentSample(void *pvparameters);// task to cycle through the 9-GPIO
 
 // ++++++++ function implementations +++++++
 
+
 void vComposerTask(void * pvparameters) {
 	// initialise the variables
 	initVariables();
