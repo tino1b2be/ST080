@@ -1,4 +1,10 @@
 #include "Utils080.h"
+#include "ComposerMode.h"
+#include "FreestyleMode.h"
+#include "AudioStuff.h"
+#include "GPIOTask.h"
+#include "UIUdate.h"
+#include "PlaybackMode.h"
 
 // define task priorities
 #define COMPOSER_TASK_PRIORITY 2
@@ -16,6 +22,8 @@
 
 // ============================================================================
 int main(void) {
+
+	startUpConfigs(); // TODO
 
 	xTaskCreate(vComposerTask, (signed char * ) "Composer Mode Task", COMPOSER_STACK_SIZE, NULL, COMPOSER_TASK_PRIORITY, NULL);
 	xTaskCreate(vUITask, (signed char * ) "UI Task", UI_STACK_SIZE, NULL, UI_TASK_PRIORITY, NULL);

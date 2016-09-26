@@ -10,6 +10,9 @@
 
 #include "Utils080.h"
 
+void initVariables(void);
+void vComposerTask(void * pvparameters);
+void addSamples(void); // TODO implement function
 
 
 #endif /* COMPOSERMODE_H_ */

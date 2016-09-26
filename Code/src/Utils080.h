@@ -21,6 +21,11 @@
 #include "stm32f4xx.h"
 #include "stm32f4_discovery.h"
 
+// Just constants
+#define COMPOSER 1
+#define PLAYBACK 2
+#define FREESTYLE 3
+
 // ==========================================================================================
 // ============================ FreeRTOS stuff ==============================================
 // ==========================================================================================
@@ -48,5 +53,19 @@ void vApplicationIdleHook(void) {
 void vApplicationMallocFailedHook(void) {
 	configASSERT(0);  // Latch on any failure / error.
 }
+
+// +++++++++++++++ function declerations ++++++++++++++++++
+
+void startUpConfigs(void); // TODO implements this function
+
+// ==========================================================================================
+// ============================ Global Variables ============================================
+// ==========================================================================================
+
+uint8_t MODE = COMPOSER;
+bool status = true;
+uint8_t current_sample = 0;
+uint8_t channelRack[16][4][16]; // 16 channel racks with 4 instruments each with 16 beat channel
+uint16_t ComposerBuffer[16000];
 
 #endif /* UTILS080_H_ */
