@@ -2717,12 +2717,14 @@ LOAD c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib
                 0x080003d0                I2C1_ER_IRQHandler
                 0x080003d0                DMA2_Stream6_IRQHandler
                 0x080003d0                DMA1_Stream3_IRQHandler
+ .text.main     0x080003d4        0xc src\main.o
+                0x080003d4                main
  .text.vApplicationTickHook
-                0x080003d4       0x24 src\main.o
-                0x080003d4                vApplicationTickHook
+                0x080003e0       0x24 src\main.o
+                0x080003e0                vApplicationTickHook
  .text.vApplicationIdleHook
-                0x080003f8       0x24 src\main.o
-                0x080003f8                vApplicationIdleHook
+                0x08000404       0x24 src\main.o
+                0x08000404                vApplicationIdleHook
  .text.vApplicationMallocFailedHook
                 0x0800041c       0x10 src\main.o
                 0x0800041c                vApplicationMallocFailedHook
@@ -3585,7 +3587,6 @@ GPIO_CLK                                          Libraries\STM32F4xx_StdPeriph_
 GPIO_DeInit                                       Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
 GPIO_Init                                         Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
                                                   Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                                                  src\main.o
                                                   src\stm32f4_discovery_lis302dl.o
                                                   src\utils.o
 GPIO_PIN                                          Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
@@ -3597,7 +3598,6 @@ GPIO_PinLockConfig                                Libraries\STM32F4xx_StdPeriph_
 GPIO_ReadInputData                                Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
 GPIO_ReadInputDataBit                             Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
                                                   Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                                                  src\main.o
 GPIO_ReadOutputData                               Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
 GPIO_ReadOutputDataBit                            Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
 GPIO_ResetBits                                    Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
@@ -3746,7 +3746,6 @@ PendSV_Handler                                    src\FreeRTOS\portable\GCC\ARM_
 PrescalerValue                                    src\utils.o
 RCC_AHB1PeriphClockCmd                            Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
                                                   Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                                                  src\main.o
                                                   src\stm32f4_discovery_lis302dl.o
                                                   src\utils.o
 RCC_AHB1PeriphClockLPModeCmd                      Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
@@ -3775,7 +3774,6 @@ RCC_APB1PeriphResetCmd                            Libraries\STM32F4xx_StdPeriph_
                                                   Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_wwdg.o
 RCC_APB2PeriphClockCmd                            Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
                                                   Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4_discovery.o
-                                                  src\main.o
                                                   src\stm32f4_discovery_lis302dl.o
 RCC_APB2PeriphClockLPModeCmd                      Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
 RCC_APB2PeriphResetCmd                            Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
@@ -4097,7 +4095,6 @@ TM_DISCO_ButtonOnPressed                          src\TM38\tm_stm32f4_disco.o
 TM_DISCO_ButtonOnReleased                         src\TM38\tm_stm32f4_disco.o
 TM_DISCO_LedInit                                  src\TM38\tm_stm32f4_disco.o
 TM_EXTI_Attach                                    src\TM38\tm_stm32f4_exti.o
-                                                  src\main.o
 TM_EXTI_DeInit                                    src\TM38\tm_stm32f4_exti.o
 TM_EXTI_Detach                                    src\TM38\tm_stm32f4_exti.o
 TM_EXTI_Handler                                   src\TM38\tm_stm32f4_exti.o
@@ -4388,7 +4385,6 @@ _write                                            c:/program files (x86)/atollic
 accel                                             src\mems.o
 addSamples                                        src\main.o
 cleanup_glue                                      c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-reent.o)
-configInstrPins                                   src\main.o
 configInterrupts                                  src\main.o
 end                                               c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-syscalls.o)
 environ                                           c:/program files (x86)/atollic/truestudio for arm 5.4.1/armtools/bin/../lib/gcc/arm-atollic-eabi/4.8.3/../../../../arm-atollic-eabi/lib/armv7e-m/softfp\libc.a(lib_a-syscalls.o)
@@ -4474,7 +4470,6 @@ vApplicationMallocFailedHook                      src\main.o
                                                   src\FreeRTOS\portable\MemMang\heap_1.o
 vApplicationTickHook                              src\main.o
                                                   src\FreeRTOS\tasks.o
-vCheckCurrentSample                               src\main.o
 vCoRoutineAddToDelayedList                        src\FreeRTOS\croutine.o
 vCoRoutineSchedule                                src\FreeRTOS\croutine.o
 vComposerTask                                     src\main.o
@@ -4537,7 +4532,6 @@ vQueueWaitForMessageRestricted                    src\FreeRTOS\queue.o
 vSetMemsDump                                      src\mems.o
                                                   src\debug.o
 vTaskDelay                                        src\FreeRTOS\tasks.o
-                                                  src\main.o
                                                   src\mems.o
 vTaskDelayUntil                                   src\FreeRTOS\tasks.o
 vTaskDelete                                       src\FreeRTOS\tasks.o
@@ -4599,7 +4593,6 @@ xTaskCheckForTimeOut                              src\FreeRTOS\tasks.o
                                                   src\FreeRTOS\queue.o
 xTaskGenericCreate                                src\FreeRTOS\tasks.o
                                                   src\FreeRTOS\timers.o
-                                                  src\main.o
 xTaskGetCurrentTaskHandle                         src\FreeRTOS\tasks.o
                                                   src\FreeRTOS\queue.o
 xTaskGetSchedulerState                            src\FreeRTOS\tasks.o
