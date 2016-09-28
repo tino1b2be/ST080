@@ -11,6 +11,11 @@
 // other stuff
 #include <stdbool.h>
 
+// Library 38 (interrupts library)
+#include "TM38/defines.h"
+#include "TM38/tm_stm32f4_disco.h"
+#include "TM38/tm_stm32f4_exti.h"
+
 // FreeRTOS stuff
 #include "FreeRTOS.h"
 #include "task.h"
@@ -20,8 +25,6 @@
 // STM32f4 stuff
 #include "stm32f4xx.h"
 #include "stm32f4_discovery.h"
-
-
 
 // ==========================================================================================
 // ============================ FreeRTOS stuff ==============================================
@@ -72,9 +75,11 @@ void vApplicationMallocFailedHook(void) {
 
 uint8_t MODE = COMPOSER; 			// Global variable to e used to identify which mode the ST080 is currently in
 bool status = true;					// Variable used by Composer to check if there has been an update on the channel rack configs.
+uint64_t current = 0, previous = 0;	// Variables to be used by IRQ Handler for debouncing
 uint8_t current_sample = INSTR_1;	// variable used by the composer mode to check which instrument sample is on the channel rack
-bool channelRack[16][4][16]; 	// 16 channel racks with 4 instruments each with 16 beat channel
+bool channelRack[16][4][16]; 		// 16 channel racks with 4 instruments each with 16 beat channel
 uint8_t currentBeat = 0;			// Variable to indicate the current beat/instrumental being edited on the beat rack.
+bool resetLEDs = false;			// flag used to fresh the LEDs when switching modes. This flag will be checked by the UI_Task to check whether it should reset the LEDs or not
 uint16_t ComposerBuffer[DEFAULT_COMPOSER_BUFFERSIZE];		// Buffer used by the composer mode to push to the audio output interface
 uint16_t tempo = DEFAULT_TEMPO;
 uint16_t drumKit1 [4][SAMPLE_SIZE] = {
@@ -207,12 +212,101 @@ void startUpConfigs(){
 	if (fail){
 		// TODO failed configuring interrupts. (FLASH LEDs or something)
 	}
+}
+
+/**
+ * IRQ for the channel rack buttons.
+ */
+void TM_EXTI_Handler(uint16_t GPIO_Pin) {
+
+	// +++ debouncing logic (30 milliseconds) +++
+	current = tickTime;
+	if ((previous - current) < 30) {
+		previous = current;
+		return;
+	}
+
+	/* Handle external line 0 interrupts */
+	// first pad for the instruments
+	if (GPIO_Pin == GPIO_Pin_0) {
+		if (MODE == COMPOSER){
+			// change the instrument on the channel rack to the first one
+			current_sample = INSTR_1;
+			resetLEDs = true;
+		}
+	}
+
+	/* Handle external line 1 interrupts */
+	// second pad for the instruments
+	else if (GPIO_Pin == GPIO_Pin_1) {
+		if (MODE == COMPOSER){
+			// change the instrument on the channel rack to the second one
+			current_sample = INSTR_2;
+			resetLEDs = true;
+		}
+		else if (MODE == FREESTYLE) {
+			// TODO play the instrument
+		}
+	}
+
+	/* Handle external line 2 interrupts */
+	// third pad for the instruments
+	else if (GPIO_Pin == GPIO_Pin_2) {
+		if (MODE == COMPOSER){
+			// change the instrument on the channel rack to the third one
+			current_sample = INSTR_3;
+			resetLEDs = true;
+		}
+		else if (MODE == FREESTYLE) {
+			// TODO play the instrument
+		}
+	}
+
+	/* Handle external line 3 interrupts */
+	// forth pad for the instruments
+	else if (GPIO_Pin == GPIO_Pin_3) {
+		if (MODE == COMPOSER){
+			// change the instrument on the channel rack to the forth one
+			current_sample = INSTR_4;
+			resetLEDs = true;
+		}
+		else if (MODE == FREESTYLE) {
+			// TODO play the instrument
+		}
+	}
+
+	/* Handle external line 4 interrupts */
+	// switch to COMPOSER MODE
+	else if (GPIO_Pin == GPIO_Pin_4) {
+		MODE = COMPOSER;
+	}
+
+	/* Handle external line 5 interrupts */
+	// switch to PLAYBACK MODE
+	else if (GPIO_Pin == GPIO_Pin_5) {
+		MODE = PLAYBACK;
+	}
+
+	/* Handle external line 6 interrupts */
+	// switch to FREESTYLE MODE
+	else if (GPIO_Pin == GPIO_Pin_6) {
+		MODE = FREESTYLE;
+	}
+
+	/* Handle external line 7 interrupts */
+	// Save pin
+	else if (GPIO_Pin == GPIO_Pin_7) {
+		// TODO implement save logic
+		// Save the channelRack Array to the EPROM
+	}
+
+	previous = current; // for debouncing
+}
 
 	// +++++++++++++++++ TODO configure on-board amplifier ++++++++++++++++++++++++
 
 	// +++++++++++++++++ TODO configure EPROM pins ++++++++++++++++++++++++
 
 	// +++++++++++++++++ TODO configure Audio stuff (DMA, ADC, etc...) ++++++++++++++++++++++++
-}
 
 #endif /* UTILS080_H_ */
