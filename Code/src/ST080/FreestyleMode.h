@@ -14,8 +14,17 @@ void vFreestyleTask(void * pvparameterss);
 
 void vFreestyleTask(void * pvparameters)
 {
-	// TODO
-}
+	// TODO pre-configs
+
+	while (true)
+	{
+		while(MODE == FREESTYLE)
+		{
+			// TODO freestyle logic
+		}
+		vTaskDelay(10); // TODO might need to optmise this delay
+	} //
+} // END of task function
 
 
 #endif /* FREESTYLEMODE_H_ */

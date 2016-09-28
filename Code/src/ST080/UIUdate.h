@@ -35,6 +35,9 @@ void vUITask(void * pvparameters){
 		}
 		while(MODE==PLAYBACK)
 		{
+			// TODO still to figure out how to implement this mode
+			// load the channel rack and use the config to play back music.
+			// must enable logic to cycle through the different composed songs (use the channel rack buttons)
 
 		}
 		// TODO task delay
