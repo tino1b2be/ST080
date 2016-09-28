@@ -1,10 +1,10 @@
-#include "Utils080.h"
-#include "ComposerMode.h"
-#include "FreestyleMode.h"
-#include "AudioStuff.h"
-#include "GPIOTask.h"
-#include "UIUdate.h"
-#include "PlaybackMode.h"
+#include "ST080/Utils080.h"
+#include "ST080/ComposerMode.h"
+#include "ST080/FreestyleMode.h"
+#include "ST080/AudioStuff.h"
+#include "ST080/GPIOTask.h"
+#include "ST080/UIUdate.h"
+#include "ST080/PlaybackMode.h"
 
 // define task priorities
 #define COMPOSER_TASK_PRIORITY 2

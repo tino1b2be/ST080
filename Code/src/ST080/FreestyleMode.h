@@ -12,4 +12,10 @@
 
 void vFreestyleTask(void * pvparameterss);
 
+void vFreestyleTask(void * pvparameters)
+{
+	// TODO
+}
+
+
 #endif /* FREESTYLEMODE_H_ */

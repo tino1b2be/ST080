@@ -12,4 +12,10 @@
 
 void vGPIOTask(void * pvparameters);
 
+void vGPIOTask(void * pvparameters)
+{
+	// TODO
+}
+
+
 #endif /* GPIOTASK_H_ */

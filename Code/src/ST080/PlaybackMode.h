@@ -12,4 +12,9 @@
 
 void vPlaybackTask(void * pvparameters);
 
+void vPlaybackTask(void * pvparameters)
+{
+	// TODO
+}
+
 #endif /* PLAYBACKMODE_H_ */
