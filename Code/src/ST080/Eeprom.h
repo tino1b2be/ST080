@@ -24,6 +24,7 @@
 #define READ 0b00000011	// read instruction
 #define WRITE 0b00000010 // write instruction
 
+#define PAGE_LENGTH 16
 /*
  * @brief Configuration of the eeprom
  * Using SPI2 with
@@ -171,15 +172,59 @@ uint8_t EEPROM_Read(uint16_t address){
  * @brief	Write a page to the eeprom
  *	@param	baseAddress	: 	The base address of the page
  *	@param 	data		: 	An array of data to be send
- *	@param	pageLength	: 	The lenght/size of the page/array
+ *	@param	pageLength	: 	The lenght/size of the page/array (max is 32)
  */
-void EEPROMWritePage(uint16_t baseAddress, uint8_t *data, uint16_t pageLength){}
+void EEPROMWritePage(uint16_t baseAddress, uint8_t *data){
+	// write enable latch
+	GPIO_ResetBits(GPIOB, GPIO_Pin_12);
+	delay(1);
+	while(SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE)==RESET);
+	SPI_I2S_SendData(SPI2,WREN);
+	while(SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE)==RESET);
+	SPI_I2S_ReceiveData(SPI2); // junk
+	GPIO_SetBits(GPIOB, GPIO_Pin_12);
+	delay(5000);
+
+	// start transmission
+	GPIO_ResetBits(GPIOB, GPIO_Pin_12);
+	delay(1);
+	// send write instruction
+	while(SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE)==RESET);
+	SPI_I2S_SendData(SPI2,WRITE);
+	while(SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE)==RESET);
+	SPI_I2S_ReceiveData(SPI2); // junk
+	// send the address of the register
+	while(SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE)==RESET);
+	SPI_I2S_SendData(SPI2, baseAddress>>8);
+	while(SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE)==RESET);
+	SPI_I2S_ReceiveData(SPI2); // junk
+	while(SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE)==RESET);
+	SPI_I2S_SendData(SPI2, baseAddress);
+	while(SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE)==RESET);
+	SPI_I2S_ReceiveData(SPI2); // junk
+	// send data
+	for(int i=0; i<PAGE_LENGTH; i++){
+		while(SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE)==RESET);
+		SPI_I2S_SendData(SPI2, data[i]);
+		while(SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE)==RESET);
+		SPI_I2S_ReceiveData(SPI2); // junk
+	}
+	// end transmission
+	GPIO_SetBits(GPIOB, GPIO_Pin_12);
+	delay(5000);
+}
 
 /*
  * @brief	Read a page to the eeprom
  *	@param	baseAddress	: 	The base address of the page
- *	@param	pageLength	: 	The lenght/size of the page/array
+ *	@param	pageLength	: 	The lenght/size of the page/array (max is 32)
  */
-uint8_t* EEPROMReadPage(uint16_t baseAddress, uint16_t pageLength){}
+uint8_t* EEPROMReadPage(uint16_t baseAddress){
+	uint8_t* data[PAGE_LENGTH];
+	for(int i=0; i<PAGE_LENGTH; i++){
+		data[i] = EEPROM_Read(baseAddress+i);
+	}
+	return data;
+}
 
 #endif /* EEPROM_H_ */
