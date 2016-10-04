@@ -8,6 +8,8 @@
 #ifndef FREESTYLEMODE_H_
 #define FREESTYLEMODE_H_
 
+#include "Utils080.h"
+
 // TODO implement freestle stuff
 
 void vFreestyleTask(void * pvparameterss);

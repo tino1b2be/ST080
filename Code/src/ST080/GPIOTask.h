@@ -12,9 +12,22 @@
 
 void vGPIOTask(void * pvparameters);
 
-void vGPIOTask(void * pvparameters)
-{
+void vGPIOTask(void * pvparameters) {
 	// TODO read GPIO pins
+
+	while (true) {
+		while (MODE == COMPOSER) {
+
+		}
+		while (MODE == FREESTYLE) {
+
+		}
+		while (MODE == PLAYBACK) {
+
+		}
+		// TODO task delay
+		vTaskDelay(5);
+	}
 }
 
 
