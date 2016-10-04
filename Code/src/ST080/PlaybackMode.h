@@ -14,7 +14,15 @@ void vPlaybackTask(void * pvparameters);
 
 void vPlaybackTask(void * pvparameters)
 {
-	// TODO
+	while (true)
+	{
+		while (MODE == PLAYBACK)
+		{
+			// TODO implement code for playback mode
+			vTaskDelay(50);
+		}
+		vTaskDelay(50);
+	}
 }
 
 #endif /* PLAYBACKMODE_H_ */

@@ -23,6 +23,7 @@ void vFreestyleTask(void * pvparameters)
 		while(MODE == FREESTYLE)
 		{
 			// TODO freestyle logic
+			vTaskDelay(10);
 		}
 		vTaskDelay(10); // TODO might need to optmise this delay
 	} //

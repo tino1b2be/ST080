@@ -62,6 +62,7 @@ void vApplicationMallocFailedHook(void) {
 #define COMPOSER 1
 #define PLAYBACK 2
 #define FREESTYLE 3
+#define SAVE 4
 
 // Instrument Macros
 #define INSTR_1 0
@@ -109,10 +110,50 @@ uint16_t drumKit1 [4][SAMPLE_SIZE] = {
 // ==========================================================================================
 
 void startUpConfigs(void); 			// Function to run the start up configurations.
+void delay_ms(uint32_t milli);
+void error_(void);					// function to flash the on-board LEDs when an error occurs
 
 // ==========================================================================================
 // ============================ Function Implementations =====================================
 // ==========================================================================================
+
+/**
+  * @brief  Delay in ms
+  * @param  integer amount of milliseconds
+  * @retval None
+  */
+void delay_ms(uint32_t milli)
+{
+	uint32_t delay = milli * 17612;              // approximate loops per ms at 168 MHz, Debug config
+	for(; delay != 0; delay--);
+}
+
+/**
+ * Function to flash the LEDs when an error occurs
+ */
+void error_(void)
+{
+	/* Initialize LEDs */
+	STM_EVAL_LEDInit(LED3);
+	STM_EVAL_LEDInit(LED4);
+	STM_EVAL_LEDInit(LED5);
+	STM_EVAL_LEDInit(LED6);
+
+	/* Turn off some LEDs */
+	STM_EVAL_LEDOff(LED3);
+	STM_EVAL_LEDOff(LED4);
+	/* Turn on some LEDs */
+	STM_EVAL_LEDOn(LED5);
+	STM_EVAL_LEDOn(LED6);
+
+	while(1){
+		delay_ms(500);
+		STM_EVAL_LEDToggle(LED3);
+		STM_EVAL_LEDToggle(LED4);
+		STM_EVAL_LEDToggle(LED5);
+		STM_EVAL_LEDToggle(LED6);
+	}
+}
 
 /**
  * Run start up configurations for the STM080. These include
@@ -160,7 +201,7 @@ void startUpConfigs(){
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
 
 	// +++++++++++++++++ configure input pins ++++++++++++++++++++++++
-	// A0-3, A5-7, E8-15, C0
+	// A0-7, E8-15, C0
 
 	/* Configure Button pin as input */
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;		// Input mode
@@ -168,7 +209,7 @@ void startUpConfigs(){
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;		// To detect a logic high
 
 	// Pins A0-3, A5-7
-	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7;
+	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 	// E8-15
@@ -208,9 +249,9 @@ void startUpConfigs(){
 		// PA7
 		fail = true;
 	}
-
 	if (fail){
-		// TODO failed configuring interrupts. (FLASH LEDs or something)
+		// failed initialising interrupts.
+		error_();
 	}
 }
 
@@ -233,6 +274,9 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 			// change the instrument on the channel rack to the first one
 			current_sample = INSTR_1;
 			resetLEDs = true;
+		}
+		else if (MODE == FREESTYLE) {
+			// TODO play the instrument
 		}
 	}
 
@@ -279,6 +323,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 	// switch to COMPOSER MODE
 	else if (GPIO_Pin == GPIO_Pin_4) {
 		MODE = COMPOSER;
+		status = true;
 	}
 
 	/* Handle external line 5 interrupts */
@@ -297,13 +342,13 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 	// Save pin
 	else if (GPIO_Pin == GPIO_Pin_7) {
 		// TODO implement save logic
+		MODE = SAVE;
+		status = true;
 		// Save the channelRack Array to the EPROM
 	}
 
 	previous = current; // for debouncing
 }
-
-	// +++++++++++++++++ TODO configure on-board amplifier ++++++++++++++++++++++++
 
 	// +++++++++++++++++ TODO configure EPROM pins ++++++++++++++++++++++++
 
