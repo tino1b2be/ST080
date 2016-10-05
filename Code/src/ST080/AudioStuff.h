@@ -2,7 +2,7 @@
  * AudioStuff.h
  *
  *  Created on: Sep 27, 2016
- *      Author: user
+ *      Author: Tinotenda Chemvura
  */
 
 #ifndef AUDIOSTUFF_H_
