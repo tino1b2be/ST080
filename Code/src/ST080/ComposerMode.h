@@ -66,12 +66,18 @@ void addSamples()
 {
 	uint16_t bufferSize = DEFAULT_COMPOSER_BUFFERSIZE;
 	uint16_t bufferPos = 0;
-	uint8_t instrument = 0;
 	uint8_t pin = 0;
 
-	for (; pin < 16 || bufferPos < bufferSize; pin++ , bufferPos+=bufferSize/16){
+	for (; pin < 16; pin++ , bufferPos+=bufferSize/16){
+
+		if (bufferPos >= bufferSize){
+			// this is not supposed to happen
+			error_();
+		}
+
 		// increment to the next pin
 		// increment to the next position in the buffer
+		uint8_t instrument = 0;
 		for(; instrument < 4; instrument++){
 			if (channelRack[currentBeat][instrument][pin]){
 				// the pin is high
@@ -81,7 +87,11 @@ void addSamples()
 				uint16_t sampleIndex = 0;
 				uint16_t bufferIndex = bufferPos;
 				bool mustWrap = SAMPLE_SIZE > (bufferSize-bufferIndex);
-				for (; sampleIndex < SAMPLE_SIZE || bufferIndex < bufferSize; ++bufferIndex, ++sampleIndex) {
+				for (; sampleIndex < SAMPLE_SIZE; ++bufferIndex, ++sampleIndex) {
+
+					if (bufferIndex >= bufferSize){
+						break;
+					}
 
 					// first shift the zero point from 2048 to 0
 					// do the signal addition
@@ -95,11 +105,15 @@ void addSamples()
 					else if (temp > 2048) buffer_temp = 4095;
 					else buffer_temp = temp + 2048;
 
-					ComposerBuffer[sampleIndex] = buffer_temp;
+					ComposerBuffer[bufferIndex] = buffer_temp;
 				}
 				// if the sample spills over the buffer then wrap around and add starting from the start of the buffer
 				if (mustWrap) {
 					for (bufferIndex = 0; sampleIndex < SAMPLE_SIZE || bufferIndex< bufferSize; ++sampleIndex, ++bufferIndex){
+
+						if (bufferIndex < bufferSize){
+							break;
+						}
 
 						// first shift the zero point from 2048 to 0
 						// do the signal addition
@@ -126,7 +140,7 @@ void flushBuffer(void)
 	uint16_t i = 0;
 	for (; i < DEFAULT_COMPOSER_BUFFERSIZE; ++i)
 	{
-		ComposerBuffer[i] = 0;
+		ComposerBuffer[i] = 2048;
 	}
 }
 
