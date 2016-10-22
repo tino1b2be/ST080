@@ -2,7 +2,7 @@
  * GPIOTask.h
  *
  *  Created on: Sep 27, 2016
- *      Author: user
+ *      Author: Tinotenda Chemvura
  */
 
 #ifndef GPIOTASK_H_
@@ -29,11 +29,13 @@ void vGPIOTask(void * pvparameters) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0));
 				// toggle pin 1
 				channelRack[currentBeat][current_sample][0] = channelRack[currentBeat][current_sample][0] == true ? false : true;
+				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1));
 				// toggle pin 2
 				channelRack[currentBeat][current_sample][1] = channelRack[currentBeat][current_sample][1] == true ? false : true;
+				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2));
@@ -44,27 +46,35 @@ void vGPIOTask(void * pvparameters) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3));
 				// toggle pin 4
 				channelRack[currentBeat][current_sample][3] = channelRack[currentBeat][current_sample][3] == true ? false : true;
+				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4));
 				// toggle pin 5
 				channelRack[currentBeat][current_sample][4] = channelRack[currentBeat][current_sample][4] == true ? false : true;
+				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5));
 				// toggle pin 6
 				channelRack[currentBeat][current_sample][5] = channelRack[currentBeat][current_sample][5] == true ? false : true;
+				status = true;
 			}
-			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6));
-				// toggle pin 7
-				channelRack[currentBeat][current_sample][6] = channelRack[currentBeat][current_sample][6] == true ? false : true;
-			}
-			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7));
-				// toggle pin 8
-				channelRack[currentBeat][current_sample][7] = channelRack[currentBeat][current_sample][7] == true ? false : true;
-			}
+
+			// these two pins are high by default for some odd reason hence why they are commented out
+
+//			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6)) { // TODO implement pull down in hardware
+//				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6));
+//				// toggle pin 7
+//				channelRack[currentBeat][current_sample][6] = channelRack[currentBeat][current_sample][6] == true ? false : true;
+//				status = true;
+//			}
+//			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7)) {
+//				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7));
+//				// toggle pin 8
+//				channelRack[currentBeat][current_sample][7] = channelRack[currentBeat][current_sample][7] == true ? false : true;
+			//status = true;
+//			}
 
 			// Port E
 			
@@ -72,41 +82,49 @@ void vGPIOTask(void * pvparameters) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_8));
 				// toggle pin 9
 				channelRack[currentBeat][current_sample][8] = channelRack[currentBeat][current_sample][8] == true ? false : true;
+				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_9)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_9));
 				// toggle pin 10
 				channelRack[currentBeat][current_sample][9] = channelRack[currentBeat][current_sample][9] == true ? false : true;
+				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_10)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_10));
 				// toggle pin 11
 				channelRack[currentBeat][current_sample][10] = channelRack[currentBeat][current_sample][10] == true ? false : true;
+				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_11)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_11));
 				// toggle pin 12
 				channelRack[currentBeat][current_sample][11] = channelRack[currentBeat][current_sample][11] == true ? false : true;
+				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_12)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_12));
 				// toggle pin 13
 				channelRack[currentBeat][current_sample][12] = channelRack[currentBeat][current_sample][12] == true ? false : true;
+				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13));
 				// toggle pin 14
 				channelRack[currentBeat][current_sample][13] = channelRack[currentBeat][current_sample][13] == true ? false : true;
+				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14));
 				// toggle pin 15
 				channelRack[currentBeat][current_sample][14] = channelRack[currentBeat][current_sample][14] == true ? false : true;
+				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15));
 				// toggle pin 16
 				channelRack[currentBeat][current_sample][15] = channelRack[currentBeat][current_sample][15] == true ? false : true;
+				status = true;
 			}
 		}
 		while (MODE == FREESTYLE)
