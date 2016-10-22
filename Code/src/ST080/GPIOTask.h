@@ -182,18 +182,18 @@ void vGPIOTask(void * pvparameters) {
 				vTaskDelay(20);
 				MODE = COMPOSER;
 			}
-			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6));
-				currentBeat = 6;
-				vTaskDelay(20);
-				MODE = COMPOSER;
-			}
-			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7));
-				currentBeat = 7;
-				vTaskDelay(20);
-				MODE = COMPOSER;
-			}
+//			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6)) {
+//				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6));
+//				currentBeat = 6;
+//				vTaskDelay(20);
+//				MODE = COMPOSER;
+//			}
+//			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7)) {
+//				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7));
+//				currentBeat = 7;
+//				vTaskDelay(20);
+//				MODE = COMPOSER;
+//			}
 
 			// Port E
 
