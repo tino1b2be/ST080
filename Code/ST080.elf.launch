@@ -18,7 +18,7 @@
 <intAttribute key="com.atollic.hardwaredebug.launch.trace_system" value="0"/>
 <booleanAttribute key="com.atollic.hardwaredebug.launch.useRemoteTarget" value="true"/>
 <booleanAttribute key="com.atollic.hardwaredebug.stlink.enable_logging" value="false"/>
-<stringAttribute key="com.atollic.hardwaredebug.stlink.log_file" value="C:\Users\Tino\OneDrive\School Work\EEE3074W Embedded Systems\ST080\Code\Debug\st-link_gdbserver_log.txt"/>
+<stringAttribute key="com.atollic.hardwaredebug.stlink.log_file" value="C:\Users\user\OneDrive\School Work\EEE3074W Embedded Systems\ST080\Code\Debug\st-link_gdbserver_log.txt"/>
 <booleanAttribute key="com.atollic.hardwaredebug.stlink.verify_flash" value="false"/>
 <stringAttribute key="org.eclipse.cdt.debug.mi.core.DEBUG_NAME" value="${TOOLCHAIN_PATH}/arm-atollic-eabi-gdb"/>
 <stringAttribute key="org.eclipse.cdt.debug.mi.core.commandFactory" value="Standard (Windows)"/>
