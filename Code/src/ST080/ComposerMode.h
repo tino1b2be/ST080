@@ -49,7 +49,7 @@
 //		while(MODE==SAVE){
 //			// Save button has been pressed.
 //			if (status){ // status flag is used to make sure data is pushed to eeprom once
-//				// TODO Push the current channel rack configuration to the EEPROM
+//				//  Push the current channel rack configuration to the EEPROM
 //				status = false;
 //			}
 //			vTaskDelay(10);
@@ -148,7 +148,7 @@
 //{
 //	flushBuffer();
 //	status = true;
-//	// TODO load the channel rack from the EPROM
+//	//  load the channel rack from the EPROM
 //}
 //
 //#endif /* COMPOSERMODE_H_ */
