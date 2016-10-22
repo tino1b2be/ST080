@@ -13,7 +13,6 @@
 void vGPIOTask(void * pvparameters);
 
 void vGPIOTask(void * pvparameters) {
-	// TODO read GPIO pins
 
 	while (true) {
 		while (MODE == COMPOSER)
@@ -62,6 +61,8 @@ void vGPIOTask(void * pvparameters) {
 			}
 
 			// these two pins are high by default for some odd reason hence why they are commented out
+
+			// TODO enable reading of pins A6 and A7
 
 //			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6)) { // TODO implement pull down in hardware
 //				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6));
@@ -134,8 +135,112 @@ void vGPIOTask(void * pvparameters) {
 		}
 		while (MODE == PLAYBACK)
 		{
-			// TODO playback code
-			vTaskDelay(50);
+			// Port A
+
+			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)) {
+				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0));
+				// change to song number 1
+				currentBeat = 0;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1)) {
+				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1));
+				currentBeat = 1;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2)) {
+				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2));
+				currentBeat = 2;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3)) {
+				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3));
+				currentBeat = 3;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4)) {
+				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4));
+				currentBeat = 4;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5)) {
+				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5));
+				currentBeat = 5;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+
+			// TODO enable reading of pins A6 and A7
+
+//			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6)) {
+//				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6));
+//				currentBeat = 6;
+//				status = true;
+//				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+//			}
+//			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7)) {
+//				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7));
+//				currentBeat = 7;
+//				status = true;
+//				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+//			}
+
+			// Port E
+
+			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_8)) {
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_8));
+				currentBeat = 8;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_9)) {
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_9));
+				currentBeat = 9;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_10)) {
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_10));
+				currentBeat = 10;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_11)) {
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_11));
+				currentBeat = 11;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_12)) {
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_12));
+				currentBeat = 12;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13));
+				currentBeat = 13;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14));
+				currentBeat = 14;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15));
+				currentBeat = 15;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
+			vTaskDelay(10);
 		}
 		while (MODE == SAVE)
 		{
@@ -182,6 +287,9 @@ void vGPIOTask(void * pvparameters) {
 				vTaskDelay(20);
 				MODE = COMPOSER;
 			}
+
+			// TODO enable reading of pins A6 and A7
+
 //			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6)) {
 //				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6));
 //				currentBeat = 6;
@@ -246,7 +354,6 @@ void vGPIOTask(void * pvparameters) {
 				MODE = COMPOSER;
 			}
 			
-			// TODO task delay
 			vTaskDelay(5);
 		}
 

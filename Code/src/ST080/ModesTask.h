@@ -66,7 +66,12 @@ void vModesTask(void * pvparameters)
 				debugLED_counter_3 = tickTime;
 			}
 
-			// TODO code for the playback mode
+			if (status)
+			{
+				flushBuffer();
+				addSamples();
+				status = false;
+			}
 			vTaskDelay(50);
 		}
 
@@ -180,7 +185,7 @@ void initVariables(void)
 {
 	flushBuffer();
 	status = true;
-	// TODO load the channel rack from the EPROM
+	// TODO load the channel rack from the EPROM ## Maybe this should be done in main.c?
 }
 
 
