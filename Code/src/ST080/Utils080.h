@@ -207,8 +207,12 @@ void startUpConfigs(){
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;		// Push - Pull
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;		// To detect a logic high
 
-	// Pins A0-7
-	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7;
+	// D4-7
+	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7;;
+	GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+	// Pins A0-3,
+	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 	// E8-15

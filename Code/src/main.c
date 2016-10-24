@@ -20,7 +20,7 @@ int main(void) {
 	/* Config Eeprom*/
 	EEPROM_Configuration();
 	startUpConfigs();
-	loadFromEeprom();	// Load the channel rack from the eeprom
+	loadFromEeprom();		// Load the channel rack from the eeprom
 
 	xTaskCreate(vModesTask, (signed char * ) "Modes Task", MODES_STACK_SIZE, NULL, MODES_TASK_PRIORITY, NULL);
 	xTaskCreate(vUITask, (signed char * ) "UI Task", UI_STACK_SIZE, NULL, UI_TASK_PRIORITY, NULL);
