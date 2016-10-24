@@ -17,7 +17,8 @@
 
 // ============================================================================
 int main(void) {
-
+	/* Config Eeprom*/
+	EEPROM_Configuration();
 	startUpConfigs();
 	loadFromEeprom();	// Load the channel rack from the eeprom
 
