@@ -120,7 +120,7 @@ void AudioPlay(uint16_t *DACBuffer, uint16_t Mode, uint16_t Size ){
  * @return 	None
  */
 void AudioFreestyle(uint16_t *DACBuffer){
-	AudioPlay(DACBuffer, DMA_Mode_Normal, SAMPLE_SIZE);
+	AudioPlay(DACBuffer, DMA_Mode_Normal, 1103);
 }
 
 /*
