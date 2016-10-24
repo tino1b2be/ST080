@@ -16,6 +16,20 @@
 
 #include "Utils080.h"
 
+// TODO needed functions
+void saveToEeprom(void); 	// TODO this function saves the array "channelRack[][][]" to the eeprom, the size of this array is CHANNEL_RACK_SIZE
+void loadFromEeprom(void);	// TODO this function initialises the "channelRack[][][]" using data read from the eeprom
+
+void saveToEeprom(void)
+{
+	// todo
+}
+
+void loadFromEeprom(void)
+{
+	// todo
+}
+
 // EEPROM instructions
 #define WREN 0b00000110 // enable writing
 #define WRDI 0b00000100 // disable writing
@@ -237,8 +251,6 @@ void EEPROMReadPage(uint8_t*data,uint16_t size){
 		data[i] = EEPROM_Read(i);
 	}
 }
-
-
 
 #endif /* EEPROM_H_ */
 

@@ -9,11 +9,11 @@
 #define ST080_MODESTASK_H_
 
 #include "Utils080.h"
+#include "Eeprom.h"
 
 void initVariables(void);							// Method to initialise and variables as needed.
 void addSamples(void); 								// Method to add the samples based on the layout of the channel rack
 void flushBuffer(void);								// function to flush the DAC buffer before adding the samples
-
 void vModesTask(void * pvparameters);
 
 void vModesTask(void * pvparameters)
@@ -86,7 +86,7 @@ void vModesTask(void * pvparameters)
 
 			// Save button has been pressed.
 			if (status) { // status flag is used to make sure data is pushed to eeprom once
-				// TODO Push the current channel rack configuration to the EEPROM
+				saveToEeprom();
 				status = false;
 			}
 			vTaskDelay(10);
@@ -185,8 +185,6 @@ void initVariables(void)
 {
 	flushBuffer();
 	status = true;
-	// TODO load the channel rack from the EPROM ## Maybe this should be done in main.c?
 }
-
 
 #endif /* ST080_MODESTASK_H_ */

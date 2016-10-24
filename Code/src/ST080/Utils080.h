@@ -72,7 +72,8 @@ void vApplicationMallocFailedHook(void) {
 
 #define SAMPLE_SIZE 1103
 #define DEFAULT_COMPOSER_BUFFERSIZE 20000
-#define DEFAULT_TEMPO 0 // define proper tempos
+#define DEFAULT_TEMPO 0 // define proper tempo
+#define CHANNEL_RACK_SIZE 1024
 
 uint8_t MODE = COMPOSER; 			// Global variable to e used to identify which mode the ST080 is currently in
 bool status = true;					// Variable used by Composer to check if there has been an update on the channel rack configs.
