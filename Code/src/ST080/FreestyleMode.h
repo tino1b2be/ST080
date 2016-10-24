@@ -48,7 +48,7 @@ void vFreestyleTask(void * pvparameters)
 	 * Ideally we want the configs to take place when the STM boots
 	 * (inside the "startUpConfigs() function in the Utils080.h"
 	 */
-	initVariables();
+	initSamples();
 
 
 	while (true)
@@ -56,72 +56,76 @@ void vFreestyleTask(void * pvparameters)
 		while(MODE == FREESTYLE)
 		{
 			// TODO freestyle logic
+
+			// void AudioFreestyle(uint16_t *DACBuffer)
+
 			// One Instrument played!
 			// Instrument 1 played
 			if(played_inst == 2){
 				// TODO SEND SAMPLE TO BUFFER TO BE PLAYED
+				// AudioFreestyle(*drumKit1[0]);
 			}
 			// Instrument 2 played
 			else if(played_inst == 4){
-
+				// AudioFreestyle(*drumKit1[1];
 			}
 			// Instrument 3 played
 			else if(played_inst == 8){
-
+				// AudioFreestyle(*drumKit1[2]);
 			}
 			// Instrument 4 played
 			else if(played_inst == 16){
-
+				// AudioFreestyle(*drumKit1[3]);
 			}
 			// Two Instruments played!
 			// Instrument 1 and 2 played
 			else if(played_inst == 6){
-
+				// AudioFreestyle(*freestyle_samples[0]);
 			}
 			// Instrument 1 and 3 played
 			else if(played_inst == 10){
-
+				// AudioFreestyle(*freestyle_samples[1]);
 			}
 			// Instrument 1 and 4 played
 			else if(played_inst == 18){
-
+				// AudioFreestyle(*freestyle_samples[2]);
 			}
 			// Instrument 2 and 3 played
 			else if(played_inst == 12){
-
+				// AudioFreestyle(*freestyle_samples[3]);
 			}
 			// Instrument 2 and 4 played
 			else if(played_inst == 20){
-
+				// AudioFreestyle(*freestyle_samples[4]);
 			}
 			// Instrument 3 and 4 played
 			else if(played_inst == 24){
-
+				// AudioFreestyle(*freestyle_samples[5]);
 			}
 			// Three Instruments played!
 			// Instrument 1, 2 and 3 played
 			else if(played_inst == 14){
-
+				// AudioFreestyle(*freestyle_samples[6]);
 			}
 			// Instrument 1, 2 and 4 played
 			else if(played_inst == 22){
-
+				// AudioFreestyle*freestyle_samples[7]();
 			}
 			// Instrument 1, 3 and 4 played
 			else if(played_inst == 26){
-
+				// AudioFreestyle(*freestyle_samples[8]);
 			}
 			// Instrument 2,3 and 4 played
 			else if(played_inst == 28){
-
+				// AudioFreestyle(*freestyle_samples[9]);
 			}
 			// Four Instruments played!
 			// All 4 Instruments played!
 			else if(played_inst == 30){
-
+				// AudioFreestyle(*freestyle_samples[10]);
 			}
 			else{
-
+				// AudioFreestyle();
 			}
 			played_inst = 0;
 			vTaskDelay(10);
