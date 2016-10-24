@@ -126,8 +126,8 @@ void AudioFreestyle(uint16_t *DACBuffer){
  * @param	DACBuffer		:	Array to be pushed to the DMA
  * @return 	None
  */
-void AudioPlayback(uint16_t *DACBuffer){
-	AudioPlay(DACBuffer, DMA_Mode_Circular, SAMPLE_SIZE*16);
+void AudioPlayback(uint16_t *DACBuffer, uint16_t size){
+	AudioPlay(DACBuffer, DMA_Mode_Circular, size);
 }
 
 /*
