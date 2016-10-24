@@ -14,11 +14,14 @@
 void initVariables(void);			// Method to initialise and variables as needed.
 void addSamples(void); 				// Method to add the samples based on the layout of the channel rack
 void flushBuffer(void);				// function to flush the DAC buffer before adding the samples
-void initSamples(void);
+void initSamples(void);				// Function to create different samples for different combinations of instrument presses
+// sampleAdd (Freestylemode) method takes in 1, 2, 3 or 4 numbers and adds them, capping the numbers at 0 or 4095
+uint16_t sampleAdd(int16_t value1, int16_t value2, int16_t value3, int16_t value4, uint16_t sampleNum);
 void vModesTask(void * pvparameters);
 
 void vModesTask(void * pvparameters)
 {
+	initSamples();
 	while (true){
 
 		// ===
@@ -259,7 +262,37 @@ void initVariables(void)
 	status = true;
 }
 
+// sampleAdd (Freestylemode) method takes in 1, 2, 3 or 4 numbers and adds them, capping the numbers at 0 or 4095
+uint16_t sampleAdd(int16_t value1, int16_t value2, int16_t value3, int16_t value4, uint16_t sampleNum){
+	int16_t temp = 0;
+	uint16_t buffer_temp = 0;
+	if(sampleNum == 2){
+		int16_t temp_value1 = value1 - 2048;
+		int16_t temp_value2 = value2 - 2048;
+		temp = temp_value1 + temp_value2;
+	}
+	if(sampleNum == 3){
+		int16_t temp_value1 = value1 - 2048;
+		int16_t temp_value2 = value2 - 2048;
+		int16_t temp_value3 = value3 - 2048;
+		temp = temp_value1 + temp_value2 + temp_value3;
+	}
+	if(sampleNum == 4){
+		int16_t temp_value1 = value1 - 2048;
+		int16_t temp_value2 = value2 - 2048;
+		int16_t temp_value3 = value3 - 2048;
+		int16_t temp_value4 = value4 - 2048;
+		temp = temp_value1 + temp_value2 + temp_value3 + temp_value4;
+	}
+	if (temp < -2048) buffer_temp = 0;
+	else if (temp > 2048) buffer_temp = 4095;
+	else buffer_temp = temp + 2048;
 
+	return buffer_temp;
+}
+
+
+// Function to create different samples for different combinations of instrument presses
 void initSamples(void)
 {
 
@@ -267,27 +300,27 @@ void initSamples(void)
 	for(; sampleIndex < SAMPLE_SIZE; sampleIndex++)
 	{
 		// Combination 1 - instrument 1 and 2 - [0]
-		freestyle_samples[0][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[1][sampleIndex];
+		freestyle_samples[0][sampleIndex] = sampleAdd(drumKit1[0][sampleIndex], drumKit1[1][sampleIndex],0,0,2);
 		// Combination 2 - instrument 1 and 3 - [1]
-		freestyle_samples[1][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[2][sampleIndex];
+		freestyle_samples[1][sampleIndex] = sampleAdd(drumKit1[0][sampleIndex], drumKit1[2][sampleIndex],0,0,2);
 		// Combination 3 - instrument 1 and 4 - [2]
-		freestyle_samples[2][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[3][sampleIndex];
+		freestyle_samples[2][sampleIndex] = sampleAdd(drumKit1[0][sampleIndex], drumKit1[3][sampleIndex],0,0,2);
 		// Combination 4 - instrument 2 and 3 - [3]
-		freestyle_samples[3][sampleIndex] = drumKit1[1][sampleIndex]+drumKit1[2][sampleIndex];
+		freestyle_samples[3][sampleIndex] = sampleAdd(drumKit1[1][sampleIndex], drumKit1[2][sampleIndex],0,0,2);
 		// Combination 5 - instrument 2 and 4 - [4]
-		freestyle_samples[4][sampleIndex] = drumKit1[1][sampleIndex]+drumKit1[3][sampleIndex];
+		freestyle_samples[4][sampleIndex] = sampleAdd(drumKit1[1][sampleIndex], drumKit1[3][sampleIndex],0,0,2);
 		// Combination 6 - instrument 3 and 4 - [5]
-		freestyle_samples[5][sampleIndex] = drumKit1[2][sampleIndex]+drumKit1[3][sampleIndex];
+		freestyle_samples[5][sampleIndex] = sampleAdd(drumKit1[2][sampleIndex], drumKit1[3][sampleIndex],0,0,2);
 		// Combination 7 - instrument 1,2 and 3 - [6]
-		freestyle_samples[6][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[1][sampleIndex]+drumKit1[2][sampleIndex];
+		freestyle_samples[6][sampleIndex] = sampleAdd(drumKit1[0][sampleIndex], drumKit1[1][sampleIndex], drumKit1[2][sampleIndex],0,3);
 		// Combination 8 - instrument 1,2 and 4 - [7]
-		freestyle_samples[7][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[1][sampleIndex]+drumKit1[3][sampleIndex];
+		freestyle_samples[7][sampleIndex] = sampleAdd(drumKit1[0][sampleIndex], drumKit1[1][sampleIndex], drumKit1[3][sampleIndex],0,3);
 		// Combination 9 - instrument 1,3 and 4 - [8]
-		freestyle_samples[8][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[2][sampleIndex]+drumKit1[3][sampleIndex];
+		freestyle_samples[8][sampleIndex] = sampleAdd(drumKit1[0][sampleIndex], drumKit1[2][sampleIndex], drumKit1[3][sampleIndex],0,3);
 		// Combination 10 - instrument 2,3 and 4 - [9]
-		freestyle_samples[9][sampleIndex] = drumKit1[1][sampleIndex]+drumKit1[2][sampleIndex]+drumKit1[3][sampleIndex];
+		freestyle_samples[9][sampleIndex] = sampleAdd(drumKit1[1][sampleIndex], drumKit1[2][sampleIndex], drumKit1[3][sampleIndex],0,3);
 		// Combination 11 - instrument 1,2,3 and 4 - [10]
-		freestyle_samples[10][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[1][sampleIndex]+drumKit1[2][sampleIndex]+drumKit1[3][sampleIndex];
+		freestyle_samples[10][sampleIndex] = sampleAdd(drumKit1[0][sampleIndex], drumKit1[1][sampleIndex], drumKit1[2][sampleIndex], drumKit1[3][sampleIndex],4);
 	}
 }
 
