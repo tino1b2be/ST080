@@ -31,6 +31,8 @@ void vModesTask(void * pvparameters)
 		// ===
 
 		while (MODE == COMPOSER) {
+			AudioDisable();
+			AudioPlayback(ComposerBuffer,DEFAULT_COMPOSER_BUFFERSIZE);
 
 			// toggle LED3 (500ms) to check if this loop is running properly
 			if ((tickTime - debugLED_counter_3) > 500)
@@ -50,7 +52,7 @@ void vModesTask(void * pvparameters)
 		}
 
 		while (MODE == FREESTYLE) {
-
+			AudioDisable();
 			// toggle LED4 (500ms) to check if this loop is running properly
 			if ((tickTime - debugLED_counter_3) > 500) {
 				// toggle LED5 (red)
@@ -133,7 +135,8 @@ void vModesTask(void * pvparameters)
 		}
 
 		while (MODE == PLAYBACK) {
-
+			AudioDisable();
+			AudioPlayback(ComposerBuffer, DEFAULT_COMPOSER_BUFFERSIZE);
 			// toggle LED5 (500ms) to check if this loop is running properly
 			if ((tickTime - debugLED_counter_3) > 500) {
 				// toggle LED5 (red)
