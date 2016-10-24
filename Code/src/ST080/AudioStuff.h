@@ -12,7 +12,9 @@
 
 
 //#include "Utils080.h"
-
+// STM32f4 stuff
+#include "stm32f4xx.h"
+#include "stm32f4_discovery.h"
 
 #define AUDIO_FREQUENCY 11000
 #define DMA_FREQUENCY  (86000000/(2*AUDIO_FREQUENCY))
