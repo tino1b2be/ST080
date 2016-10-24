@@ -131,8 +131,10 @@ void vUITask(void * pvparameters){
 		while(MODE==COMPOSER || MODE==PLAYBACK)
 		{
 			//update the Instrument-Select Pad
-			for(uint8_t instr = 0; instr < 4; ++instr)
-				updateLED(instr, instr == current_sample, 1);
+			if(MODE==COMPOSER) {
+				for(uint8_t instr = 0; instr < 4; ++instr)
+					updateLED(instr, instr == current_sample, 1);
+			}
 			// go through channel rack and set LED status based on channel rack pins
 			// NB Have to manually check each pin on the channel rack and update the corresponding GPIO pin
 			for (uint8_t pin = 0; pin < 16; ++pin)
