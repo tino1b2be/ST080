@@ -10,8 +10,6 @@
 #ifndef AUDIOSTUFF_H_
 #define AUDIOSTUFF_H_
 
-
-//#include "Utils080.h"
 // STM32f4 stuff
 #include "stm32f4xx.h"
 #include "stm32f4_discovery.h"
@@ -120,7 +118,7 @@ void AudioPlay(uint16_t *DACBuffer, uint16_t Mode, uint16_t Size ){
  * @return 	None
  */
 void AudioFreestyle(uint16_t *DACBuffer){
-	AudioPlay(DACBuffer, DMA_Mode_Normal, 1103);
+	AudioPlay(DACBuffer, DMA_Mode_Normal, 1103); // sample size hard coded in
 }
 
 /*
