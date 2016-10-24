@@ -79,6 +79,8 @@ uint8_t MODE = COMPOSER; 			// Global variable to e used to identify which mode 
 bool status = true;					// Variable used by Composer to check if there has been an update on the channel rack configs.
 uint64_t current = 0, previous = 0;	// Variables to be used by IRQ Handler for debouncing
 uint8_t current_sample = INSTR_1;	// variable used by the composer mode to check which instrument sample is on the channel rack
+uint8_t played_inst = 0;			// variable used by the Freestyle mode to determine the instrument(s) played
+uint16_t freestyle_samples [11][SAMPLE_SIZE]; // This will hold the samples of the different possible combinations
 bool channelRack[16][4][16]; 		// 16 channel racks with 4 instruments each with 16 beat channel
 uint8_t currentBeat = 0;			// Variable to indicate the current beat/instrumental being edited on the beat rack.
 bool resetLEDs = false;			// flag used to fresh the LEDs when switching modes. This flag will be checked by the UI_Task to check whether it should reset the LEDs or not
@@ -286,7 +288,9 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		}
 		else if (MODE == FREESTYLE) {
 			// Button for the first instrument has been pressed in FREESTYLE mode. Do something.
+			played_inst = played_inst + 2;
 			// TODO play the instrument
+			// TODO Have a 1ms timer
 		}
 	}
 
@@ -300,6 +304,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		}
 		else if (MODE == FREESTYLE) {
 			// Button for the second instrument has been pressed in FREESTYLE mode. Do something.
+			played_inst = played_inst + 4;
 			// TODO play the instrument
 		}
 	}
@@ -314,6 +319,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		}
 		else if (MODE == FREESTYLE) {
 			// Button for the third instrument has been pressed in FREESTYLE mode. Do something.
+			played_inst = played_inst + 8;
 			// TODO play the instrument
 		}
 	}
@@ -328,6 +334,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		}
 		else if (MODE == FREESTYLE) {
 			// Button for the forth instrument has been pressed in FREESTYLE mode. Do something.
+			played_inst = played_inst + 16;
 			// TODO play the instrument
 		}
 	}
