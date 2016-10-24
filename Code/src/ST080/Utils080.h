@@ -10,6 +10,7 @@
 
 // other stuff
 #include <stdbool.h>
+#include "AudioStuff.h"
 
 // Library 38 (interrupts library)
 #include "TM38/defines.h"
