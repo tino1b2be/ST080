@@ -16,20 +16,6 @@
 
 #include "Utils080.h"
 
-// TODO needed functions
-void saveToEeprom(void); 	// TODO this function saves the array "channelRack[][][]" to the eeprom, the size of this array is CHANNEL_RACK_SIZE
-void loadFromEeprom(void);	// TODO this function initialises the "channelRack[][][]" using data read from the eeprom
-
-void saveToEeprom(void)
-{
-	// todo
-}
-
-void loadFromEeprom(void)
-{
-	// todo
-}
-
 // EEPROM instructions
 #define WREN 0b00000110 // enable writing
 #define WRDI 0b00000100 // disable writing
@@ -228,28 +214,25 @@ void EEPROMWritePage32(uint16_t baseAddress, uint8_t *data){
 	delay(5000);
 }
 
-
 /*
- * 	@brief	Read a page to the eeprom
- *	@param	baseAddress	: 	The base address of the page
- *	@param		size	: 	The number of uint8_t to read from eeprom
+ * 	@brief	Saves the array "channelRack[][][]" to the eeprom, the size of this array is CHANNEL_RACK_SIZE
  */
-void EEPROMWritePage(uint8_t *data, uint16_t size){
-	for(int i=0; i<size; i+=32){
-		EEPROMWritePage32(i,(uint8_t *)&data[i]);
+void saveToEeprom(){
+	for(int i=0; i<CHANNEL_RACK_SIZE; i+=32){
+		EEPROMWritePage32(i,(uint8_t *)&channelRack[i]);
 	}
 }
 
-
 /*
- * @brief	Read a page to the eeprom
- *	@param	data	: 	The array in which data need to be copied
- *	@param	size	: 	The number of uint8_t to read from eeprom
+ * @brief	Initializes the "channelRack[][][]" using data read from the eeprom
  */
-void EEPROMReadPage(uint8_t*data,uint16_t size){
-	for(int i=0; i<size; i++){
-		data[i] = EEPROM_Read(i);
-	}
+void loadFromEeprom(){
+	int i,j,k,l=0;
+	for (i=0; i<16;++i)
+		for (j=0;j<4;++j)
+			for (k=0;k<16;++k,++l)
+				channelRack[i][j][k] = (bool)EEPROM_Read(l);
+
 }
 
 #endif /* EEPROM_H_ */
