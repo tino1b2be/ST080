@@ -76,6 +76,8 @@ void vApplicationMallocFailedHook(void) {
 #define DEFAULT_TEMPO 0 // define proper tempo
 #define CHANNEL_RACK_SIZE 1024
 
+bool PAD_STATE[4];  				//Global variable use to check the state of the Freestyle pad
+bool STATE_CHANGED;					//Global variable to check if there has been a change in Pad status
 uint8_t MODE = COMPOSER; 			// Global variable to e used to identify which mode the ST080 is currently in
 bool status = true;					// Variable used by Composer to check if there has been an update on the channel rack configs.
 uint64_t current = 0, previous = 0;	// Variables to be used by IRQ Handler for debouncing
@@ -292,6 +294,8 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 			resetLEDs = true;
 		}
 		else if (MODE == FREESTYLE) {
+			PAD_STATE[0] = true;
+			STATE_CHANGED = true;
 			// Button for the first instrument has been pressed in FREESTYLE mode. Do something.
 			played_inst = played_inst + 2;
 			// TODO play the instrument
@@ -308,6 +312,8 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 			resetLEDs = true;
 		}
 		else if (MODE == FREESTYLE) {
+			PAD_STATE[1] = true;
+			STATE_CHANGED = true;
 			// Button for the second instrument has been pressed in FREESTYLE mode. Do something.
 			played_inst = played_inst + 4;
 			// TODO play the instrument
@@ -323,6 +329,8 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 			resetLEDs = true;
 		}
 		else if (MODE == FREESTYLE) {
+			PAD_STATE[2] = true;
+			STATE_CHANGED = true;
 			// Button for the third instrument has been pressed in FREESTYLE mode. Do something.
 			played_inst = played_inst + 8;
 			// TODO play the instrument
@@ -338,6 +346,8 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 			resetLEDs = true;
 		}
 		else if (MODE == FREESTYLE) {
+			PAD_STATE[3] = true;
+			STATE_CHANGED = true;
 			// Button for the forth instrument has been pressed in FREESTYLE mode. Do something.
 			played_inst = played_inst + 16;
 			// TODO play the instrument

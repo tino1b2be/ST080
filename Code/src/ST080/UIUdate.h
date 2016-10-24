@@ -13,6 +13,8 @@
 void vUITask(void * pvparameters);
 LED_GPIO getGPIO(uint8_t pin, uint8_t type);
 void updateLED(uint8_t pin, bool condition, uint8_t type);
+bool LEDOnDelay(uint32_t milli);
+//bool getCondition(uint8_t instr);
 
 /**
  * return the correct GPIO and GPIO_pin based on the given channel rack's pin
@@ -123,6 +125,117 @@ void updateLED(uint8_t pin, bool condition, uint8_t type) {
 }
 
 /**
+ *Delay used to keep LED on for a while when in freestyle mode
+ */
+bool LEDOnDelay(uint32_t milli) {
+	uint32_t delay = milli * 17612;              // approximate loops per ms at 168 MHz, Debug config
+	for(; delay != 0; delay--)
+	{
+//		quick delay if user presses the pad again
+		if(STATE_CHANGED) return false;
+	};
+	return true;
+}
+
+/**
+ * return the flag/condition upon which LED should be updated
+ * when in FreeStyle mode
+ * !!!!Not needed at the moment but do not remove please!!!!
+ */
+//bool getCondition(uint8_t instr){
+//	switch(instr){
+//	//for instrument 1
+//	case 0(uint8_t):
+//			switch(played_inst){
+//			case 2:
+//				return true;
+//			case 6:
+//				return true;
+//			case 10:
+//				return true;
+//			case 18:
+//				return true;
+//			case 14:
+//				return true;
+//			case 22:
+//				return true;
+//			case 26:
+//				return true;
+//			case 30:
+//				return true;
+//			default:
+//				return false;
+//			}
+//	//for instrument 1
+//	case 1(uint8_t):
+//		switch(played_inst){
+//		case 4:
+//			return true;
+//		case 6:
+//			return true;
+//		case 12:
+//			return true;
+//		case 20:
+//			return true;
+//		case 14:
+//			return true;
+//		case 22:
+//			return true;
+//		case 28:
+//			return true;
+//		case 30:
+//			return true;
+//		default:
+//			return false;
+//		}
+//	//for instrument 1
+//	case 2(uint8_t):
+//		switch(played_inst){
+//		case 8:
+//			return true;
+//		case 10:
+//			return true;
+//		case 12:
+//			return true;
+//		case 24:
+//			return true;
+//		case 14:
+//			return true;
+//		case 26:
+//			return true;
+//		case 28:
+//			return true;
+//		case 30:
+//			return true;
+//		default:
+//			return false;
+//		}
+//	//for instrument 1
+//	case 3(uint8_t):
+//		switch(played_inst){
+//		case 16:
+//			return true;
+//		case 18:
+//			return true;
+//		case 20:
+//			return true;
+//		case 24:
+//			return true;
+//		case 22:
+//			return true;
+//		case 26:
+//			return true;
+//		case 28:
+//			return true;
+//		case 30:
+//			return true;
+//		default:
+//			return false;
+//		}
+//	}
+//}
+
+/**
  * Task to update the LEDs depending on the current mode and status of the system
  */
 void vUITask(void * pvparameters){
@@ -143,10 +256,28 @@ void vUITask(void * pvparameters){
 		}
 		while(MODE==FREESTYLE)
 		{
+			PAD_STATE[0] = true;
+//			reset the flag
+			STATE_CHANGED = false;
 			// TODO light up the corresponding LEDs for the freestyle pad depending on the status of the flags
 			// * use a global array of flags (four flags) which will be set by the IRQ and reset inside this function
 			// * LEDs must flash for a short period (200ms)
 			// * Can use a timer to count up to 200ms. NB TODO must carefully work out algorithm
+			for(uint8_t instr = 0; instr < 4; ++instr) {
+				updateLED(instr, PAD_STATE[instr], 1);
+//				reset flag
+				PAD_STATE[instr] = false;
+			}
+			//Delay if there's at least one LED on
+			if (PAD_STATE[0] || PAD_STATE[1] || PAD_STATE[2] || PAD_STATE[3]) {
+				//turn LEDs off if delay is not interrupted otherwise the next loop will update it
+				if ( !LEDOnDelay(200) ) {
+					for(uint8_t instr = 0; instr < 4; ++instr) {
+						updateLED(instr, false, 1);
+					}
+				}
+
+			}
 			vTaskDelay(50);
 		}
 		vTaskDelay(50);
