@@ -11,9 +11,10 @@
 #include "Utils080.h"
 #include "Eeprom.h"
 
-void initVariables(void);							// Method to initialise and variables as needed.
-void addSamples(void); 								// Method to add the samples based on the layout of the channel rack
-void flushBuffer(void);								// function to flush the DAC buffer before adding the samples
+void initVariables(void);			// Method to initialise and variables as needed.
+void addSamples(void); 				// Method to add the samples based on the layout of the channel rack
+void flushBuffer(void);				// function to flush the DAC buffer before adding the samples
+void initSamples(void);
 void vModesTask(void * pvparameters);
 
 void vModesTask(void * pvparameters)
@@ -54,9 +55,80 @@ void vModesTask(void * pvparameters)
 				debugLED_counter_3 = tickTime;
 			}
 
-			// TODO code for the freestyle mode
-			vTaskDelay(50);
+			// void AudioFreestyle(uint16_t *DACBuffer)
+
+			// One Instrument played!
+			// Instrument 1 played
+			if(played_inst == 2){
+				// TODO SEND SAMPLE TO BUFFER TO BE PLAYED
+				// AudioFreestyle(*drumKit1[0]);
+			}
+			// Instrument 2 played
+			else if(played_inst == 4){
+				// AudioFreestyle(*drumKit1[1];
+			}
+			// Instrument 3 played
+			else if(played_inst == 8){
+				// AudioFreestyle(*drumKit1[2]);
+			}
+			// Instrument 4 played
+			else if(played_inst == 16){
+				// AudioFreestyle(*drumKit1[3]);
+			}
+			// Two Instruments played!
+			// Instrument 1 and 2 played
+			else if(played_inst == 6){
+				// AudioFreestyle(*freestyle_samples[0]);
+			}
+			// Instrument 1 and 3 played
+			else if(played_inst == 10){
+				// AudioFreestyle(*freestyle_samples[1]);
+			}
+			// Instrument 1 and 4 played
+			else if(played_inst == 18){
+				// AudioFreestyle(*freestyle_samples[2]);
+			}
+			// Instrument 2 and 3 played
+			else if(played_inst == 12){
+				// AudioFreestyle(*freestyle_samples[3]);
+			}
+			// Instrument 2 and 4 played
+			else if(played_inst == 20){
+				// AudioFreestyle(*freestyle_samples[4]);
+			}
+			// Instrument 3 and 4 played
+			else if(played_inst == 24){
+				// AudioFreestyle(*freestyle_samples[5]);
+			}
+			// Three Instruments played!
+			// Instrument 1, 2 and 3 played
+			else if(played_inst == 14){
+				// AudioFreestyle(*freestyle_samples[6]);
+			}
+			// Instrument 1, 2 and 4 played
+			else if(played_inst == 22){
+				// AudioFreestyle*freestyle_samples[7]();
+			}
+			// Instrument 1, 3 and 4 played
+			else if(played_inst == 26){
+				// AudioFreestyle(*freestyle_samples[8]);
+			}
+			// Instrument 2,3 and 4 played
+			else if(played_inst == 28){
+				// AudioFreestyle(*freestyle_samples[9]);
+			}
+			// Four Instruments played!
+			// All 4 Instruments played!
+			else if(played_inst == 30){
+				// AudioFreestyle(*freestyle_samples[10]);
+			}
+			else{
+				// AudioFreestyle();
+			}
+			played_inst = 0;
+			vTaskDelay(10);
 		}
+
 		while (MODE == PLAYBACK) {
 
 			// toggle LED5 (500ms) to check if this loop is running properly
@@ -185,6 +257,38 @@ void initVariables(void)
 {
 	flushBuffer();
 	status = true;
+}
+
+
+void initSamples(void)
+{
+
+	uint16_t sampleIndex = 0;
+	for(; sampleIndex < SAMPLE_SIZE; sampleIndex++)
+	{
+		// Combination 1 - instrument 1 and 2 - [0]
+		freestyle_samples[0][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[1][sampleIndex];
+		// Combination 2 - instrument 1 and 3 - [1]
+		freestyle_samples[1][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[2][sampleIndex];
+		// Combination 3 - instrument 1 and 4 - [2]
+		freestyle_samples[2][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[3][sampleIndex];
+		// Combination 4 - instrument 2 and 3 - [3]
+		freestyle_samples[3][sampleIndex] = drumKit1[1][sampleIndex]+drumKit1[2][sampleIndex];
+		// Combination 5 - instrument 2 and 4 - [4]
+		freestyle_samples[4][sampleIndex] = drumKit1[1][sampleIndex]+drumKit1[3][sampleIndex];
+		// Combination 6 - instrument 3 and 4 - [5]
+		freestyle_samples[5][sampleIndex] = drumKit1[2][sampleIndex]+drumKit1[3][sampleIndex];
+		// Combination 7 - instrument 1,2 and 3 - [6]
+		freestyle_samples[6][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[1][sampleIndex]+drumKit1[2][sampleIndex];
+		// Combination 8 - instrument 1,2 and 4 - [7]
+		freestyle_samples[7][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[1][sampleIndex]+drumKit1[3][sampleIndex];
+		// Combination 9 - instrument 1,3 and 4 - [8]
+		freestyle_samples[8][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[2][sampleIndex]+drumKit1[3][sampleIndex];
+		// Combination 10 - instrument 2,3 and 4 - [9]
+		freestyle_samples[9][sampleIndex] = drumKit1[1][sampleIndex]+drumKit1[2][sampleIndex]+drumKit1[3][sampleIndex];
+		// Combination 11 - instrument 1,2,3 and 4 - [10]
+		freestyle_samples[10][sampleIndex] = drumKit1[0][sampleIndex]+drumKit1[1][sampleIndex]+drumKit1[2][sampleIndex]+drumKit1[3][sampleIndex];
+	}
 }
 
 #endif /* ST080_MODESTASK_H_ */
