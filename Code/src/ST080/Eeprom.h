@@ -1,7 +1,7 @@
 /*
  * Eeprom.h
  *
- *  Created on: Oct 3, 2016
+ *  Created on: Oct 24, 2016
  *      Author: Othniel Konan
  * Description:	Manage eeprom access
  * EEPROM Pins:		MOSI	PB15
@@ -24,7 +24,7 @@
 #define READ 0b00000011	// read instruction
 #define WRITE 0b00000010 // write instruction
 
-#define PAGE_LENGTH 16
+#define PAGE_LENGTH 32
 /*
  * @brief Configuration of the eeprom
  * Using SPI2 with
@@ -174,7 +174,7 @@ uint8_t EEPROM_Read(uint16_t address){
  *	@param 	data		: 	An array of data to be send
  *	@param	pageLength	: 	The lenght/size of the page/array (max is 32)
  */
-void EEPROMWritePage(uint16_t baseAddress, uint8_t *data){
+void EEPROMWritePage32(uint16_t baseAddress, uint8_t *data){
 	// write enable latch
 	GPIO_ResetBits(GPIOB, GPIO_Pin_12);
 	delay(1);
@@ -214,17 +214,31 @@ void EEPROMWritePage(uint16_t baseAddress, uint8_t *data){
 	delay(5000);
 }
 
+
 /*
- * @brief	Read a page to the eeprom
+ * 	@brief	Read a page to the eeprom
  *	@param	baseAddress	: 	The base address of the page
- *	@param	pageLength	: 	The lenght/size of the page/array (max is 32)
+ *	@param		size	: 	The number of uint8_t to read from eeprom
  */
-uint8_t* EEPROMReadPage(uint16_t baseAddress){
-	uint8_t* data[PAGE_LENGTH];
-	for(int i=0; i<PAGE_LENGTH; i++){
-		data[i] = EEPROM_Read(baseAddress+i);
+void EEPROMWritePage(uint8_t *data, uint16_t size){
+	for(int i=0; i<size; i+=32){
+		EEPROMWritePage32(i,(uint8_t *)&data[i]);
 	}
-	return data;
 }
 
+
+/*
+ * @brief	Read a page to the eeprom
+ *	@param	data	: 	The array in which data need to be copied
+ *	@param	size	: 	The number of uint8_t to read from eeprom
+ */
+void EEPROMReadPage(uint8_t*data,uint16_t size){
+	for(int i=0; i<size; i++){
+		data[i] = EEPROM_Read(i);
+	}
+}
+
+
+
 #endif /* EEPROM_H_ */
+
