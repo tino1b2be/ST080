@@ -20,16 +20,42 @@ void vComposerTask(void * pvparameters)
 	initVariables();
 	uint8_t previous_sample = 0;
 	while(1){
+		// toggle LED3 faster (100ms) when not in composer mode
+		if ((tickTime - debugLED_counter_3) > 100) {
+			// toggle LED5 (red)
+			STM_EVAL_LEDToggle(LED3);
+			debugLED_counter_3 = tickTime;
+		}
+
 		while(MODE==COMPOSER){
+
+			// toggle LED3 (500ms) to check if this loop is running properly
+			if ((tickTime - debugLED_counter_3) > 500)
+			{
+				// toggle LED5 (red)
+				STM_EVAL_LEDToggle(LED3);
+				debugLED_counter_3 = tickTime;
+			}
 
 			if (status || current_sample != previous_sample) {
 				flushBuffer(); // flush the buffer and add the samples again
 				addSamples();
+				status = false;
 			}
 			previous_sample = current_sample;
 
 			vTaskDelay(10);
 		} // End of in-mode while-loop
+		while(MODE==SAVE){
+			// Save button has been pressed.
+			if (status){ // status flag is used to make sure data is pushed to eeprom once
+				// TODO Push the current channel rack configuration to the EEPROM
+				status = false;
+			}
+			vTaskDelay(10);
+			// Wait for user to select the new song channel rack to modify
+			// After selecting the new song, switch back to COMPOSER mode.
+		}
 		vTaskDelay(10);
 
 	}// End of forever while-loop
@@ -54,7 +80,7 @@ void addSamples()
 
 				uint16_t sampleIndex = 0;
 				uint16_t bufferIndex = bufferPos;
-				bool mustWrap = SAMPLE_SIZE < (bufferSize-bufferIndex);
+				bool mustWrap = SAMPLE_SIZE > (bufferSize-bufferIndex);
 				for (; sampleIndex < SAMPLE_SIZE || bufferIndex < bufferSize; ++bufferIndex, ++sampleIndex) {
 
 					// first shift the zero point from 2048 to 0
