@@ -12,12 +12,21 @@
 
 
 #include "Utils080.h"
+#include "Tempo.h"
 
 
 #define AUDIO_FREQUENCY 11000
 #define DMA_FREQUENCY  (86000000/(2*AUDIO_FREQUENCY))
 
-
+void AudioDisable(void);
+void AudioInit(uint16_t *, uint16_t,uint16_t);
+void Timer_configuration(uint16_t);
+void TIM2_IRQHandler(void);
+void TempoSetValue(uint16_t);
+void TempoDisable(void);
+void AudioPlay(uint16_t * , uint16_t, uint16_t);
+void AudioFreestyle(uint16_t *);
+void AudioComposerPlayback(uint16_t);
 
 /*
  * @brief Disable the DMA
@@ -27,13 +36,6 @@ void AudioDisable(){
 	DMA_Cmd(DMA1_Stream5,DISABLE);
 }
 
-/*
- * @brief	Disable DMA and Timer used for Composer mode
- * @return 	None
- */
-void AudioComDisable(){
-
-}
 
 /*
  * @brief	Perform audio initialization
@@ -100,6 +102,7 @@ void AudioInit(uint16_t *DACBuffer, uint16_t Mode, uint16_t Size){
 	DAC_Cmd(DAC_Channel_1, ENABLE);
 }
 
+
 /*
  * @brief	Play a sample
  * @param	DACBuffer		:	Array to be pushed to the DMA
@@ -121,23 +124,90 @@ void AudioFreestyle(uint16_t *DACBuffer){
 	AudioPlay(DACBuffer, DMA_Mode_Normal, SAMPLE_SIZE);
 }
 
-/*
- * @brief	Play sample in playback mode (play sample infinitly)
- * @param	DACBuffer		:	Array to be pushed to the DMA
- * @return 	None
- */
-void AudioPlayback(uint16_t *DACBuffer, uint16_t size){
-	AudioPlay(DACBuffer, DMA_Mode_Circular, size);
-}
 
 /*
- * @brief	Play an array of sample a a given tempo
- * @param	sample		:	Pointer of Arrays to be pushed to the DMA
+ * @brief	Play each sample from a 16 array of sample at the given
+ * 			interval of time
  * @param	tempo		: 	Tempo of the sound (default=60bpm)
  * @return 	None
  */
-void AudioComposer(uint16_t *sample, uint16_t tempo){
+void AudioComposerPlayback(uint16_t tempo){
+	// Set Timer
+	Timer_configuration(tempo);
+}
+
+/*
+ * @brief	Tempo Timer Configuration
+ */
+void Timer_configuration(uint16_t tempo){
+
+	// Enable TIM2
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 ,ENABLE);
+	// TODO Compute ARR and PSC based on tempo
+	// Setup the timer
+	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStruct;
+	TIM_TimeBaseStruct.TIM_Prescaler = 10000;
+	TIM_TimeBaseStruct.TIM_Period = (uint32_t) 126000/tempo + 1;
+	TIM_TimeBaseStruct.TIM_ClockDivision = 0;
+	TIM_TimeBaseStruct.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStruct);
+	TIM_Cmd(TIM2, ENABLE);
+	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+
+	// Enable the TIM2 global Interrupt
+	NVIC_InitTypeDef NVIC_InitStructure;
+	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
 
 }
+
+/*
+ * @brief	TIM2 Handler
+ **/
+void TIM2_IRQHandler(void)
+{
+	static uint8_t index = 0;
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+	{
+		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+    	// TODO Play sample at index, need a global variable array
+		//AudioPlay(DACBuffer,DMA_Mode_Normal,250);
+		// Update index
+		if(index>=15)index=0;
+		else index++;
+	}
+	uint16_t temp = Tempo_Convert();
+	float gradient = (200.0-30.0)/(4096.0);
+	uint16_t tempo = (uint16_t) (gradient*(float)temp+30);
+	TempoSetValue(tempo);
+/*	TM_HD44780_Clear();
+	TM_HD44780_Puts(0, 0, "TEMPO: ");
+	int n = log10(tempo) + 1;
+	char *numberArray = calloc(n, sizeof(char));
+	itoa(tempo,numberArray,10);
+	TM_HD44780_Puts(10, 0, numberArray);*/
+}
+
+/*
+ * @brief Set the tempo
+ */
+void TempoSetValue(uint16_t tempo){
+	// Compute ARR based on tempo
+	float arr = 126000/tempo + 1;
+	TIM2->ARR = (uint32_t) arr;
+}
+
+/*
+ * @brief Disable tempo
+ * @important	TO BE USED WHEN MOVING TO FREESTYLE MODE
+ */
+void TempoDisable(){
+	TIM_Cmd(TIM2,DISABLE);
+}
+
+
 
 #endif /* AUDIOSTUFF_H_ */
