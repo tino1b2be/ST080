@@ -49,29 +49,29 @@ void vGPIOTask(void * pvparameters) {
 				channelRack[currentBeat][current_sample][3] = channelRack[currentBeat][current_sample][3] == true ? false : true;
 				status = true;
 			}
-
-			// Port D
-
-			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4));
-				// toggle pin 5
-				channelRack[currentBeat][current_sample][4] = channelRack[currentBeat][current_sample][4] == true ? false : true;
-				status = true;
-			}
-			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_5)) {
+			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5));
 				// toggle pin 6
 				channelRack[currentBeat][current_sample][5] = channelRack[currentBeat][current_sample][5] == true ? false : true;
 				status = true;
 			}
+
+			// Port D
+
+			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4)) {
+				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4));
+				// toggle pin 5
+				channelRack[currentBeat][current_sample][4] = channelRack[currentBeat][current_sample][4] == true ? false : true;
+				status = true;
+			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6));
+				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6));
 				// toggle pin 7
 				channelRack[currentBeat][current_sample][6] = channelRack[currentBeat][current_sample][6] == true ? false : true;
 				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7));
+				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7));
 				// toggle pin 8
 				channelRack[currentBeat][current_sample][7] = channelRack[currentBeat][current_sample][7] == true ? false : true;
 			status = true;
@@ -162,29 +162,28 @@ void vGPIOTask(void * pvparameters) {
 				status = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
-
-			// Port D
-
-			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4));
-				currentBeat = 4;
-				status = true;
-				vTaskDelay(10); // delay to allow the Modes task to sum the samples
-			}
-			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_5)) {
+			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5));
 				currentBeat = 5;
 				status = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
+			// Port D
+
+			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4)) {
+				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4));
+				currentBeat = 4;
+				status = true;
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
+			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6));
+				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6));
 				currentBeat = 6;
 				status = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7));
+				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7));
 				currentBeat = 7;
 				status = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
@@ -279,25 +278,25 @@ void vGPIOTask(void * pvparameters) {
 			// Port D
 
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4));
+				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4));
 				currentBeat = 4;
 				vTaskDelay(20);
 				MODE = COMPOSER;
 			}
-			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_5)) {
+			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5));
 				currentBeat = 5;
 				vTaskDelay(20);
 				MODE = COMPOSER;
 			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6));
+				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6));
 				currentBeat = 6;
 				vTaskDelay(20);
 				MODE = COMPOSER;
 			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7));
+				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7));
 				currentBeat = 7;
 				vTaskDelay(20);
 				MODE = COMPOSER;

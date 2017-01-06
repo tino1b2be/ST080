@@ -136,7 +136,7 @@ void EEPROM_Write(uint16_t address, uint8_t data){
 /*
  * @brief	Read a byte from the eeprom
  * @param	address	:	The address of the memory
-* @return 	data
+ * @return 	data
  */
 uint8_t EEPROM_Read(uint16_t address){
 	uint8_t value;
@@ -218,9 +218,11 @@ void EEPROMWritePage32(uint16_t baseAddress, uint8_t *data){
  * 	@brief	Saves the array "channelRack[][][]" to the eeprom, the size of this array is CHANNEL_RACK_SIZE
  */
 void saveToEeprom(){
-	for(int i=0; i<CHANNEL_RACK_SIZE; i+=32){
-		EEPROMWritePage32(i,(uint8_t *)&channelRack[i]);
-	}
+	int i,j,k,l=0;
+	for (i=0; i<16;++i)
+			for (j=0;j<4;++j)
+				for (k=0;k<16;++k,++l)
+					EEPROMWritePage32(l,(uint8_t *)&channelRack[i][j][k]);
 }
 
 /*
