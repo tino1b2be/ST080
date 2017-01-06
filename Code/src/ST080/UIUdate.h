@@ -31,7 +31,7 @@ LED_GPIO getGPIO(uint8_t pin, uint8_t type) {
 					return _GPIO;
 			case (uint8_t)1:
 					_GPIO.GPIO = GPIOA;
-					_GPIO.pin = GPIO_Pin_9;
+					_GPIO.pin = GPIO_Pin_7;
 					return _GPIO;
 			case (uint8_t)2:
 					_GPIO.GPIO = GPIOA;
@@ -94,19 +94,19 @@ LED_GPIO getGPIO(uint8_t pin, uint8_t type) {
 			switch(pin) {
 			case (uint8_t)0:
 					_GPIO.GPIO = GPIOB;
-					_GPIO.pin = GPIO_Pin_0;
+					_GPIO.pin = GPIO_Pin_6;
 					return _GPIO;
 			case (uint8_t)1:
 					_GPIO.GPIO = GPIOB;
-					_GPIO.pin = GPIO_Pin_1;
+					_GPIO.pin = GPIO_Pin_7;
 					return _GPIO;
 			case (uint8_t)2:
 					_GPIO.GPIO = GPIOB;
-					_GPIO.pin = GPIO_Pin_2;
+					_GPIO.pin = GPIO_Pin_8;
 					return _GPIO;
 			case (uint8_t)3:
 					_GPIO.GPIO = GPIOB;
-					_GPIO.pin = GPIO_Pin_3;
+					_GPIO.pin = GPIO_Pin_9;
 					return _GPIO;
 			}
 	}
@@ -131,7 +131,7 @@ bool LEDOnDelay(uint32_t milli) {
 	uint32_t delay = milli * 17612;              // approximate loops per ms at 168 MHz, Debug config
 	for(; delay != 0; delay--)
 	{
-//		quick delay if user presses the pad again
+//		quit delay if user presses the pad again
 		if(STATE_CHANGED) return false;
 	};
 	return true;
