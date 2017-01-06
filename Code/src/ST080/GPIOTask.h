@@ -18,7 +18,7 @@ void vGPIOTask(void * pvparameters) {
 		while (MODE == COMPOSER)
 		{
 			// read the channel rack pins
-			// 1=A0, 2=A1, 3=A2, 4=A3, 5=D4, 6=D5, 7=D6, 8=D7, 9=E8, 10=E9, 11=E10, 12=E11, 13=E12, 14=E13, 15=E14, 16=E15
+			// 1=A0, 2=A1, 3=A2, 4=A3, 5=D4, 6=A5, 7=D6, 8=D7, 9=E8, 10=E9, 11=E10, 12=E11, 13=E12, 14=E13, 15=E14, 16=E15
 
 			// TODO add button to reset the current channel rack
 
@@ -258,19 +258,28 @@ void vGPIOTask(void * pvparameters) {
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1));
+				// change to song number 2
 				currentBeat = 1;
 				vTaskDelay(20);
 				MODE = COMPOSER;
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2));
+				// change to song number 3
 				currentBeat = 2;
 				vTaskDelay(20);
 				MODE = COMPOSER;
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3));
+				// change to song number 4
 				currentBeat = 3;
+				vTaskDelay(20);
+				MODE = COMPOSER;
+			}
+			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5)) {
+				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5));
+				currentBeat = 5;
 				vTaskDelay(20);
 				MODE = COMPOSER;
 			}
@@ -280,12 +289,6 @@ void vGPIOTask(void * pvparameters) {
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4)) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4));
 				currentBeat = 4;
-				vTaskDelay(20);
-				MODE = COMPOSER;
-			}
-			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5)) {
-				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5));
-				currentBeat = 5;
 				vTaskDelay(20);
 				MODE = COMPOSER;
 			}
@@ -352,13 +355,10 @@ void vGPIOTask(void * pvparameters) {
 				vTaskDelay(20);
 				MODE = COMPOSER;
 			}
-			
 			vTaskDelay(5);
 		}
-
 		vTaskDelay(50);
 	}
 }
-
 
 #endif /* GPIOTASK_H_ */

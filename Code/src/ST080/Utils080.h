@@ -185,12 +185,12 @@ void startUpConfigs(){
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
 	
-	// pins A8-10
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10;
+	// pins A7, A8, A10
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_10;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-	// Pins B0-4
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4;
+	// Pins B6-9 and B4 and B5
+	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	// Pins C0-11
@@ -202,18 +202,17 @@ void startUpConfigs(){
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
 
 	// +++++++++++++++++ configure input pins ++++++++++++++++++++++++
-	// A0-7, E8-15
 
 	/* Configure Button pin as input */
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;		// Input mode
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;		// Push - Pull
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;		// To detect a logic high
 
-	// D4-7
+	// D4 D6 D7
 	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_4 | GPIO_PIN_6 | GPIO_PIN_7;;
 	GPIO_Init(GPIOD, &GPIO_InitStructure);
 
-	// Pins A0-3,
+	// Pins A0-3, 5
 	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_5;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
