@@ -117,10 +117,10 @@ LED_GPIO getGPIO(uint8_t pin, uint8_t type) {
  * Turn the channel rack LED On or Off depending on the state of the corresponding pin
  * added by Hermann
  */
-void updateLED(uint8_t pin, bool condition, uint8_t type) {
+void updateLED(uint8_t pin, bool On, uint8_t type) {
 	LED_GPIO _GPIO = getGPIO(pin, type);
 	;
-	if(condition) GPIO_SetBits(_GPIO.GPIO, _GPIO.pin);
+	if(On) GPIO_SetBits(_GPIO.GPIO, _GPIO.pin);
 	else GPIO_ResetBits(_GPIO.GPIO, _GPIO.pin);
 }
 
@@ -245,8 +245,27 @@ void vUITask(void * pvparameters){
 		{
 			//update the Instrument-Select Pad
 			if(MODE==COMPOSER) {
+				//LCD_funtion("Composer Mode")
+				switch(current_sample) {
+				case INSTR_1:
+//					LCD_function("kick");
+					break;
+				case INSTR_2:
+//					LCD_function("snare");
+					break;
+				case INSTR_3:
+//					LCD_function("high-hat");
+					break;
+				case INSTR_4:
+//					LCD_function("cowbell");
+					break;
+				}
 				for(uint8_t instr = 0; instr < 4; ++instr)
 					updateLED(instr, instr == current_sample, 1);
+			}
+			else {
+				//LCD_funtion("Composer Mode")
+				//LCD_funtion("Playing Song 1")
 			}
 			// go through channel rack and set LED status based on channel rack pins
 			// NB Have to manually check each pin on the channel rack and update the corresponding GPIO pin
@@ -256,6 +275,8 @@ void vUITask(void * pvparameters){
 		}
 		while(MODE==FREESTYLE)
 		{
+			//LCD_funtion("Freestyle Mode")
+			//LCD_funtion("Enjoy your freestyle")
 			PAD_STATE[0] = true;
 //			reset the flag
 			STATE_CHANGED = false;

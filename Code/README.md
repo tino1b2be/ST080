@@ -1,3 +1,4 @@
-This is the feature-freestyle branch.
+This is the feature-interface branch.
 
-branched from the kernel branch
+it basically updates the LED and the LCD screen according to 
+the mode, the instrument(where applicable) and channel rack selected 
