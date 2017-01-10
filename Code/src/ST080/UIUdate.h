@@ -148,26 +148,26 @@ void vUITask(void * pvparameters){
 		{
 			//update the Instrument-Select Pad
 			if(MODE==COMPOSER) {
-				lcd_flush_write(0, 'Composer Mode');
+				lcd_flush_write(0, "Composer Mode");
 				switch(current_sample) {
 				case INSTR_1:
-					lcd_flush_write(1, 'Editing open hat');
+					lcd_flush_write(1, "Editing open hat");
 					break;
 				case INSTR_2:
-					lcd_flush_write(1, 'Editing kick');
+					lcd_flush_write(1, "Editing kick");
 					break;
 				case INSTR_3:
-					lcd_flush_write(1, 'Editing hihat');
+					lcd_flush_write(1, "Editing hihat");
 					break;
 				case INSTR_4:
-					lcd_flush_write(1, 'Editing clap');
+					lcd_flush_write(1, "Editing clap");
 					break;
 				}
 				for(uint8_t instr = 0; instr < 4; ++instr)
 					updateLED(instr, instr == current_sample, 1);
 			}
 			else {
-				LCD_funtion(0, 'Playback Mode');
+				LCD_funtion(0, "Playback Mode");
 				//LCD_funtion("Playing Song 1")
 			}
 			// go through channel rack and set LED status based on channel rack pins
@@ -178,8 +178,8 @@ void vUITask(void * pvparameters){
 		}
 		while(MODE==FREESTYLE)
 		{
-			lcd_flush_write(0, 'Freestyle Mode');
-			lcd_flush_write(1, 'Enjoy :)');
+			lcd_flush_write(0, "Freestyle Mode");
+			lcd_flush_write(1, "Enjoy :)");
 			PAD_STATE[0] = true;
 //			reset the flag
 			STATE_CHANGED = false;
@@ -205,8 +205,8 @@ void vUITask(void * pvparameters){
 			vTaskDelay(50);
 		}
 		while(MODE==ERROR_MODE) {
-			lcd_flush_write(0, 'Error occurred');
-			lcd_flush_write(1, 'Restarting...');
+			lcd_flush_write(0, "Error occurred");
+			lcd_flush_write(1, "Restarting...");
 		}
 		vTaskDelay(50);
 	}
