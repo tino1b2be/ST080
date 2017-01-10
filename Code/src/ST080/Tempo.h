@@ -9,11 +9,10 @@
 #ifndef TEMPO_H_
 #define TEMPO_H_
 
-
 #include "Utils080.h"
 
 void Tempo_Configuration();
-void Tempo_Convert();
+uint16_t Tempo_Convert();
 
 void Tempo_Configuration(){
 	ADC_InitTypeDef ADC_init_structure; //Structure for adc confguration
@@ -50,7 +49,5 @@ uint16_t Tempo_Convert(){
 	while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC));//Processing the conversion
 	return ADC_GetConversionValue(ADC1); //Return the converted data
 }
-
-
 
 #endif /* TEMPO_H_ */

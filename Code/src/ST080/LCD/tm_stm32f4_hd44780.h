@@ -113,8 +113,8 @@ K		GND				Ground for back light
 #include "stm32f4xx.h"
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx_gpio.h"
-#include "tm_stm32f4_delay.h"
-#include "tm_stm32f4_gpio.h"
+#include "../../TM38/tm_stm32f4_delay.h"
+#include "../../TM38/tm_stm32f4_gpio.h"
 
 /**
  * @defgroup TM_HD44780_Macros

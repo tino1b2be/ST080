@@ -174,7 +174,7 @@ void TIM2_IRQHandler(void)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
     	// TODO Play sample at index, need a global variable array
-		AudioPlay(ComposerBuffer[index*sample_size],DMA_Mode_Normal,SAMPLE_SIZE);
+		AudioPlay(&ComposerBuffer[index*sample_size],DMA_Mode_Normal,SAMPLE_SIZE);
 		// Update index
 		if(index>=15)index=0;
 		else index++;
