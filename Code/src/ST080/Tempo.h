@@ -3,6 +3,7 @@
  *
  *  Created on: Dec 29, 2016
  *      Author: Othniel
+ * 	   Version: Jan 10, 2017
  */
 
 #ifndef TEMPO_H_
@@ -10,6 +11,9 @@
 
 
 #include "Utils080.h"
+
+void Tempo_Configuration();
+void Tempo_Convert();
 
 void Tempo_Configuration(){
 	ADC_InitTypeDef ADC_init_structure; //Structure for adc confguration
