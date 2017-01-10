@@ -167,7 +167,7 @@ void vUITask(void * pvparameters){
 					updateLED(instr, instr == current_sample, 1);
 			}
 			else {
-				LCD_funtion(0, "Playback Mode");
+				lcd_flush_write(0, "Playback Mode");
 				//LCD_funtion("Playing Song 1")
 			}
 			// go through channel rack and set LED status based on channel rack pins
