@@ -1,4 +1,4 @@
-This is the feature-interface branch.
+This is the feature-audio branch.
 
-it basically updates the LED and the LCD screen according to 
-the mode, the instrument(where applicable) and channel rack selected 
+this is branched from the kernel branch
+
