@@ -1,3 +1,3 @@
-This is the feature-freestyle branch.
+This is the feature-audio branch.
 
-branched from the kernel branch
+this is branched from the kernel branch
