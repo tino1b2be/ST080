@@ -27,6 +27,9 @@
 #include "stm32f4xx.h"
 #include "stm32f4_discovery.h"
 
+// LCD library
+#include "LCD/tm_stm32f4_hd44780.h"
+
 // ==========================================================================================
 // ============================ FreeRTOS stuff ==============================================
 // ==========================================================================================
@@ -59,11 +62,16 @@ void vApplicationMallocFailedHook(void) {
 // ============================ Global Variables ============================================
 // ==========================================================================================
 
+// LCD dimensions
+#define LCD_COLUMNS 16
+#define LCD_ROWS 2
+
 // Modes used by the ST080
 #define COMPOSER 1
 #define PLAYBACK 2
 #define FREESTYLE 3
 #define SAVE 4
+#define ERROR_MODE 5
 
 // Instrument Macros
 #define INSTR_1 0
@@ -136,6 +144,9 @@ void delay_ms(uint32_t milli)
  */
 void error_(void)
 {
+	// TODO add mode for an error
+	MODE = ERROR_MODE;
+
 	/* Initialize LEDs */
 	STM_EVAL_LEDInit(LED3);
 	STM_EVAL_LEDInit(LED4);
@@ -254,6 +265,9 @@ void startUpConfigs(){
 		error_();
 	}
 
+	// config for LCD
+	TM_HD44780_Init(LCD_COLUMNS, LCD_ROWS);
+
 	// initialise debugging LEDs
 	/* Initialize LEDs */
 	STM_EVAL_LEDInit(LED3);
@@ -266,6 +280,8 @@ void startUpConfigs(){
 	STM_EVAL_LEDOff(LED4);
 	STM_EVAL_LEDOff(LED5);
 	STM_EVAL_LEDOff(LED6);
+
+
 }
 
 /**
@@ -383,9 +399,5 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 
 	previous = current; // for debouncing
 }
-
-	// +++++++++++++++++ TODO configure EPROM pins ++++++++++++++++++++++++
-
-	// +++++++++++++++++ TODO configure Audio stuff (DMA, ADC, etc...) ++++++++++++++++++++++++
 
 #endif /* UTILS080_H_ */
