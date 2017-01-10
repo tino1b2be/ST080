@@ -137,103 +137,6 @@ bool LEDOnDelay(uint32_t milli) {
 	return true;
 }
 
-/**
- * return the flag/condition upon which LED should be updated
- * when in FreeStyle mode
- * !!!!Not needed at the moment but do not remove please!!!!
- */
-//bool getCondition(uint8_t instr){
-//	switch(instr){
-//	//for instrument 1
-//	case 0(uint8_t):
-//			switch(played_inst){
-//			case 2:
-//				return true;
-//			case 6:
-//				return true;
-//			case 10:
-//				return true;
-//			case 18:
-//				return true;
-//			case 14:
-//				return true;
-//			case 22:
-//				return true;
-//			case 26:
-//				return true;
-//			case 30:
-//				return true;
-//			default:
-//				return false;
-//			}
-//	//for instrument 1
-//	case 1(uint8_t):
-//		switch(played_inst){
-//		case 4:
-//			return true;
-//		case 6:
-//			return true;
-//		case 12:
-//			return true;
-//		case 20:
-//			return true;
-//		case 14:
-//			return true;
-//		case 22:
-//			return true;
-//		case 28:
-//			return true;
-//		case 30:
-//			return true;
-//		default:
-//			return false;
-//		}
-//	//for instrument 1
-//	case 2(uint8_t):
-//		switch(played_inst){
-//		case 8:
-//			return true;
-//		case 10:
-//			return true;
-//		case 12:
-//			return true;
-//		case 24:
-//			return true;
-//		case 14:
-//			return true;
-//		case 26:
-//			return true;
-//		case 28:
-//			return true;
-//		case 30:
-//			return true;
-//		default:
-//			return false;
-//		}
-//	//for instrument 1
-//	case 3(uint8_t):
-//		switch(played_inst){
-//		case 16:
-//			return true;
-//		case 18:
-//			return true;
-//		case 20:
-//			return true;
-//		case 24:
-//			return true;
-//		case 22:
-//			return true;
-//		case 26:
-//			return true;
-//		case 28:
-//			return true;
-//		case 30:
-//			return true;
-//		default:
-//			return false;
-//		}
-//	}
-//}
 
 /**
  * Task to update the LEDs depending on the current mode and status of the system
@@ -245,26 +148,26 @@ void vUITask(void * pvparameters){
 		{
 			//update the Instrument-Select Pad
 			if(MODE==COMPOSER) {
-				//LCD_funtion("Composer Mode")
+				lcd_flush_write(0, 'Composer Mode');
 				switch(current_sample) {
 				case INSTR_1:
-//					LCD_function("kick");
+					lcd_flush_write(1, 'Editing open hat');
 					break;
 				case INSTR_2:
-//					LCD_function("snare");
+					lcd_flush_write(1, 'Editing kick');
 					break;
 				case INSTR_3:
-//					LCD_function("high-hat");
+					lcd_flush_write(1, 'Editing hihat');
 					break;
 				case INSTR_4:
-//					LCD_function("cowbell");
+					lcd_flush_write(1, 'Editing clap');
 					break;
 				}
 				for(uint8_t instr = 0; instr < 4; ++instr)
 					updateLED(instr, instr == current_sample, 1);
 			}
 			else {
-				//LCD_funtion("Composer Mode")
+				LCD_funtion(0, 'Playback Mode');
 				//LCD_funtion("Playing Song 1")
 			}
 			// go through channel rack and set LED status based on channel rack pins
@@ -275,8 +178,8 @@ void vUITask(void * pvparameters){
 		}
 		while(MODE==FREESTYLE)
 		{
-			//LCD_funtion("Freestyle Mode")
-			//LCD_funtion("Enjoy your freestyle")
+			lcd_flush_write(0, 'Freestyle Mode');
+			lcd_flush_write(1, 'Enjoy :)');
 			PAD_STATE[0] = true;
 //			reset the flag
 			STATE_CHANGED = false;
@@ -300,6 +203,10 @@ void vUITask(void * pvparameters){
 
 			}
 			vTaskDelay(50);
+		}
+		while(MODE==ERROR_MODE) {
+			lcd_flush_write(0, 'Error occurred');
+			lcd_flush_write(1, 'Restarting...');
 		}
 		vTaskDelay(50);
 	}
