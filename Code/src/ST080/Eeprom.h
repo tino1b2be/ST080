@@ -223,10 +223,13 @@ void EEPROMWritePage32(uint16_t baseAddress, uint8_t *data){
  */
 void saveToEeprom(){
 	int i,j,k,l=0;
-	for (i=0; i<16;++i)
-			for (j=0;j<4;++j)
-				for (k=0;k<16;++k,++l)
-					EEPROMWritePage32(l,(uint8_t *)&channelRack[i][j][k]);
+	for (i=0; i<16;++i){
+		for (j=0;j<4;++j){
+			for (k=0;k<16;++k,++l){
+				EEPROMWritePage32(l,(uint8_t *)&channelRack[i][j][k]);
+			}
+		}
+	}
 }
 
 /*

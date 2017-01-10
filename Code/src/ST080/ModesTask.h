@@ -9,6 +9,8 @@
 #define ST080_MODESTASK_H_
 
 #include "Utils080.h"
+#include "Eeprom.h"
+#include "AudioStuff.h"
 
 void initVariables(void);			// Method to initialise and variables as needed.
 void addSamples(void); 				// Method to add the samples based on the layout of the channel rack
@@ -39,7 +41,8 @@ void vModesTask(void * pvparameters)
 
 			if (new_flag){
 				// start playing music for composer mode
-				AudioComposerPlayback(Tempo_Convert());
+				uint16_t tempo = Tempo_Convert();
+				AudioComposerPlayback(tempo);
 				new_flag = false;
 			}
 
@@ -65,7 +68,8 @@ void vModesTask(void * pvparameters)
 
 			if (new_flag){
 				// start playing music for composer mode
-				AudioComposerPlayback(Tempo_Convert());
+				uint16_t tempo = Tempo_Convert();
+				AudioComposerPlayback(tempo);
 				new_flag = false;
 			}
 
