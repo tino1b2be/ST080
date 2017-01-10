@@ -281,7 +281,6 @@ void startUpConfigs(){
 	STM_EVAL_LEDOff(LED5);
 	STM_EVAL_LEDOff(LED6);
 
-
 }
 
 /**
@@ -400,4 +399,16 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 	previous = current; // for debouncing
 }
 
+// Remap the LCD functions
+/**
+ * Method to flush the LCD screen and write a new message on the specified row
+ *
+ * @param msg String to write to teh LCD screen
+ * @param row_num
+ *
+ */
+void lcd_flush_write(uint8_t row_num, char* msg){
+	TM_HD44780_Clear();
+	TM_HD44780_Puts(0,row_num,msg);
+}
 #endif /* UTILS080_H_ */
