@@ -148,6 +148,7 @@ void vUITask(void * pvparameters){
 		{
 			//update the Instrument-Select Pad
 			if(MODE==COMPOSER) {
+<<<<<<< HEAD
 				lcd_flush_write(0, "Composer Mode");
 				switch(current_sample) {
 				case INSTR_1:
@@ -161,12 +162,15 @@ void vUITask(void * pvparameters){
 					break;
 				case INSTR_4:
 					lcd_flush_write(1, "Editing clap");
+=======
+>>>>>>> refs/remotes/origin/v2-merge
 					break;
 				}
 				for(uint8_t instr = 0; instr < 4; ++instr)
 					updateLED(instr, instr == current_sample, 1);
 			}
 			else {
+<<<<<<< HEAD
 				LCD_funtion(0, "Playback Mode");
 				//LCD_funtion("Playing Song 1")
 			}
@@ -178,6 +182,7 @@ void vUITask(void * pvparameters){
 		}
 		while(MODE==FREESTYLE)
 		{
+<<<<<<< HEAD
 			lcd_flush_write(0, "Freestyle Mode");
 			lcd_flush_write(1, "Enjoy :)");
 			PAD_STATE[0] = true;
@@ -205,8 +210,13 @@ void vUITask(void * pvparameters){
 			vTaskDelay(50);
 		}
 		while(MODE==ERROR_MODE) {
+<<<<<<< HEAD
 			lcd_flush_write(0, "Error occurred");
 			lcd_flush_write(1, "Restarting...");
+=======
+			lcd_flush_write(0, 'Error occurred');
+			lcd_flush_write(1, 'Restarting...');
+>>>>>>> refs/remotes/origin/v2-merge
 		}
 		vTaskDelay(50);
 	}
