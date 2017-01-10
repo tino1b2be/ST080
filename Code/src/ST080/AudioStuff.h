@@ -3,7 +3,7 @@
  *
  *  Created on: Sep 27, 2016
  *      Author: Othniel Konan
- *     Version: Oct 3, 2016
+ *     Version: Jan 10, 2017
  * Description: Contains set of functions to generate sound
  */
 
@@ -143,7 +143,6 @@ void Timer_configuration(uint16_t tempo){
 
 	// Enable TIM2
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 ,ENABLE);
-	// TODO Compute ARR and PSC based on tempo
 	// Setup the timer
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStruct;
 	TIM_TimeBaseStruct.TIM_Prescaler = 10000;
@@ -170,11 +169,12 @@ void Timer_configuration(uint16_t tempo){
 void TIM2_IRQHandler(void)
 {
 	static uint8_t index = 0;
+	static uint16_t sample_size = DEFAULT_COMPOSER_BUFFERSIZE/16;
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
     	// TODO Play sample at index, need a global variable array
-		//AudioPlay(DACBuffer,DMA_Mode_Normal,250);
+		AudioPlay(ComposerBuffer[index*sample_size],DMA_Mode_Normal,SAMPLE_SIZE);
 		// Update index
 		if(index>=15)index=0;
 		else index++;
@@ -183,12 +183,6 @@ void TIM2_IRQHandler(void)
 	float gradient = (200.0-30.0)/(4096.0);
 	uint16_t tempo = (uint16_t) (gradient*(float)temp+30);
 	TempoSetValue(tempo);
-/*	TM_HD44780_Clear();
-	TM_HD44780_Puts(0, 0, "TEMPO: ");
-	int n = log10(tempo) + 1;
-	char *numberArray = calloc(n, sizeof(char));
-	itoa(tempo,numberArray,10);
-	TM_HD44780_Puts(10, 0, numberArray);*/
 }
 
 /*
