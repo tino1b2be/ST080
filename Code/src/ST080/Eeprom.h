@@ -33,6 +33,10 @@
  * 		CLK		PB13
  * 		CS		PB12
  */
+
+void EEPROMWritePage32(uint16_t baseAddress, uint8_t *data);
+uint8_t EEPROM_Read(uint16_t address);
+
 void EEPROM_Configuration(){
 	/* RCC Configuration */
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);

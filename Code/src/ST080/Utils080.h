@@ -10,7 +10,7 @@
 
 // other stuff
 #include <stdbool.h>
-#include "AudioStuff.h"
+//#include "AudioStuff.h"
 
 // Library 38 (interrupts library)
 #include "TM38/defines.h"
@@ -29,6 +29,9 @@
 
 // LCD library
 #include "LCD/tm_stm32f4_hd44780.h"
+
+// EEprom library
+#include "Eeprom.h"
 
 // ==========================================================================================
 // ============================ FreeRTOS stuff ==============================================
@@ -144,7 +147,6 @@ void delay_ms(uint32_t milli)
  */
 void error_(void)
 {
-	// TODO add mode for an error
 	MODE = ERROR_MODE;
 
 	/* Initialize LEDs */
