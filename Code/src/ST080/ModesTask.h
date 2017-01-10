@@ -9,30 +9,39 @@
 #define ST080_MODESTASK_H_
 
 #include "Utils080.h"
-#include "Eeprom.h"
 
 void initVariables(void);			// Method to initialise and variables as needed.
 void addSamples(void); 				// Method to add the samples based on the layout of the channel rack
 void flushBuffer(void);				// function to flush the DAC buffer before adding the samples
 void initSamples(void);				// Function to create different samples for different combinations of instrument presses
-// sampleAdd (Freestylemode) method takes in 1, 2, 3 or 4 numbers and adds them, capping the numbers at 0 or 4095
-uint16_t sampleAdd(int16_t value1, int16_t value2, int16_t value3, int16_t value4, uint16_t sampleNum);
+uint16_t sampleAdd(					// sampleAdd (Freestylemode) method takes in 1, 2, 3 or 4 numbers and adds them, capping the numbers at 0 or 4095
+		int16_t value1,
+		int16_t value2,
+		int16_t value3,
+		int16_t value4,
+		uint16_t sampleNum
+);
 void vModesTask(void * pvparameters);
+
+// Function implementations
 
 void vModesTask(void * pvparameters)
 {
 	initSamples();
-	while (true){
+	uint8_t previous_sample = 0;
+	bool new_flag = true;			// flag to check if the composer/playback modes have been switched to
 
-		// ===
-		// code used by Composer mode...must run before switching to composer mode
+	while (true){
 		initVariables();
-		uint8_t previous_sample = 0;
-		// ===
+		new_flag = true;
 
 		while (MODE == COMPOSER) {
-			AudioDisable();
-			AudioPlayback(ComposerBuffer,DEFAULT_COMPOSER_BUFFERSIZE);
+
+			if (new_flag){
+				// start playing music for composer mode
+				AudioComposerPlayback(Tempo_Convert());
+				new_flag = false;
+			}
 
 			// toggle LED3 (500ms) to check if this loop is running properly
 			if ((tickTime - debugLED_counter_3) > 500)
@@ -50,9 +59,51 @@ void vModesTask(void * pvparameters)
 			previous_sample = current_sample;
 			vTaskDelay(10);
 		}
+		new_flag = true; // set flag for the next iteration for composer
 
+		while (MODE == PLAYBACK) {
+
+			if (new_flag){
+				// start playing music for composer mode
+				AudioComposerPlayback(Tempo_Convert());
+				new_flag = false;
+			}
+
+			// toggle LED5 (500ms) to check if this loop is running properly
+			if ((tickTime - debugLED_counter_3) > 500) {
+				// toggle LED5 (red)
+				STM_EVAL_LEDToggle(LED5);
+				debugLED_counter_3 = tickTime;
+			}
+
+			if (status) {
+				flushBuffer();
+				addSamples();
+				status = false;
+			}
+			vTaskDelay(50);
+		}
+
+		while (MODE == SAVE) {
+
+			// toggle LED6 (500ms) to check if this loop is running properly
+			if ((tickTime - debugLED_counter_6) > 100) {
+				// toggle LED5 (red)
+				STM_EVAL_LEDToggle(LED6);
+				debugLED_counter_6 = tickTime;
+			}
+
+			// Save button has been pressed.
+			if (status) { // status flag is used to make sure data is pushed to eeprom once
+				saveToEeprom();
+				status = false;
+			}
+			vTaskDelay(10);
+			// Wait for user to select the new song channel rack to modify
+			// After selecting the new song, switch back to COMPOSER mode.
+		}
 		while (MODE == FREESTYLE) {
-			AudioDisable();
+
 			// toggle LED4 (500ms) to check if this loop is running properly
 			if ((tickTime - debugLED_counter_3) > 500) {
 				// toggle LED5 (red)
@@ -128,50 +179,15 @@ void vModesTask(void * pvparameters)
 				AudioFreestyle(freestyle_samples[10]);
 			}
 			else{
-				// TODO Error message
+				error_();
 			}
 			played_inst = 0;
 			vTaskDelay(10);
 		}
-
-		while (MODE == PLAYBACK) {
-			AudioDisable();
-			AudioPlayback(ComposerBuffer, DEFAULT_COMPOSER_BUFFERSIZE);
-			// toggle LED5 (500ms) to check if this loop is running properly
-			if ((tickTime - debugLED_counter_3) > 500) {
-				// toggle LED5 (red)
-				STM_EVAL_LEDToggle(LED5);
-				debugLED_counter_3 = tickTime;
-			}
-
-			if (status)
-			{
-				flushBuffer();
-				addSamples();
-				status = false;
-			}
+		while (MODE == ERROR_MODE){
 			vTaskDelay(50);
 		}
-
-		while (MODE == SAVE) {
-
-			// toggle LED6 (500ms) to check if this loop is running properly
-			if ((tickTime - debugLED_counter_6) > 100) {
-				// toggle LED5 (red)
-				STM_EVAL_LEDToggle(LED6);
-				debugLED_counter_6 = tickTime;
-			}
-
-			// Save button has been pressed.
-			if (status) { // status flag is used to make sure data is pushed to eeprom once
-				saveToEeprom();
-				status = false;
-			}
-			vTaskDelay(10);
-			// Wait for user to select the new song channel rack to modify
-			// After selecting the new song, switch back to COMPOSER mode.
-		}
-
+		// done witg modes
 		vTaskDelay(20);
 	}
 }
@@ -293,7 +309,6 @@ uint16_t sampleAdd(int16_t value1, int16_t value2, int16_t value3, int16_t value
 
 	return buffer_temp;
 }
-
 
 // Function to create different samples for different combinations of instrument presses
 void initSamples(void)
