@@ -32,6 +32,9 @@
 // EEprom library
 //#include "Eeprom.h"
 
+// Tempo library
+#include "Tempo.h"
+
 // ==========================================================================================
 // ============================ FreeRTOS stuff ==============================================
 // ==========================================================================================
@@ -125,6 +128,7 @@ uint64_t debugLED_counter_6 = 0, debugLED_counter_5 = 0, debugLED_counter_4 = 0,
 void startUpConfigs(void); 			// Function to run the start up configurations.
 void delay_ms(uint32_t milli);
 void error_(void);					// function to flash the on-board LEDs when an error occurs
+void lcd_flush_write(uint8_t row_num, char* msg);
 
 // ==========================================================================================
 // ============================ Function Implementations =====================================
@@ -160,6 +164,13 @@ void error_(void)
 	/* Turn on some LEDs */
 	STM_EVAL_LEDOn(LED5);
 	STM_EVAL_LEDOn(LED6);
+
+	lcd_flush_write(0, "ERROR!");
+
+	GPIO_SetBits(GPIOB, 6);
+	GPIO_SetBits(GPIOB, 7);
+	GPIO_SetBits(GPIOB, 8);
+	GPIO_SetBits(GPIOB, 9);
 
 	while(1){
 		delay_ms(500);
@@ -266,8 +277,12 @@ void startUpConfigs(){
 		error_();
 	}
 
+	// config for Tempo
+	Tempo_Configuration();
+
 	// config for LCD
-	TM_HD44780_Init(LCD_COLUMNS, LCD_ROWS);
+	//TM_HD44780_Init(LCD_COLUMNS, LCD_ROWS);
+	//TM_HD44780_Clear();
 
 	// initialise debugging LEDs
 	/* Initialize LEDs */
@@ -409,7 +424,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
  *
  */
 void lcd_flush_write(uint8_t row_num, char* msg){
-	TM_HD44780_Clear();
-	TM_HD44780_Puts(0,row_num,msg);
+	//TM_HD44780_Clear();
+	//TM_HD44780_Puts(0,row_num,msg);
 }
 #endif /* UTILS080_H_ */
