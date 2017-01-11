@@ -46,7 +46,7 @@ static HD44780_Options_t HD44780_Opts;
 #define HD44780_E_HIGH              TM_GPIO_SetPinHigh(HD44780_E_PORT, HD44780_E_PIN)
 
 #define HD44780_E_BLINK             HD44780_E_HIGH; HD44780_Delay(20); HD44780_E_LOW; HD44780_Delay(20)
-#define HD44780_Delay(x)            Delay(x)
+#define HD44780_Delay(x)            LCD_Delay(x)
 
 /* Commands*/
 #define HD44780_CLEARDISPLAY        0x01
@@ -85,7 +85,7 @@ static HD44780_Options_t HD44780_Opts;
 
 void TM_HD44780_Init(uint8_t cols, uint8_t rows) {
 	/* Initialize delay */
-	TM_DELAY_Init();
+	//TM_DELAY_Init();
 	
 	/* Init pinout */
 	TM_HD44780_InitPins();
@@ -116,7 +116,7 @@ void TM_HD44780_Init(uint8_t cols, uint8_t rows) {
 	
 	/* Third goo! */
 	TM_HD44780_Cmd4bit(0x03);
-	HD44780_Delay(4500);	
+	HD44780_Delay(4500);
 	
 	/* Set 4-bit interface */
 	TM_HD44780_Cmd4bit(0x02);
@@ -282,4 +282,14 @@ static void TM_HD44780_InitPins(void) {
 	TM_GPIO_SetPinLow(HD44780_D5_PORT, HD44780_D5_PIN);
 	TM_GPIO_SetPinLow(HD44780_D6_PORT, HD44780_D6_PIN);
 	TM_GPIO_SetPinLow(HD44780_D7_PORT, HD44780_D7_PIN);
+}
+
+/**
+ * @brief: Delay
+ */
+void LCD_Delay(uint32_t microseconds) {
+  /* Hangs for specified number of microseconds. */
+  volatile uint32_t counter = 0;
+  microseconds *= 13;
+  for(; counter<microseconds; counter++);
 }
