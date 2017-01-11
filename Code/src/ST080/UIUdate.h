@@ -14,7 +14,7 @@ void vUITask(void * pvparameters);
 LED_GPIO getGPIO(uint8_t pin, uint8_t type);
 void updateLED(uint8_t pin, bool condition, uint8_t type);
 bool LEDOnDelay(uint32_t milli);
-//bool getCondition(uint8_t instr);
+void clearLEDs();
 
 /**
  * return the correct GPIO and GPIO_pin based on the given channel rack's pin
@@ -113,6 +113,9 @@ LED_GPIO getGPIO(uint8_t pin, uint8_t type) {
 	return _GPIO; //to satisfy compiler
 }
 
+void clearLED() {
+
+}
 /**
  * Turn the channel rack LED On or Off depending on the state of the corresponding pin
  * added by Hermann
@@ -137,6 +140,13 @@ bool LEDOnDelay(uint32_t milli) {
 	return true;
 }
 
+void clearLEDs() {
+	for (uint8_t pin = 0; pin < 16; ++pin)
+		updateLED(pin, false, 0);
+	for(uint8_t instr = 0; instr < 4; ++instr) {
+		updateLED(instr, false, 1);
+	}
+}
 
 /**
  * Task to update the LEDs depending on the current mode and status of the system
@@ -144,6 +154,9 @@ bool LEDOnDelay(uint32_t milli) {
 void vUITask(void * pvparameters){
 
 	while (true){
+		if(resetLEDs) {
+			clearLEDs();
+		}
 		while(MODE==COMPOSER || MODE==PLAYBACK)
 		{
 			//update the Instrument-Select Pad
