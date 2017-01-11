@@ -31,28 +31,27 @@ void vModesTask(void * pvparameters)
 {
 	initSamples();
 	uint8_t previous_sample = 0;
-	bool new_flag = true;			// flag to check if the composer/playback modes have been switched to
+	bool new_flag = true;			// Flag for one time functions in each mode
 
 	while (true){
-		initVariables();
 		new_flag = true;
-
 		while (MODE == COMPOSER) {
 
 			if (new_flag){
 				// start playing music for composer mode
+				initVariables();
 				uint16_t tempo = Tempo_Convert();
 				AudioComposerPlayback(tempo);
 				new_flag = false;
 			}
 
 			// toggle LED3 (500ms) to check if this loop is running properly
-			if ((tickTime - debugLED_counter_3) > 500)
-			{
-				// toggle LED5 (red)
-				STM_EVAL_LEDToggle(LED3);
-				debugLED_counter_3 = tickTime;
-			}
+//			if ((tickTime - debugLED_counter_3) > 500)
+//			{
+//				// toggle LED5 (red)
+//				STM_EVAL_LEDToggle(LED3);
+//				debugLED_counter_3 = tickTime;
+//			}
 
 			if (status || current_sample != previous_sample) {
 				flushBuffer(); // flush the buffer and add the samples again
@@ -74,11 +73,11 @@ void vModesTask(void * pvparameters)
 			}
 
 			// toggle LED5 (500ms) to check if this loop is running properly
-			if ((tickTime - debugLED_counter_3) > 500) {
-				// toggle LED5 (red)
-				STM_EVAL_LEDToggle(LED5);
-				debugLED_counter_3 = tickTime;
-			}
+//			if ((tickTime - debugLED_counter_3) > 500) {
+//				// toggle LED5 (red)
+//				STM_EVAL_LEDToggle(LED5);
+//				debugLED_counter_3 = tickTime;
+//			}
 
 			if (status) {
 				flushBuffer();
@@ -91,11 +90,11 @@ void vModesTask(void * pvparameters)
 		while (MODE == SAVE) {
 
 			// toggle LED6 (500ms) to check if this loop is running properly
-			if ((tickTime - debugLED_counter_6) > 100) {
-				// toggle LED5 (red)
-				STM_EVAL_LEDToggle(LED6);
-				debugLED_counter_6 = tickTime;
-			}
+//			if ((tickTime - debugLED_counter_6) > 100) {
+//				// toggle LED5 (red)
+//				STM_EVAL_LEDToggle(LED6);
+//				debugLED_counter_6 = tickTime;
+//			}
 
 			// Save button has been pressed.
 			if (status) { // status flag is used to make sure data is pushed to eeprom once
@@ -115,11 +114,11 @@ void vModesTask(void * pvparameters)
 				new_flag = false;
 			}
 			// toggle LED4 (500ms) to check if this loop is running properly
-			if ((tickTime - debugLED_counter_3) > 500) {
-				// toggle LED5 (red)
-				STM_EVAL_LEDToggle(LED4);
-				debugLED_counter_3 = tickTime;
-			}
+//			if ((tickTime - debugLED_counter_3) > 500) {
+//				// toggle LED5 (red)
+//				STM_EVAL_LEDToggle(LED4);
+//				debugLED_counter_3 = tickTime;
+//			}
 
 			// void AudioFreestyle(uint16_t *DACBuffer)
 

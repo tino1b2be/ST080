@@ -141,6 +141,7 @@ bool LEDOnDelay(uint32_t milli) {
 }
 
 void clearLEDs() {
+	resetLEDs = false;
 	for (uint8_t pin = 0; pin < 16; ++pin)
 		updateLED(pin, false, 0);
 	for(uint8_t instr = 0; instr < 4; ++instr) {
@@ -154,11 +155,11 @@ void clearLEDs() {
 void vUITask(void * pvparameters){
 
 	while (true){
-		if(resetLEDs) {
-			clearLEDs();
-		}
 		while(MODE==COMPOSER || MODE==PLAYBACK)
 		{
+			if(resetLEDs) {
+				clearLEDs();
+			}
 			//update the Instrument-Select Pad
 			if(MODE==COMPOSER) {
 				lcd_flush_write(0, "Composer Mode");
@@ -191,6 +192,9 @@ void vUITask(void * pvparameters){
 		}
 		while(MODE==FREESTYLE)
 		{
+			if(resetLEDs) {
+				clearLEDs();
+			}
 			lcd_flush_write(0, "Freestyle Mode");
 			lcd_flush_write(1, "Enjoy :)");
 			PAD_STATE[0] = true;

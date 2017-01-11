@@ -389,18 +389,21 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 	else if (GPIO_Pin == GPIO_Pin_4) {
 		MODE = COMPOSER;
 		status = true;
+		resetLEDs = true;
 	}
 
 	/* Handle external line 5 interrupts */
 	// switch to PLAYBACK MODE
 	else if (GPIO_Pin == GPIO_Pin_5) {
 		MODE = PLAYBACK;
+		resetLEDs = true;
 	}
 
 	/* Handle external line 6 interrupts */
 	// switch to FREESTYLE MODE
 	else if (GPIO_Pin == GPIO_Pin_6) {
 		MODE = FREESTYLE;
+		resetLEDs = true;
 	}
 
 	/* Handle external line 7 interrupts */
@@ -409,6 +412,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		// TODO implement save logic
 		MODE = SAVE;
 		status = true;
+		resetLEDs = true;
 		// Save the channelRack Array to the EEPROM
 	}
 

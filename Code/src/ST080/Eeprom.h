@@ -223,10 +223,12 @@ void EEPROMWritePage32(uint16_t baseAddress, uint8_t *data){
  */
 void saveToEeprom(){
 	int i,j,k,l=0;
-	for (i=0; i<16;++i){
-		for (j=0;j<4;++j){
-			for (k=0;k<16;++k,++l){
-				EEPROM_Write(l,(uint8_t) channelRack[i][j][k]);
+	uint8_t temp = 0;
+	for (i = 0; i < 16; ++i) {
+		for (j = 0; j < 4; ++j) {
+			for (k = 0; k < 16; ++k, ++l) {
+				temp = (uint8_t) channelRack[i][j][k];
+				EEPROM_Write(l, temp);
 			}
 		}
 	} // end of for loops
@@ -236,12 +238,12 @@ void saveToEeprom(){
  * @brief	Initializes the "channelRack[][][]" using data read from the eeprom
  */
 void loadFromEeprom(){
-	int i,j,k,l=0;
+	int i, j, k, l = 0;
 	bool temp = false;
-	for (i=0; i<16;++i){
-		for (j=0;j<4;++j){
-			for (k=0;k<16;++k,++l){
-				temp = (bool)EEPROM_Read(l);
+	for (i = 0; i < 16; ++i) {
+		for (j = 0; j < 4; ++j) {
+			for (k = 0; k < 16; ++k, ++l) {
+				temp = (bool) EEPROM_Read(l);
 				channelRack[i][j][k] = temp;
 			}
 		}
