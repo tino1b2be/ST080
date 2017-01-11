@@ -17,7 +17,6 @@
 
 // ============================================================================
 int main(void) {
-	/* Config Eeprom*/
 	EEPROM_Configuration();
 	startUpConfigs();
 	lcd_flush_write(0,"YASSS");
@@ -27,8 +26,6 @@ int main(void) {
 	xTaskCreate(vUITask, (signed char * ) "UI Task", UI_STACK_SIZE, NULL, UI_TASK_PRIORITY, NULL);
 	xTaskCreate(vGPIOTask, (signed char * ) "GPIO Inputs Task", GPIO_STACK_SIZE, NULL, GPIO_TASK_PRIORITY, NULL);
 
-	vTaskStartScheduler(); // This should never return.
-	// Will only get here if there was insufficient memory to create
-	// the idle task.
+	vTaskStartScheduler();
 	while(1);
 }

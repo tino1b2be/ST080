@@ -122,10 +122,24 @@ void vGPIOTask(void * pvparameters) {
 				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
-				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15));
+				bool reset = false;
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
+					if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
+						while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14))
+							if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
+								flushRack();
+								flushBuffer();
+								break;
+								reset = true;
+							}
+					}
+				}
+				if (reset)
+				{
 				// toggle pin 16
 				channelRack[currentBeat][current_sample][15] = channelRack[currentBeat][current_sample][15] == true ? false : true;
 				status = true;
+				}
 			}
 		}
 		while (MODE == FREESTYLE)
