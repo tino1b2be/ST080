@@ -182,6 +182,10 @@ void vModesTask(void * pvparameters)
 			else if(played_inst == 30){
 				AudioFreestyle(freestyle_samples[10]);
 			}
+			else if(played_inst == 0)
+			{
+				//Do nothing
+			}
 			else{
 				error_();
 			}
