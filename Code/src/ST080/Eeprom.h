@@ -237,10 +237,12 @@ void saveToEeprom(){
  */
 void loadFromEeprom(){
 	int i,j,k,l=0;
+	bool temp = false;
 	for (i=0; i<16;++i){
 		for (j=0;j<4;++j){
 			for (k=0;k<16;++k,++l){
-				channelRack[i][j][k] = (bool)EEPROM_Read(l);
+				temp = (bool)EEPROM_Read(l);
+				channelRack[i][j][k] = temp;
 			}
 		}
 	} // end of for loops
