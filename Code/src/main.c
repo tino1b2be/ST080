@@ -20,7 +20,6 @@ int main(void) {
 	EEPROM_Configuration();
 	startUpConfigs();
 	lcd_write(4,0,"WELCOME");
-	TM_HD44780_BlinkOn();
 	loadFromEeprom();		// Load the channel rack from the eeprom
 
 	xTaskCreate(vModesTask, (signed char * ) "Modes Task", MODES_STACK_SIZE, NULL, MODES_TASK_PRIORITY, NULL);

@@ -15,15 +15,18 @@ LED_GPIO getGPIO(uint8_t pin, uint8_t type);
 void updateLED(uint8_t pin, bool condition, uint8_t type);
 bool LEDOnDelay(uint32_t milli);
 void clearLEDs();
-
+void updateModeLEDs();
+void updateInstrLEDs();
 /**
  * return the correct GPIO and GPIO_pin based on the given channel rack's pin
  * added by Hermann
  */
 LED_GPIO getGPIO(uint8_t pin, uint8_t type) {
 	LED_GPIO _GPIO;
+//	split in cases to reduce checking delay
 	switch(type) {
 	case (uint8_t)0:
+			//for channel rack LEDs
 			switch(pin) {
 			case (uint8_t)0:
 					_GPIO.GPIO = GPIOA;
@@ -91,6 +94,7 @@ LED_GPIO getGPIO(uint8_t pin, uint8_t type) {
 					return _GPIO;
 			}
 	case (uint8_t)1:
+//			For instrument selection
 			switch(pin) {
 			case (uint8_t)0:
 					_GPIO.GPIO = GPIOB;
@@ -109,20 +113,32 @@ LED_GPIO getGPIO(uint8_t pin, uint8_t type) {
 					_GPIO.pin = GPIO_Pin_9;
 					return _GPIO;
 			}
+	case (uint8_t)2:
+//			For Mode selection
+			switch(pin) {
+			case (uint8_t)0:
+					_GPIO.GPIO = GPIOC;
+					_GPIO.pin = GPIO_Pin_0;
+					return _GPIO;
+			case (uint8_t)1:
+					_GPIO.GPIO = GPIOC;
+					_GPIO.pin = GPIO_Pin_1;
+					return _GPIO;
+			case (uint8_t)2:
+					_GPIO.GPIO = GPIOC;
+					_GPIO.pin = GPIO_Pin_2;
+					return _GPIO;
+			}
 	}
 	return _GPIO; //to satisfy compiler
 }
 
-void clearLED() {
-
-}
 /**
  * Turn the channel rack LED On or Off depending on the state of the corresponding pin
  * added by Hermann
  */
 void updateLED(uint8_t pin, bool On, uint8_t type) {
 	LED_GPIO _GPIO = getGPIO(pin, type);
-	;
 	if(On) GPIO_SetBits(_GPIO.GPIO, _GPIO.pin);
 	else GPIO_ResetBits(_GPIO.GPIO, _GPIO.pin);
 }
@@ -141,11 +157,30 @@ bool LEDOnDelay(uint32_t milli) {
 }
 
 void clearLEDs() {
-	for (uint8_t pin = 0; pin < 16; ++pin)
-		updateLED(pin, false, 0);
-	for(uint8_t instr = 0; instr < 4; ++instr) {
-		updateLED(instr, false, 1);
+	if(resetLEDs){
+		resetLEDs = false;
+	//	clear mode LEDs
+		for (uint8_t pin = 0; pin < 3; ++pin)
+			updateLED(pin, false, 2);
+	//	clear channel rack LEDs
+		for (uint8_t pin = 0; pin < 16; ++pin)
+			updateLED(pin, false, 0);
+	//	clear instrument LEDs
+		for(uint8_t instr = 0; instr < 4; ++instr) {
+			updateLED(instr, false, 1);
+		}
 	}
+}
+
+void updateModeLEDs(){
+	//		update the mode LEDs
+	for (uint8_t mode = 0; mode < 3; ++mode)
+		updateLED(mode, MODE == mode + 1, 2);
+}
+
+void updateInstrLEDs() {
+	for(uint8_t instr = 0; instr < 4; ++instr)
+		updateLED(instr, instr == current_sample, 1);
 }
 
 /**
@@ -154,46 +189,48 @@ void clearLEDs() {
 void vUITask(void * pvparameters){
 
 	while (true){
-		if(resetLEDs) {
-			clearLEDs();
-		}
-		while(MODE==COMPOSER || MODE==PLAYBACK)
-		{
+		clearLEDs();
+		updateModeLEDs();
+		switch(MODE){
+		case COMPOSER:
 			//update the Instrument-Select Pad
-			if(MODE==COMPOSER) {
-				lcd_flush_write(0, "Composer Mode");
-				switch(current_sample) {
-				case INSTR_1:
-					lcd_flush_write(1, "Editing open hat");
-					break;
-				case INSTR_2:
-					lcd_flush_write(1, "Editing kick");
-					break;
-				case INSTR_3:
-					lcd_flush_write(1, "Editing hihat");
-					break;
-				case INSTR_4:
-					lcd_flush_write(1, "Editing clap");
-					break;
-				}
-				for(uint8_t instr = 0; instr < 4; ++instr)
-					updateLED(instr, instr == current_sample, 1);
+			lcd_flush_write(0, " Composer Mode");
+			switch(current_sample) {
+			case INSTR_1:
+				lcd_write(0, 1, "open hat");
+				lcd_write(10, 1, "T:");
+//				tempo = 30;
+				uint8_t n = log10(tempo) + 1;
+				char *numberArray = calloc(n, sizeof(char));
+				itoa(tempo,numberArray,10);
+				TM_HD44780_Puts(12, 1, numberArray);
+				free(numberArray);
+//				lcd_write(10, 1, "T:");
+				break;
+			case INSTR_2:
+				lcd_write(0, 1, "Editing kick");
+				break;
+			case INSTR_3:
+				lcd_write(0, 1, "Editing hihat");
+				break;
+			case INSTR_4:
+				lcd_write(0, 1, "Editing clap");
+				break;
 			}
-			else {
-				lcd_flush_write(0, "Playback Mode");
-				//LCD_funtion("Playing Song 1")
-			}
+			updateInstrLEDs();
 			// go through channel rack and set LED status based on channel rack pins
 			// NB Have to manually check each pin on the channel rack and update the corresponding GPIO pin
 			for (uint8_t pin = 0; pin < 16; ++pin)
 				updateLED(pin, channelRack[currentBeat][current_sample][pin], 0);
-			vTaskDelay(50);
-		}
-		while(MODE==FREESTYLE)
-		{
-			lcd_flush_write(0, "Freestyle Mode");
-			lcd_flush_write(1, "Enjoy :)");
-			PAD_STATE[0] = true;
+			break;
+		case PLAYBACK:
+			lcd_flush_write(0, " Playback Mode");
+			//LCD_funtion("Playing Song 1")
+			break;
+		case FREESTYLE:
+			lcd_flush_write(0, " Freestyle Mode");
+			lcd_write(4, 1, "Enjoy :)");
+//			PAD_STATE[0] = true;
 //			reset the flag
 			STATE_CHANGED = false;
 			// TODO light up the corresponding LEDs for the freestyle pad depending on the status of the flags
@@ -215,11 +252,11 @@ void vUITask(void * pvparameters){
 				}
 
 			}
-			vTaskDelay(50);
-		}
-		while(MODE==ERROR_MODE) {
+			break;
+		case ERROR_MODE:
 			lcd_flush_write(0, "Error occurred");
-			lcd_flush_write(1, "Restarting...");
+			lcd_write(0, 1, "Restarting...");
+			break;
 		}
 		vTaskDelay(50);
 	}
