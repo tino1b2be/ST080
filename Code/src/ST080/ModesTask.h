@@ -106,8 +106,14 @@ void vModesTask(void * pvparameters)
 			// Wait for user to select the new song channel rack to modify
 			// After selecting the new song, switch back to COMPOSER mode.
 		}
+		new_flag = true;
 		while (MODE == FREESTYLE) {
 
+			if (new_flag){
+				// start playing music for composer mode
+				TempoDisable();
+				new_flag = false;
+			}
 			// toggle LED4 (500ms) to check if this loop is running properly
 			if ((tickTime - debugLED_counter_3) > 500) {
 				// toggle LED5 (red)
@@ -192,10 +198,11 @@ void vModesTask(void * pvparameters)
 			played_inst = 0;
 			vTaskDelay(10);
 		}
+		new_flag = true;
 		while (MODE == ERROR_MODE){
 			vTaskDelay(50);
 		}
-		// done witg modes
+		// done with modes
 		vTaskDelay(20);
 	}
 }
@@ -288,6 +295,23 @@ void initVariables(void)
 	flushBuffer();
 	status = true;
 }
+
+/**
+ * Function
+ */
+void flushRack(void)
+{
+	int i, j, k;
+	for (i = 0; i < 16; ++i) {
+		for (j = 0; j < 4; ++j) {
+			for (k = 0; k < 16; ++k) {
+				channelRack[i][j][k] = 0;
+			}
+		}
+	} // end of for loops
+} // end of flush channel rack function
+
+// functions for freestyle mode
 
 // sampleAdd (Freestylemode) method takes in 1, 2, 3 or 4 numbers and adds them, capping the numbers at 0 or 4095
 uint16_t sampleAdd(int16_t value1, int16_t value2, int16_t value3, int16_t value4, uint16_t sampleNum){
