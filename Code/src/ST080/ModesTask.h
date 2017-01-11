@@ -37,14 +37,6 @@ void vModesTask(void * pvparameters)
 		new_flag = true;
 		while (MODE == COMPOSER) {
 
-			if (new_flag){
-				// start playing music for composer mode
-				initVariables();
-				uint16_t tempo = Tempo_Convert();
-				AudioComposerPlayback(tempo);
-				new_flag = false;
-			}
-
 			// toggle LED3 (500ms) to check if this loop is running properly
 //			if ((tickTime - debugLED_counter_3) > 500)
 //			{
@@ -52,6 +44,14 @@ void vModesTask(void * pvparameters)
 //				STM_EVAL_LEDToggle(LED3);
 //				debugLED_counter_3 = tickTime;
 //			}
+
+			if (new_flag){
+				// Enable audio playnack for the composer mode
+				initVariables();
+				uint16_t tempo = Tempo_Convert();
+				AudioComposerPlayback(tempo);
+				new_flag = false;
+			}
 
 			if (status || current_sample != previous_sample) {
 				flushBuffer(); // flush the buffer and add the samples again
@@ -65,19 +65,19 @@ void vModesTask(void * pvparameters)
 
 		while (MODE == PLAYBACK) {
 
-			if (new_flag){
-				// start playing music for composer mode
-				uint16_t tempo = Tempo_Convert();
-				AudioComposerPlayback(tempo);
-				new_flag = false;
-			}
-
 			// toggle LED5 (500ms) to check if this loop is running properly
 //			if ((tickTime - debugLED_counter_3) > 500) {
 //				// toggle LED5 (red)
 //				STM_EVAL_LEDToggle(LED5);
 //				debugLED_counter_3 = tickTime;
 //			}
+
+			if (new_flag){
+				// start playing music for composer mode
+				uint16_t tempo = Tempo_Convert();
+				AudioComposerPlayback(tempo);
+				new_flag = false;
+			}
 
 			if (status) {
 				flushBuffer();
@@ -100,19 +100,16 @@ void vModesTask(void * pvparameters)
 			if (status) { // status flag is used to make sure data is pushed to eeprom once
 				saveToEeprom();
 				status = false;
+				TempoDisable();
 			}
 			vTaskDelay(10);
+			// TODO update LCD
 			// Wait for user to select the new song channel rack to modify
 			// After selecting the new song, switch back to COMPOSER mode.
 		}
+
 		new_flag = true;
 		while (MODE == FREESTYLE) {
-
-			if (new_flag){
-				// start playing music for composer mode
-				TempoDisable();
-				new_flag = false;
-			}
 			// toggle LED4 (500ms) to check if this loop is running properly
 //			if ((tickTime - debugLED_counter_3) > 500) {
 //				// toggle LED5 (red)
@@ -120,12 +117,14 @@ void vModesTask(void * pvparameters)
 //				debugLED_counter_3 = tickTime;
 //			}
 
-			// void AudioFreestyle(uint16_t *DACBuffer)
+			if (new_flag){
+				TempoDisable();
+				new_flag = false;
+			}
 
 			// One Instrument played!
 			// Instrument 1 played
 			if(played_inst == 2){
-				// TODO SEND SAMPLE TO BUFFER TO BE PLAYED
 				AudioFreestyle(drumKit1[0]);
 			}
 			// Instrument 2 played
@@ -189,7 +188,7 @@ void vModesTask(void * pvparameters)
 			}
 			else if(played_inst == 0)
 			{
-				//Do nothing
+				// Do nothing
 			}
 			else{
 				error_();
@@ -203,8 +202,9 @@ void vModesTask(void * pvparameters)
 		}
 		// done with modes
 		vTaskDelay(20);
-	}
-}
+
+	} // end of task while loop
+} // and of Task function
 
 // Functions used by the composer mode
 void addSamples()
