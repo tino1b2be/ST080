@@ -9,8 +9,6 @@
 #ifndef TEMPO_H_
 #define TEMPO_H_
 
-#include "Utils080.h"
-
 void Tempo_Configuration();
 uint16_t Tempo_Convert();
 
