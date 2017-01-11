@@ -46,7 +46,7 @@ void vModesTask(void * pvparameters)
 //			}
 
 			if (new_flag){
-				// Enable audio playnack for the composer mode
+				// Enable audio playback for the composer mode
 				initVariables();
 				uint16_t tempo = Tempo_Convert();
 				AudioComposerPlayback(tempo);
@@ -207,13 +207,13 @@ void vModesTask(void * pvparameters)
 } // and of Task function
 
 // Functions used by the composer mode
-void addSamples()
+static void addSamples()
 {
 	uint16_t bufferSize = DEFAULT_COMPOSER_BUFFERSIZE;
 	uint16_t bufferPos = 0;
 	uint8_t pin = 0;
 
-	for (; pin < 16; pin++ , bufferPos+=bufferSize/16){
+	for (; pin < 16; ++pin , bufferPos+=bufferSize/16){
 
 		if (bufferPos >= bufferSize){
 			// this is not supposed to happen
@@ -227,14 +227,13 @@ void addSamples()
 			if (channelRack[currentBeat][instrument][pin]){
 				// the pin is high
 				// add the instrument sample to the buffer starting at bufferIndex
-				// wrap around if the end is reached
 
 				uint16_t sampleIndex = 0;
 				uint16_t bufferIndex = bufferPos;
-				bool mustWrap = SAMPLE_SIZE > (bufferSize-bufferIndex);
 				for (; sampleIndex < SAMPLE_SIZE; ++bufferIndex, ++sampleIndex) {
 
 					if (bufferIndex >= bufferSize){
+						// not supposed to happen
 						break;
 					}
 
@@ -247,40 +246,17 @@ void addSamples()
 					int16_t temp = temp_inst_sample + temp_buffer_sample;
 					uint16_t buffer_temp;
 					if (temp < -2048) buffer_temp = 0;
-					else if (temp > 2048) buffer_temp = 4095;
+					else if (temp >= 2048) buffer_temp = 4095;
 					else buffer_temp = temp + 2048;
 
 					ComposerBuffer[bufferIndex] = buffer_temp;
-				}
-				// if the sample spills over the buffer then wrap around and add starting from the start of the buffer
-				if (mustWrap) {
-					for (bufferIndex = 0; sampleIndex < SAMPLE_SIZE || bufferIndex< bufferSize; ++sampleIndex, ++bufferIndex){
-
-						if (bufferIndex < bufferSize){
-							break;
-						}
-
-						// first shift the zero point from 2048 to 0
-						// do the signal addition
-						// cap the signal if it is saturated.
-
-						int16_t temp_inst_sample = drumKit1[instrument][sampleIndex] - 2048;
-						int16_t temp_buffer_sample = ComposerBuffer[bufferIndex] - 2048;
-						int16_t temp = temp_inst_sample + temp_buffer_sample;
-						uint16_t buffer_temp;
-						if (temp < -2048) buffer_temp = 0;
-						else if (temp > 2048) buffer_temp = 4095;
-						else buffer_temp = temp + 2048;
-
-						ComposerBuffer[sampleIndex] = buffer_temp;
-					} // end of for-loop for the wrap-around
-				} // end of if statement for wrap-around
+				} // end of for loop to add the samples
 			} // End of if statement to check if the pin is high
 		} // end of for loop for the different instruments
-	} // End of for loop for the pins
+	} // End of for loop for the 16 pins
 } // End of addSamples function
 
-void flushBuffer(void)
+static void flushBuffer(void)
 {
 	uint16_t i = 0;
 	for (; i < DEFAULT_COMPOSER_BUFFERSIZE; ++i)
@@ -289,7 +265,7 @@ void flushBuffer(void)
 	}
 }
 
-void initVariables(void)
+static void initVariables(void)
 {
 	flushBuffer();
 	status = true;
@@ -298,7 +274,7 @@ void initVariables(void)
 /**
  * Function
  */
-void flushRack(void)
+static void flushRack(void)
 {
 	int i, j, k;
 	for (i = 0; i < 16; ++i) {
