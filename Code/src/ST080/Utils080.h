@@ -281,8 +281,8 @@ void startUpConfigs(){
 	Tempo_Configuration();
 
 	// config for LCD
-	//TM_HD44780_Init(LCD_COLUMNS, LCD_ROWS);
-	//TM_HD44780_Clear();
+	TM_HD44780_Init(LCD_COLUMNS, LCD_ROWS);
+	TM_HD44780_Clear();
 
 	// initialise debugging LEDs
 	/* Initialize LEDs */
@@ -424,7 +424,18 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
  *
  */
 void lcd_flush_write(uint8_t row_num, char* msg){
-	//TM_HD44780_Clear();
-	//TM_HD44780_Puts(0,row_num,msg);
+	TM_HD44780_Clear();
+	TM_HD44780_Puts(0,row_num,msg);
+}
+/**
+ *
+ * @brief Method to add a new message on the specified column row
+ * @param msg String to write to teh LCD screen
+ * @param col_num
+ * @param col_num
+ *
+ */
+void lcd_write(uint8_t col_num, uint8_t row_num, char* msg){
+	TM_HD44780_Puts(col_num,row_num,msg);
 }
 #endif /* UTILS080_H_ */
