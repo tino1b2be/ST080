@@ -251,4 +251,3 @@ void loadFromEeprom(){
 } // end of loadFromEeprom
 
 #endif /* EEPROM_H_ */
-

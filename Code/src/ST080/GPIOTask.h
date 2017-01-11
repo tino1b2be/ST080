@@ -19,11 +19,6 @@ void vGPIOTask(void * pvparameters) {
 		{
 			// read the channel rack pins
 			// 1=A0, 2=A1, 3=A2, 4=A3, 5=D4, 6=A5, 7=D6, 8=D7, 9=E8, 10=E9, 11=E10, 12=E11, 13=E12, 14=E13, 15=E14, 16=E15
-
-			// TODO add button to reset the current channel rack
-
-			vTaskDelay(10);
-
 			// Port A
 			
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)) {
@@ -74,7 +69,7 @@ void vGPIOTask(void * pvparameters) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7));
 				// toggle pin 8
 				channelRack[currentBeat][current_sample][7] = channelRack[currentBeat][current_sample][7] == true ? false : true;
-			status = true;
+				status = true;
 			}
 
 			// Port E
@@ -123,30 +118,37 @@ void vGPIOTask(void * pvparameters) {
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
 				bool reset = false;
+				// reset logic. Reset if you press and hold Pin_16 + Pin_15 + Pin_14
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
 					if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
-						while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14))
+						while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)){
 							if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
 								flushRack();
 								flushBuffer();
-								break;
 								reset = true;
+								break;
 							}
+						}
 					}
 				}
-				if (reset)
+				if (!reset)
 				{
-				// toggle pin 16
-				channelRack[currentBeat][current_sample][15] = channelRack[currentBeat][current_sample][15] == true ? false : true;
-				status = true;
+					// toggle pin 16
+					channelRack[currentBeat][current_sample][15] = channelRack[currentBeat][current_sample][15] == true ? false : true;
+					status = true;
 				}
-			}
-		}
+			} // end of checking pin 16
+
+			vTaskDelay(10);
+
+		} // end of composer while loop
+
 		while (MODE == FREESTYLE)
 		{
-			// TODO freestyle code
+			// no GPIO functionality for this mode
 			vTaskDelay(50);
 		}
+
 		while (MODE == PLAYBACK)
 		{
 			// Port A
