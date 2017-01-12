@@ -160,7 +160,6 @@ void Timer_configuration(uint16_t tempo){
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
-
 }
 
 /*
@@ -211,7 +210,5 @@ void TempoSetValue(uint16_t tempo){
 void TempoDisable(){
 	TIM_Cmd(TIM2,DISABLE);
 }
-
-
 
 #endif /* AUDIOSTUFF_H_ */

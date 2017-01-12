@@ -269,5 +269,4 @@ void clearEeprom(){
 	} // end of for loops
 } // end of loadFromEeprom
 
-
 #endif /* EEPROM_H_ */
