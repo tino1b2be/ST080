@@ -192,7 +192,12 @@ void TIM2_IRQHandler(void)
 	float gradient = (200.0-30.0)/(4096.0);
 	uint16_t _tempo = (uint16_t) (gradient*(float)temp+30);
 	TempoSetValue(_tempo);
-	tempo = _tempo;
+//	check if tempo has changed: then refresh LED
+//	added by Hermann
+	if (_tempo != tempo) {
+		UPDATE_TEMPO = true;
+		tempo = _tempo;
+	}
 }
 
 /*

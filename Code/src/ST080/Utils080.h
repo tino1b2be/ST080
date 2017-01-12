@@ -101,7 +101,9 @@ uint8_t played_inst = 0;			// variable used by the Freestyle mode to determine t
 uint16_t freestyle_samples [11][SAMPLE_SIZE]; // This will hold the samples of the different possible combinations
 bool channelRack[16][4][16]; 		// 16 channel racks with 4 instruments each with 16 beat channel
 uint8_t currentBeat = 0;			// Variable to indicate the current beat/instrumental being edited on the beat rack.
-bool resetLEDs = true;			// flag used to fresh the LEDs when switching modes. This flag will be checked by the UI_Task to check whether it should reset the LEDs or not
+bool resetLEDs = true;				// flag used to fresh the LEDs when switching modes. This flag will be checked by the UI_Task to check whether it should reset the LEDs or not
+bool UPDATE_LCD = true; 				// flag used to update LCD
+bool UPDATE_TEMPO = true;
 uint16_t ComposerBuffer[DEFAULT_COMPOSER_BUFFERSIZE];		// Buffer used by the composer mode to push to the audio output interface
 uint16_t tempo = DEFAULT_TEMPO;
 uint16_t drumKit1 [4][SAMPLE_SIZE] = {
@@ -325,6 +327,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		if (MODE == COMPOSER){
 			// Change the instrument on the channel rack to the first one
 			current_sample = INSTR_1;
+			UPDATE_LCD = true;
 		}
 		else if (MODE == FREESTYLE) {
 			PAD_STATE[0] = true;
@@ -342,6 +345,8 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		if (MODE == COMPOSER){
 			// change the instrument on the channel rack to the second one
 			current_sample = INSTR_2;
+			//update the instrument being edited on LCD
+			UPDATE_LCD = true;
 		}
 		else if (MODE == FREESTYLE) {
 			PAD_STATE[1] = true;
@@ -358,6 +363,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		if (MODE == COMPOSER){
 			// change the instrument on the channel rack to the third one
 			current_sample = INSTR_3;
+			UPDATE_LCD = true;
 		}
 		else if (MODE == FREESTYLE) {
 			PAD_STATE[2] = true;
@@ -374,6 +380,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		if (MODE == COMPOSER){
 			// change the instrument on the channel rack to the forth one
 			current_sample = INSTR_4;
+			UPDATE_LCD = true;
 		}
 		else if (MODE == FREESTYLE) {
 			PAD_STATE[3] = true;
@@ -390,6 +397,8 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		MODE = COMPOSER;
 		status = true;
 		resetLEDs = true;
+//		update the Mode on LCD
+		UPDATE_LCD = true;
 	}
 
 	/* Handle external line 5 interrupts */
@@ -397,11 +406,15 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 	else if (GPIO_Pin == GPIO_Pin_5) {
 		MODE = PLAYBACK;
 		resetLEDs = true;
+//		update the Mode on LCD
+		UPDATE_LCD = true;
 	}
 
 	/* Handle external line 6 interrupts */
 	// switch to FREESTYLE MODE
 	else if (GPIO_Pin == GPIO_Pin_6) {
+//		update the Mode on LCD
+		UPDATE_LCD = true;
 		MODE = FREESTYLE;
 		resetLEDs = true;
 	}
@@ -413,6 +426,8 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		MODE = SAVE;
 		status = true;
 		resetLEDs = true;
+//		update the Mode on LCD
+		UPDATE_LCD = true;
 		// Save the channelRack Array to the EEPROM
 	}
 

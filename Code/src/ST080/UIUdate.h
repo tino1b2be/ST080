@@ -156,6 +156,53 @@ bool LEDOnDelay(uint32_t milli) {
 	return true;
 }
 
+/**
+ * Refresh LED if there's a change in mode or
+ */
+void updateLCD() {
+	if(UPDATE_LCD) {
+		UPDATE_LCD = false;
+		switch(MODE) {
+		case COMPOSER:
+			lcd_flush_write(0, " Composer Mode");
+			//update the Instrument-Select Pad
+			switch(current_sample) {
+			case INSTR_1:
+				lcd_write(0, 1, "hat");
+				break;
+			case INSTR_2:
+				lcd_write(0, 1, "kick");
+				break;
+			case INSTR_3:
+				lcd_write(0, 1, "hihat");
+				break;
+			case INSTR_4:
+				lcd_write(0, 1, "clap");
+				break;
+			}
+			lcd_write(9, 1, "T: ");
+			break;
+		case PLAYBACK:
+			lcd_flush_write(0, " Playback Mode");
+			//LCD_funtion("Playing Song 1")
+			break;
+		case FREESTYLE:
+			lcd_flush_write(0, " Freestyle Mode");
+			lcd_write(4, 1, "Enjoy :)");
+			break;
+		}
+	}
+	else if ((MODE == COMPOSER)  && UPDATE_TEMPO) {
+		uint8_t n = log10(tempo) + 1;
+		char *numberArray = calloc(n, sizeof(char));
+		itoa(tempo, numberArray, 10);
+		lcd_write(12, 1, numberArray);
+//		free memory
+		free(numberArray);
+	}
+}
+
+
 void clearLEDs() {
 	if(resetLEDs){
 		resetLEDs = false;
@@ -190,33 +237,10 @@ void vUITask(void * pvparameters){
 
 	while (true){
 		clearLEDs();
+		updateLCD();
 		updateModeLEDs();
 		switch(MODE){
 		case COMPOSER:
-			//update the Instrument-Select Pad
-			lcd_flush_write(0, " Composer Mode");
-			switch(current_sample) {
-			case INSTR_1:
-				lcd_write(0, 1, "open hat");
-				lcd_write(10, 1, "T:");
-//				tempo = 30;
-				uint8_t n = log10(tempo) + 1;
-				char *numberArray = calloc(n, sizeof(char));
-				itoa(tempo,numberArray,10);
-				TM_HD44780_Puts(12, 1, numberArray);
-				free(numberArray);
-//				lcd_write(10, 1, "T:");
-				break;
-			case INSTR_2:
-				lcd_write(0, 1, "Editing kick");
-				break;
-			case INSTR_3:
-				lcd_write(0, 1, "Editing hihat");
-				break;
-			case INSTR_4:
-				lcd_write(0, 1, "Editing clap");
-				break;
-			}
 			updateInstrLEDs();
 			// go through channel rack and set LED status based on channel rack pins
 			// NB Have to manually check each pin on the channel rack and update the corresponding GPIO pin
@@ -224,19 +248,15 @@ void vUITask(void * pvparameters){
 				updateLED(pin, channelRack[currentBeat][current_sample][pin], 0);
 			break;
 		case PLAYBACK:
-			lcd_flush_write(0, " Playback Mode");
-			//LCD_funtion("Playing Song 1")
+//			implement playback LED update
 			break;
 		case FREESTYLE:
-			lcd_flush_write(0, " Freestyle Mode");
-			lcd_write(4, 1, "Enjoy :)");
-//			PAD_STATE[0] = true;
-//			reset the flag
-			STATE_CHANGED = false;
 			// TODO light up the corresponding LEDs for the freestyle pad depending on the status of the flags
 			// * use a global array of flags (four flags) which will be set by the IRQ and reset inside this function
 			// * LEDs must flash for a short period (200ms)
 			// * Can use a timer to count up to 200ms. NB TODO must carefully work out algorithm
+			//			reset the flag
+			STATE_CHANGED = false;
 			for(uint8_t instr = 0; instr < 4; ++instr) {
 				updateLED(instr, PAD_STATE[instr], 1);
 //				reset flag
@@ -252,10 +272,6 @@ void vUITask(void * pvparameters){
 				}
 
 			}
-			break;
-		case ERROR_MODE:
-			lcd_flush_write(0, "Error occurred");
-			lcd_write(0, 1, "Restarting...");
 			break;
 		}
 		vTaskDelay(50);
