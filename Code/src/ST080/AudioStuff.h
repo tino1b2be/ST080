@@ -170,19 +170,23 @@ void TIM2_IRQHandler(void)
 {
 	static uint8_t index = 0;
 	static uint16_t sample_size = DEFAULT_COMPOSER_BUFFERSIZE/16;
+	static bool boo;
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-    	// TODO Play sample at index, need a global variable array
+		boo = GPIO_ReadOutputDataBit(getGPIO(index,0).GPIO,getGPIO(index,0).pin);
+		updateLED(index,boo,0);
 		AudioPlay(&ComposerBuffer[index*sample_size],DMA_Mode_Normal,SAMPLE_SIZE);
+		updateLED(index,!boo,0);
 		// Update index
 		if(index>=15)index=0;
 		else index++;
 	}
 	uint16_t temp = Tempo_Convert();
 	float gradient = (200.0-30.0)/(4096.0);
-	uint16_t tempo = (uint16_t) (gradient*(float)temp+30);
-	TempoSetValue(tempo);
+	uint16_t _tempo = (uint16_t) (gradient*(float)temp+30);
+	TempoSetValue(_tempo);
+	tempo = _tempo;
 }
 
 /*

@@ -131,6 +131,8 @@ void startUpConfigs(void); 			// Function to run the start up configurations.
 void delay_ms(uint32_t milli);
 void error_(void);					// function to flash the on-board LEDs when an error occurs
 void lcd_flush_write(uint8_t row_num, char* msg);
+void updateLED(uint8_t pin, bool On, uint8_t type); // implemented in UIUdate
+LED_GPIO getGPIO(uint8_t pin, uint8_t type); // implemented in UIUdate
 
 // ==========================================================================================
 // ============================ Function Implementations =====================================
