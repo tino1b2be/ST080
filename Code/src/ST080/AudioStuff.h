@@ -174,10 +174,16 @@ void TIM2_IRQHandler(void)
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-		boo = GPIO_ReadOutputDataBit(getGPIO(index,0).GPIO,getGPIO(index,0).pin);
-		updateLED(index,boo,0);
-		AudioPlay(&ComposerBuffer[index*sample_size],DMA_Mode_Normal,SAMPLE_SIZE);
-		updateLED(index,!boo,0);
+		if(MODE==COMPOSER){
+			boo = GPIO_ReadOutputDataBit(getGPIO(index,0).GPIO,getGPIO(index,0).pin);
+			updateLED(index,boo,0);
+			//delay_ms(50);
+			AudioPlay(&ComposerBuffer[index*sample_size],DMA_Mode_Normal,SAMPLE_SIZE);
+			updateLED(index,!boo,0);
+		}
+		else{
+			AudioPlay(&ComposerBuffer[index*sample_size],DMA_Mode_Normal,SAMPLE_SIZE);
+		}
 		// Update index
 		if(index>=15)index=0;
 		else index++;
