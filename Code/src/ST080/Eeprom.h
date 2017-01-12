@@ -36,6 +36,7 @@
 
 void EEPROMWritePage32(uint16_t baseAddress, uint8_t *data);
 uint8_t EEPROM_Read(uint16_t address);
+void clearEeprom(void);
 
 void EEPROM_Configuration(){
 	/* RCC Configuration */
@@ -249,5 +250,24 @@ void loadFromEeprom(){
 		}
 	} // end of for loops
 } // end of loadFromEeprom
+
+/*
+ * @brief	Clear eeprom
+ */
+void clearEeprom(){
+	int i,j,k,l=0;
+	for (i=0; i<16;++i){
+		for (j=0;j<4;++j){
+			for (k=0;k<16;++k,++l){
+				EEPROM_Write(l,0);
+/*				uint8_t t = EEPROM_Read(l); // for testing
+				if(l==4*16){
+					uint8_t a = 0;
+				}*/
+			}
+		}
+	} // end of for loops
+} // end of loadFromEeprom
+
 
 #endif /* EEPROM_H_ */

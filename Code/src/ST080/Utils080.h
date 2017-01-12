@@ -10,6 +10,8 @@
 
 // other stuff
 #include <stdbool.h>
+#include <stdlib.h>
+#include <math.h>
 
 // Library 38 (interrupts library)
 #include "TM38/defines.h"
@@ -99,7 +101,7 @@ uint8_t played_inst = 0;			// variable used by the Freestyle mode to determine t
 uint16_t freestyle_samples [11][SAMPLE_SIZE]; // This will hold the samples of the different possible combinations
 bool channelRack[16][4][16]; 		// 16 channel racks with 4 instruments each with 16 beat channel
 uint8_t currentBeat = 0;			// Variable to indicate the current beat/instrumental being edited on the beat rack.
-bool resetLEDs = false;			// flag used to fresh the LEDs when switching modes. This flag will be checked by the UI_Task to check whether it should reset the LEDs or not
+bool resetLEDs = true;			// flag used to fresh the LEDs when switching modes. This flag will be checked by the UI_Task to check whether it should reset the LEDs or not
 uint16_t ComposerBuffer[DEFAULT_COMPOSER_BUFFERSIZE];		// Buffer used by the composer mode to push to the audio output interface
 uint16_t tempo = DEFAULT_TEMPO;
 uint16_t drumKit1 [4][SAMPLE_SIZE] = {
@@ -129,6 +131,8 @@ void startUpConfigs(void); 			// Function to run the start up configurations.
 void delay_ms(uint32_t milli);
 void error_(void);					// function to flash the on-board LEDs when an error occurs
 void lcd_flush_write(uint8_t row_num, char* msg);
+void updateLED(uint8_t pin, bool On, uint8_t type); // implemented in UIUdate
+LED_GPIO getGPIO(uint8_t pin, uint8_t type); // implemented in UIUdate
 
 // ==========================================================================================
 // ============================ Function Implementations =====================================
@@ -217,7 +221,7 @@ void startUpConfigs(){
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	// Pins C0-11
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11;
 	GPIO_Init(GPIOC, &GPIO_InitStructure);
 
 	// Pins E0-3
@@ -281,8 +285,8 @@ void startUpConfigs(){
 	Tempo_Configuration();
 
 	// config for LCD
-	//TM_HD44780_Init(LCD_COLUMNS, LCD_ROWS);
-	//TM_HD44780_Clear();
+	TM_HD44780_Init(LCD_COLUMNS, LCD_ROWS);
+	TM_HD44780_Clear();
 
 	// initialise debugging LEDs
 	/* Initialize LEDs */
@@ -321,7 +325,6 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		if (MODE == COMPOSER){
 			// Change the instrument on the channel rack to the first one
 			current_sample = INSTR_1;
-			resetLEDs = true;
 		}
 		else if (MODE == FREESTYLE) {
 			PAD_STATE[0] = true;
@@ -339,7 +342,6 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		if (MODE == COMPOSER){
 			// change the instrument on the channel rack to the second one
 			current_sample = INSTR_2;
-			resetLEDs = true;
 		}
 		else if (MODE == FREESTYLE) {
 			PAD_STATE[1] = true;
@@ -356,7 +358,6 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		if (MODE == COMPOSER){
 			// change the instrument on the channel rack to the third one
 			current_sample = INSTR_3;
-			resetLEDs = true;
 		}
 		else if (MODE == FREESTYLE) {
 			PAD_STATE[2] = true;
@@ -373,7 +374,6 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		if (MODE == COMPOSER){
 			// change the instrument on the channel rack to the forth one
 			current_sample = INSTR_4;
-			resetLEDs = true;
 		}
 		else if (MODE == FREESTYLE) {
 			PAD_STATE[3] = true;
@@ -428,7 +428,18 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
  *
  */
 void lcd_flush_write(uint8_t row_num, char* msg){
-	//TM_HD44780_Clear();
-	//TM_HD44780_Puts(0,row_num,msg);
+	TM_HD44780_Clear();
+	TM_HD44780_Puts(0,row_num,msg);
+}
+/**
+ *
+ * @brief Method to add a new message on the specified column row
+ * @param msg String to write to teh LCD screen
+ * @param col_num
+ * @param col_num
+ *
+ */
+void lcd_write(uint8_t col_num, uint8_t row_num, char* msg){
+	TM_HD44780_Puts(col_num,row_num,msg);
 }
 #endif /* UTILS080_H_ */

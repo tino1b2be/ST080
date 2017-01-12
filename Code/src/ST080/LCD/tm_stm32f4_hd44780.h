@@ -113,7 +113,6 @@ K		GND				Ground for back light
 #include "stm32f4xx.h"
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx_gpio.h"
-#include "../../TM38/tm_stm32f4_delay.h"
 #include "../../TM38/tm_stm32f4_gpio.h"
 
 /**
@@ -262,9 +261,10 @@ void TM_HD44780_CreateChar(uint8_t location, uint8_t* data);
 void TM_HD44780_PutCustom(uint8_t x, uint8_t y, uint8_t location);
 
 /**
- * @}
+ * @brief	Delay
  */
- 
+void LCD_Delay(uint32_t microseconds);
+
 /**
  * @}
  */
