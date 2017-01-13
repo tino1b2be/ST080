@@ -121,7 +121,7 @@ typedef struct {
 }LED_GPIO;
 
 // Debugging stuff
-uint64_t debugLED_counter_6 = 0, debugLED_counter_5 = 0, debugLED_counter_4 = 0, debugLED_counter_3 = 0;
+uint64_t debugLED_counter_6 = 0, debugLED_counter_5 = 0, debugLED_counter_4 = 0, debugLED_counter_3 = 0, lcd_timer = 0;
 
 // ==========================================================================================
 // ============================ Function Declarations =======================================
@@ -402,9 +402,11 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 	/* Handle external line 7 interrupts */
 	// Save pin
 	else if (GPIO_Pin == GPIO_Pin_7) {
-		MODE = SAVE;
-		status = true;
-		resetLEDs = true;
+		if (MODE == COMPOSER || MODE == PLAYBACK) {
+			MODE = SAVE;
+			status = true;
+			resetLEDs = true;
+		}
 		// Save the channelRack Array to the EEPROM
 	}
 

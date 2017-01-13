@@ -98,9 +98,10 @@ void vModesTask(void * pvparameters)
 
 			// Save button has been pressed.
 			if (status) { // status flag is used to make sure data is pushed to eeprom once
+				vTaskDelay(5);
+				TempoDisable();
 				saveToEeprom();
 				status = false;
-				TempoDisable();
 			}
 			vTaskDelay(10);
 			// TODO update LCD
