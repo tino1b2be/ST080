@@ -22,7 +22,7 @@
 							<option id="com.atollic.truestudio.toolchain_options.mcu.1057200513" name="Microcontroller" superClass="com.atollic.truestudio.toolchain_options.mcu" value="STM32F407VG" valueType="string"/>
 							<option id="com.atollic.truestudio.toolchain_options.vendor.336820532" name="Vendor name" superClass="com.atollic.truestudio.toolchain_options.vendor" value="STMicroelectronics" valueType="string"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.atollic.truestudio.exe.debug.toolchain.platform.143290274" isAbstract="false" name="Debug platform" superClass="com.atollic.truestudio.exe.debug.toolchain.platform"/>
-							<builder buildPath="${workspace_loc:/Test1/Debug}" customBuilderProperties="toolChainpathString=C:/Program Files (x86)/Atollic/TrueSTUDIO for ARM 6.0.0/ARMTools/bin|com.atollic.truestudio.common_options.target.mcu=STM32F407VG|toolChainpathType=1|com.atollic.truestudio.common_options.target.vendor=STMicroelectronics|" errorParsers="" id="com.atollic.truestudio.mbs.builder1.629273094" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="com.atollic.truestudio.mbs.builder1"/>
+							<builder buildPath="${workspace_loc:/Test1/Debug}" customBuilderProperties="toolChainpathString=C:/Program Files (x86)/Atollic/TrueSTUDIO for ARM 6.0.0/ARMTools/bin|toolChainpathType=1|com.atollic.truestudio.common_options.target.vendor=STMicroelectronics|com.atollic.truestudio.common_options.target.mcu=STM32F407VG|" errorParsers="" id="com.atollic.truestudio.mbs.builder1.629273094" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="com.atollic.truestudio.mbs.builder1"/>
 							<tool errorParsers="org.eclipse.cdt.core.GASErrorParser" id="com.atollic.truestudio.exe.debug.toolchain.as.170153732" name="Assembler" superClass="com.atollic.truestudio.exe.debug.toolchain.as">
 								<option id="com.atollic.truestudio.common_options.target.endianess.918651693" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.945156998" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F407VG" valueType="enumerated"/>
@@ -31,7 +31,7 @@
 								<option id="com.atollic.truestudio.as.symbols.defined.1473564356" name="Defined symbols" superClass="com.atollic.truestudio.as.symbols.defined"/>
 								<option id="com.atollic.truestudio.as.general.incpath.805092679" name="Include path" superClass="com.atollic.truestudio.as.general.incpath"/>
 								<option id="com.atollic.truestudio.common_options.target.fpucore.1272716459" name="FPU" superClass="com.atollic.truestudio.common_options.target.fpucore" value="com.atollic.truestudio.common_options.target.fpucore.fpv4-sp-d16" valueType="enumerated"/>
-								<option id="com.atollic.truestudio.common_options.target.interwork.2059486456" superClass="com.atollic.truestudio.common_options.target.interwork"/>
+								<option id="com.atollic.truestudio.common_options.target.interwork.2059486456" name="Mix ARM/Thumb" superClass="com.atollic.truestudio.common_options.target.interwork"/>
 								<inputType id="com.atollic.truestudio.as.input.859600300" name="Input" superClass="com.atollic.truestudio.as.input"/>
 							</tool>
 							<tool errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="com.atollic.truestudio.exe.debug.toolchain.gcc.697510364" name="C Compiler" superClass="com.atollic.truestudio.exe.debug.toolchain.gcc">
@@ -70,7 +70,7 @@
 									<listOptionValue builtIn="false" value="m"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.fpucore.1149720001" name="FPU" superClass="com.atollic.truestudio.common_options.target.fpucore" value="com.atollic.truestudio.common_options.target.fpucore.fpv4-sp-d16" valueType="enumerated"/>
-								<option id="com.atollic.truestudio.common_options.target.interwork.1557692489" superClass="com.atollic.truestudio.common_options.target.interwork"/>
+								<option id="com.atollic.truestudio.common_options.target.interwork.1557692489" name="Mix ARM/Thumb" superClass="com.atollic.truestudio.common_options.target.interwork"/>
 								<inputType id="com.atollic.truestudio.ld.input.355087028" name="Input" superClass="com.atollic.truestudio.ld.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -96,8 +96,8 @@
 								<option id="com.atollic.truestudio.gpp.optimization.prep_data.1695558668" name="Prepare dead data removal" superClass="com.atollic.truestudio.gpp.optimization.prep_data" value="true" valueType="boolean"/>
 								<option id="com.atollic.truestudio.gpp.optimization.fno_rtti.1097044613" name="Disable RTTI" superClass="com.atollic.truestudio.gpp.optimization.fno_rtti"/>
 								<option id="com.atollic.truestudio.gpp.optimization.fno_exceptions.1288192553" name="Disable exception handling" superClass="com.atollic.truestudio.gpp.optimization.fno_exceptions"/>
-								<option id="com.atollic.truestudio.common_options.target.fpucore.1330649938" superClass="com.atollic.truestudio.common_options.target.fpucore" value="com.atollic.truestudio.common_options.target.fpucore.fpv4-sp-d16" valueType="enumerated"/>
-								<option id="com.atollic.truestudio.common_options.target.interwork.1869149851" superClass="com.atollic.truestudio.common_options.target.interwork"/>
+								<option id="com.atollic.truestudio.common_options.target.fpucore.1330649938" name="FPU" superClass="com.atollic.truestudio.common_options.target.fpucore" value="com.atollic.truestudio.common_options.target.fpucore.fpv4-sp-d16" valueType="enumerated"/>
+								<option id="com.atollic.truestudio.common_options.target.interwork.1869149851" name="Mix ARM/Thumb" superClass="com.atollic.truestudio.common_options.target.interwork"/>
 							</tool>
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.ldcc.976123" name="C++ Linker" superClass="com.atollic.truestudio.exe.debug.toolchain.ldcc">
 								<option id="com.atollic.truestudio.common_options.target.endianess.1205448930" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
@@ -109,8 +109,8 @@
 								<option id="com.atollic.truestudio.ldcc.libraries.list.188682131" name="Libraries" superClass="com.atollic.truestudio.ldcc.libraries.list" valueType="libs">
 									<listOptionValue builtIn="false" value="m"/>
 								</option>
-								<option id="com.atollic.truestudio.common_options.target.fpucore.2071501308" superClass="com.atollic.truestudio.common_options.target.fpucore" value="com.atollic.truestudio.common_options.target.fpucore.fpv4-sp-d16" valueType="enumerated"/>
-								<option id="com.atollic.truestudio.common_options.target.interwork.715500248" superClass="com.atollic.truestudio.common_options.target.interwork"/>
+								<option id="com.atollic.truestudio.common_options.target.fpucore.2071501308" name="FPU" superClass="com.atollic.truestudio.common_options.target.fpucore" value="com.atollic.truestudio.common_options.target.fpucore.fpv4-sp-d16" valueType="enumerated"/>
+								<option id="com.atollic.truestudio.common_options.target.interwork.715500248" name="Mix ARM/Thumb" superClass="com.atollic.truestudio.common_options.target.interwork"/>
 							</tool>
 							<tool errorParsers="" id="com.atollic.truestudio.exe.debug.toolchain.secoutput.1682830118" name="Other" superClass="com.atollic.truestudio.exe.debug.toolchain.secoutput"/>
 							<tool id="com.atollic.truestudio.ar.base.1447691167" name="Archiver" superClass="com.atollic.truestudio.ar.base"/>
@@ -299,8 +299,13 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="Test1.com.atollic.truestudio.exe.679534987" name="Executable" projectType="com.atollic.truestudio.exe"/>
 	</storageModule>
-	<storageModule moduleId="refreshScope" versionNumber="1">
-		<resource resourceType="PROJECT" workspacePath="/Test1"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/Test1"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/Test1"/>
+		</configuration>
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>

@@ -193,10 +193,13 @@ void updateLCD() {
 		}
 	}
 	else if ((MODE == COMPOSER)  && UPDATE_TEMPO) {
+		UPDATE_TEMPO = false;
 		uint8_t n = log10(tempo) + 1;
 		char *numberArray = calloc(n, sizeof(char));
 		itoa(tempo, numberArray, 10);
 		lcd_write(12, 1, numberArray);
+		if(tempo < 100)
+			lcd_write(14, 1, " ");
 //		free memory
 		free(numberArray);
 	}
