@@ -160,8 +160,7 @@ bool LEDOnDelay(uint32_t milli) {
  * Refresh LED if there's a change in mode or
  */
 void updateLCD() {
-	if(UPDATE_LCD) {
-		UPDATE_LCD = false;
+	if(UPDATE_LCD ) {
 		switch(MODE) {
 		case COMPOSER:
 			//update the Instrument-Select Pad
@@ -192,7 +191,8 @@ void updateLCD() {
 			break;
 		}
 	}
-	else if ((MODE == COMPOSER)  && UPDATE_TEMPO) {
+	if( (MODE == COMPOSER)  && (UPDATE_LCD || UPDATE_TEMPO)) {
+		UPDATE_LCD = false;
 		UPDATE_TEMPO = false;
 		uint8_t n = log10(tempo) + 1;
 		char *numberArray = calloc(n, sizeof(char));
@@ -264,8 +264,7 @@ void vUITask(void * pvparameters){
 				updateLED(pin, channelRack[currentBeat][current_sample][pin], 0);
 			break;
 		case PLAYBACK:
-			int i;
-			for (i = 0; i < 16; ++i)
+			for (uint8_t i = 0; i < 16; ++i)
 				updateLED(i,i==currentBeat,0);
 			//LCD_funtion("Playing Song 1")
 			break;
