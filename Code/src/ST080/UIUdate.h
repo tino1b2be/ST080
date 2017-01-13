@@ -160,7 +160,21 @@ bool LEDOnDelay(uint32_t milli) {
  * Refresh LED if there's a change in mode or
  */
 void updateLCD() {
-	if(UPDATE_LCD ) {
+	if(UPDATE_LCD || UPDATE_TEMPO ) {
+		if( UPDATE_TEMPO && MODE == COMPOSER) {
+			UPDATE_TEMPO = false;
+			uint8_t n = log10(tempo) + 1;
+			char *numberArray = calloc(n, sizeof(char));
+			itoa(tempo, numberArray, 10);
+			lcd_write(12, 1, numberArray);
+			if(tempo < 100)
+				lcd_write(14, 1, " ");
+	//		free memory
+			free(numberArray);
+			if (!UPDATE_LCD)
+				return;
+		}
+		UPDATE_LCD = false;
 		switch(MODE) {
 		case COMPOSER:
 			//update the Instrument-Select Pad
@@ -183,25 +197,21 @@ void updateLCD() {
 			break;
 		case PLAYBACK:
 			lcd_flush_write(0, " Playback Mode");
-			//LCD_funtion("Playing Song 1")
+			lcd_write(0, 1, "Playing beat");
+			uint8_t n = log10(currentBeat + 1) + 1;
+			char *numberArray = calloc(n, sizeof(char));
+			itoa(currentBeat + 1, numberArray, 10);
+			lcd_write(13, 1, numberArray);
+			if(tempo < 10)
+				lcd_write(14, 1, " ");
+	//		free memory
+			free(numberArray);
 			break;
 		case FREESTYLE:
 			lcd_flush_write(0, " Freestyle Mode");
 			lcd_write(4, 1, "Enjoy :)");
 			break;
 		}
-	}
-	if( (MODE == COMPOSER)  && (UPDATE_LCD || UPDATE_TEMPO)) {
-		UPDATE_LCD = false;
-		UPDATE_TEMPO = false;
-		uint8_t n = log10(tempo) + 1;
-		char *numberArray = calloc(n, sizeof(char));
-		itoa(tempo, numberArray, 10);
-		lcd_write(12, 1, numberArray);
-		if(tempo < 100)
-			lcd_write(14, 1, " ");
-//		free memory
-		free(numberArray);
 	}
 }
 

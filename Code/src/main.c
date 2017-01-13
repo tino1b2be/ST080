@@ -17,8 +17,10 @@
 
 // ============================================================================
 int main(void) {
-	EEPROM_Configuration();
 	startUpConfigs();
+//	turn on reset LED
+	GPIO_SetBits(GPIOB, GPIO_PIN_5);
+	EEPROM_Configuration();
 	lcd_write(4,0,"WELCOME");
 	lcd_write(5,1,"ST080");
 	loadFromEeprom();		// Load the channel rack from the eeprom
@@ -26,7 +28,8 @@ int main(void) {
 	xTaskCreate(vModesTask, (signed char * ) "Modes Task", MODES_STACK_SIZE, NULL, MODES_TASK_PRIORITY, NULL);
 	xTaskCreate(vUITask, (signed char * ) "UI Task", UI_STACK_SIZE, NULL, UI_TASK_PRIORITY, NULL);
 	xTaskCreate(vGPIOTask, (signed char * ) "GPIO Inputs Task", GPIO_STACK_SIZE, NULL, GPIO_TASK_PRIORITY, NULL);
-
+//Turn off reset LED
+	GPIO_ResetBits(GPIOB, GPIO_PIN_5);
 	vTaskStartScheduler();
 	while(1);
 }
