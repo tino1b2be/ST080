@@ -160,7 +160,6 @@ void Timer_configuration(uint16_t tempo){
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
-
 }
 
 /*
@@ -189,7 +188,7 @@ void TIM2_IRQHandler(void)
 		else index++;
 	}
 	uint16_t temp = Tempo_Convert();
-	float gradient = (200.0-30.0)/(4096.0);
+	float gradient = (170.0-30.0)/(4096.0);
 	uint16_t _tempo = (uint16_t) (gradient*(float)temp+30);
 	TempoSetValue(_tempo);
 //	check if tempo has changed: then refresh LED
@@ -216,7 +215,5 @@ void TempoSetValue(uint16_t tempo){
 void TempoDisable(){
 	TIM_Cmd(TIM2,DISABLE);
 }
-
-
 
 #endif /* AUDIOSTUFF_H_ */

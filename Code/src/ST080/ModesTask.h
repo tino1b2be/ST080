@@ -15,7 +15,7 @@
 static void initVariables(void);			// Method to initialise and variables as needed.
 static void addSamples(void); 				// Method to add the samples based on the layout of the channel rack
 static void flushBuffer(void);				// function to flush the DAC buffer before adding the samples
-void initSamples(void);				// Function to create different samples for different combinations of instrument presses
+static void initSamples(void);				// Function to create different samples for different combinations of instrument presses
 uint16_t sampleAdd(					// sampleAdd (Freestylemode) method takes in 1, 2, 3 or 4 numbers and adds them, capping the numbers at 0 or 4095
 		int16_t value1,
 		int16_t value2,
@@ -98,9 +98,10 @@ void vModesTask(void * pvparameters)
 
 			// Save button has been pressed.
 			if (status) { // status flag is used to make sure data is pushed to eeprom once
+				vTaskDelay(5);
+				TempoDisable();
 				saveToEeprom();
 				status = false;
-				TempoDisable();
 			}
 			vTaskDelay(10);
 			// TODO update LCD

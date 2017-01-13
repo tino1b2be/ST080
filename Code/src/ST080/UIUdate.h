@@ -164,20 +164,20 @@ void updateLCD() {
 		UPDATE_LCD = false;
 		switch(MODE) {
 		case COMPOSER:
-			lcd_flush_write(0, " Composer Mode");
 			//update the Instrument-Select Pad
+			lcd_flush_write(0, " Composer Mode");
 			switch(current_sample) {
 			case INSTR_1:
-				lcd_write(0, 1, "hat");
+				lcd_write(0, 1, "Open Hat");
 				break;
 			case INSTR_2:
-				lcd_write(0, 1, "kick");
+				lcd_write(0, 1, "Kick");
 				break;
 			case INSTR_3:
-				lcd_write(0, 1, "hihat");
+				lcd_write(0, 1, "Cow Bell");
 				break;
 			case INSTR_4:
-				lcd_write(0, 1, "clap");
+				lcd_write(0, 1, "Clap");
 				break;
 			}
 			lcd_write(9, 1, "T: ");
@@ -233,11 +233,24 @@ void updateInstrLEDs() {
 		updateLED(instr, instr == current_sample, 1);
 }
 
+void lcd_write_tempo(){
+	lcd_write(10, 1, "T:");
+	uint8_t n = log10(tempo) + 1;
+	char *numberArray = calloc(n, sizeof(char));
+	itoa(tempo, numberArray, 10);
+	lcd_write(12, 1, numberArray);
+	free(numberArray);
+}
+
+bool timeToWrite(){
+	bool ret = (tickTime - lcd_timer) > 200;
+	lcd_timer = tickTime;
+	return ret;
+}
 /**
  * Task to update the LEDs depending on the current mode and status of the system
  */
 void vUITask(void * pvparameters){
-
 	while (true){
 		clearLEDs();
 		updateLCD();
@@ -251,7 +264,10 @@ void vUITask(void * pvparameters){
 				updateLED(pin, channelRack[currentBeat][current_sample][pin], 0);
 			break;
 		case PLAYBACK:
-//			implement playback LED update
+			int i;
+			for (i = 0; i < 16; ++i)
+				updateLED(i,i==currentBeat,0);
+			//LCD_funtion("Playing Song 1")
 			break;
 		case FREESTYLE:
 			// TODO light up the corresponding LEDs for the freestyle pad depending on the status of the flags
@@ -274,6 +290,23 @@ void vUITask(void * pvparameters){
 					}
 				}
 
+			}
+			break;
+		case ERROR_MODE:
+			lcd_flush_write(0, "Error occurred");
+			lcd_write(0, 1, "Restarting...");
+			break;
+
+		case SAVE:
+			while(status){
+				updateLED(currentBeat,true,0);
+				lcd_flush_write(0, " Save Mode");
+				lcd_write(0, 1,"Saving this song");
+				vTaskDelay(100);
+			}
+			if(timeToWrite()){
+				lcd_flush_write(0, " Save Mode");
+				lcd_write(0, 1,"Select next song");
 			}
 			break;
 		}

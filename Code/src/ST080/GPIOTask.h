@@ -37,6 +37,7 @@ void vGPIOTask(void * pvparameters) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2));
 				// toggle pin 3
 				channelRack[currentBeat][current_sample][2] = channelRack[currentBeat][current_sample][2] == true ? false : true;
+				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3));

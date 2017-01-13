@@ -6,8 +6,8 @@
 #include "ST080/Eeprom.h"
 
 // define task priorities
-#define MODES_TASK_PRIORITY 2
-#define UI_TASK_PRIORITY 1
+#define MODES_TASK_PRIORITY 1
+#define UI_TASK_PRIORITY 2
 #define GPIO_TASK_PRIORITY 3
 
 // define task stack sizes
@@ -20,6 +20,7 @@ int main(void) {
 	EEPROM_Configuration();
 	startUpConfigs();
 	lcd_write(4,0,"WELCOME");
+	lcd_write(5,1,"ST080");
 	loadFromEeprom();		// Load the channel rack from the eeprom
 
 	xTaskCreate(vModesTask, (signed char * ) "Modes Task", MODES_STACK_SIZE, NULL, MODES_TASK_PRIORITY, NULL);
