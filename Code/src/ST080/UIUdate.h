@@ -164,6 +164,26 @@ void updateLCD() {
 		switch(MODE) {
 		case COMPOSER:
 			UPDATE_TEMPO = false;
+//			update the mode and instrument only if needed
+			if (UPDATE_LCD) {
+				//update the Instrument-Select Pad
+				lcd_flush_write(0, " Composer Mode");
+				switch(current_sample) {
+				case INSTR_1:
+					lcd_write(0, 1, "Open Hat");
+					break;
+				case INSTR_2:
+					lcd_write(0, 1, "Kick");
+					break;
+				case INSTR_3:
+					lcd_write(0, 1, "Cow Bell");
+					break;
+				case INSTR_4:
+					lcd_write(0, 1, "Clap");
+					break;
+				}
+				lcd_write(9, 1, "T: ");
+			}
 			uint8_t n = log10(tempo) + 1;
 			char *numberArray = calloc(n, sizeof(char));
 			itoa(tempo, numberArray, 10);
@@ -172,26 +192,6 @@ void updateLCD() {
 				lcd_write(14, 1, " ");
 	//		free memory
 			free(numberArray);
-//			return if only tempo needs update
-			if (!UPDATE_LCD)
-				return;
-			//update the Instrument-Select Pad
-			lcd_flush_write(0, " Composer Mode");
-			switch(current_sample) {
-			case INSTR_1:
-				lcd_write(0, 1, "Open Hat");
-				break;
-			case INSTR_2:
-				lcd_write(0, 1, "Kick");
-				break;
-			case INSTR_3:
-				lcd_write(0, 1, "Cow Bell");
-				break;
-			case INSTR_4:
-				lcd_write(0, 1, "Clap");
-				break;
-			}
-			lcd_write(9, 1, "T: ");
 			break;
 		case PLAYBACK:
 			UPDATE_BEAT = false;
