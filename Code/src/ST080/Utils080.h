@@ -496,7 +496,7 @@ void error_(void)
 	STM_EVAL_LEDOn(LED5);
 	STM_EVAL_LEDOn(LED6);
 
-	lcd_flush_write(0, "ERROR!");
+	lcd_flush_write(0, "ERROR! Reset device");
 
 	GPIO_SetBits(GPIOB, 6);
 	GPIO_SetBits(GPIOB, 7);
