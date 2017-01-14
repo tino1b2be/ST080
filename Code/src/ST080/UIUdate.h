@@ -160,8 +160,9 @@ bool LEDOnDelay(uint32_t milli) {
  * Refresh LED if there's a change in mode or
  */
 void updateLCD() {
-	if(UPDATE_LCD || UPDATE_TEMPO ) {
-		if( UPDATE_TEMPO && MODE == COMPOSER) {
+	if(UPDATE_LCD || UPDATE_TEMPO || UPDATE_BEAT) {
+		switch(MODE) {
+		case COMPOSER:
 			UPDATE_TEMPO = false;
 			uint8_t n = log10(tempo) + 1;
 			char *numberArray = calloc(n, sizeof(char));
@@ -171,12 +172,9 @@ void updateLCD() {
 				lcd_write(14, 1, " ");
 	//		free memory
 			free(numberArray);
+//			return if only tempo needs update
 			if (!UPDATE_LCD)
 				return;
-		}
-		UPDATE_LCD = false;
-		switch(MODE) {
-		case COMPOSER:
 			//update the Instrument-Select Pad
 			lcd_flush_write(0, " Composer Mode");
 			switch(current_sample) {
@@ -196,22 +194,24 @@ void updateLCD() {
 			lcd_write(9, 1, "T: ");
 			break;
 		case PLAYBACK:
+			UPDATE_BEAT = false;
 			lcd_flush_write(0, " Playback Mode");
 			lcd_write(0, 1, "Playing beat");
-			uint8_t n = log10(currentBeat + 1) + 1;
-			char *numberArray = calloc(n, sizeof(char));
-			itoa(currentBeat + 1, numberArray, 10);
-			lcd_write(13, 1, numberArray);
+			uint8_t n_ = log10(currentBeat + 1) + 1;
+			char *numberArray_ = calloc(n_, sizeof(char));
+			itoa(currentBeat + 1, numberArray_, 10);
+			lcd_write(13, 1, numberArray_);
 			if(tempo < 10)
 				lcd_write(14, 1, " ");
 	//		free memory
-			free(numberArray);
+			free(numberArray_);
 			break;
 		case FREESTYLE:
 			lcd_flush_write(0, " Freestyle Mode");
 			lcd_write(4, 1, "Enjoy :)");
 			break;
 		}
+		UPDATE_LCD = false;
 	}
 }
 
@@ -301,10 +301,10 @@ void vUITask(void * pvparameters){
 
 			}
 			break;
-		case ERROR_MODE:
-			lcd_flush_write(0, "Error occurred");
-			lcd_write(0, 1, "Restarting...");
-			break;
+//		case ERROR_MODE:
+//			lcd_flush_write(0, "Error occurred");
+//			lcd_write(0, 1, "Restarting...");
+//			break;
 
 		case SAVE:
 			while(status){
