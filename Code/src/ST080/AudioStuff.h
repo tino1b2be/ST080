@@ -10,10 +10,7 @@
 #ifndef AUDIOSTUFF_H_
 #define AUDIOSTUFF_H_
 
-
 #include "Utils080.h"
-#include "Tempo.h"
-
 
 #define AUDIO_FREQUENCY 11000
 #define DMA_FREQUENCY  (86000000/(2*AUDIO_FREQUENCY))

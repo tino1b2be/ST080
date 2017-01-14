@@ -14,8 +14,6 @@
 #ifndef EEPROM_H_
 #define EEPROM_H_
 
-#include "Utils080.h"
-
 // EEPROM instructions
 #define WREN 0b00000110 // enable writing
 #define WRDI 0b00000100 // disable writing
@@ -219,38 +217,6 @@ void EEPROMWritePage32(uint16_t baseAddress, uint8_t *data){
 	GPIO_SetBits(GPIOB, GPIO_Pin_12);
 	delay(5000);
 }
-
-/*
- * 	@brief	Saves the array "channelRack[][][]" to the eeprom, the size of this array is CHANNEL_RACK_SIZE
- */
-void saveToEeprom(){
-	int i,j,k,l=0;
-	uint8_t temp = 0;
-	for (i = 0; i < 16; ++i) {
-		for (j = 0; j < 4; ++j) {
-			for (k = 0; k < 16; ++k, ++l) {
-				temp = (uint8_t) channelRack[i][j][k];
-				EEPROM_Write(l, temp);
-			}
-		}
-	} // end of for loops
-}// end of saveToEeprom
-
-/*
- * @brief	Initializes the "channelRack[][][]" using data read from the eeprom
- */
-void loadFromEeprom(){
-	int i, j, k, l = 0;
-	bool temp = false;
-	for (i = 0; i < 16; ++i) {
-		for (j = 0; j < 4; ++j) {
-			for (k = 0; k < 16; ++k, ++l) {
-				temp = (bool) EEPROM_Read(l);
-				channelRack[i][j][k] = temp;
-			}
-		}
-	} // end of for loops
-} // end of loadFromEeprom
 
 /*
  * @brief	Clear eeprom
