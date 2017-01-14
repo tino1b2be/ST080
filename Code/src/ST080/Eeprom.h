@@ -37,6 +37,7 @@
 void EEPROMWritePage32(uint16_t baseAddress, uint8_t *data);
 uint8_t EEPROM_Read(uint16_t address);
 void clearEeprom(void);
+bool isChannelEmpty(uint8_t index);
 
 void EEPROM_Configuration(){
 	/* RCC Configuration */
@@ -260,13 +261,27 @@ void clearEeprom(){
 		for (j=0;j<4;++j){
 			for (k=0;k<16;++k,++l){
 				EEPROM_Write(l,0);
-/*				uint8_t t = EEPROM_Read(l); // for testing
-				if(l==4*16){
-					uint8_t a = 0;
-				}*/
 			}
 		}
 	} // end of for loops
 } // end of loadFromEeprom
+
+/**
+ * @brief	Check if a channel is empty
+ */
+bool isChannelEmpty(uint8_t index){
+	int j,k,l=0;
+	bool empty = true;
+	for (j=0;j<4;++j){
+		for (k=0;k<16;++k,++l){
+			if(EEPROM_Read(4*16*index+l)!=0){
+				empty = false;
+				return empty;
+			}
+		}
+	}
+	return empty;
+}
+
 
 #endif /* EEPROM_H_ */
