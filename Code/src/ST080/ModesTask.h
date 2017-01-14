@@ -9,7 +9,6 @@
 #define ST080_MODESTASK_H_
 
 #include "Utils080.h"
-#include "Eeprom.h"
 #include "AudioStuff.h"
 
 static void initVariables(void);			// Method to initialise and variables as needed.
