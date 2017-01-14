@@ -144,12 +144,6 @@ void vGPIOTask(void * pvparameters) {
 
 		} // end of composer while loop
 
-		while (MODE == FREESTYLE)
-		{
-			// no GPIO functionality for this mode
-			vTaskDelay(50);
-		}
-
 		while (MODE == PLAYBACK)
 		{
 			// Port A
