@@ -204,10 +204,10 @@ void updateLCD() {
 			if (isChannelEmpty(currentBeat)) {
 				lcd_write(0, 1, "Beat ");
 				lcd_write(5, 1, numberArray_);
-				if(currentBeat < 10)
+				if(currentBeat < 9)
 					lcd_write(6, 1, " is empty");
 				else
-					lcd_write(8, 1, " is empty");
+					lcd_write(7, 1, " is empty");
 			}
 			else {
 				lcd_write(0, 1, "Playing beat");
@@ -319,6 +319,7 @@ void vUITask(void * pvparameters){
 //			break;
 
 		case SAVE:
+			GPIO_SetBits(GPIOB, GPIO_PIN_4);
 			while(status){
 				updateLED(currentBeat,true,0);
 				lcd_flush_write(0, " Save Mode");

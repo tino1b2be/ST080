@@ -173,13 +173,6 @@ void startUpConfigs(){
 	lcd_write(4, 0, "WELCOME");
 	lcd_write(5, 1, "ST080");
 
-	// Configure Eeprom
-	EEPROM_Configuration();
-	loadFromEeprom();		// Load the channel rack from the eeprom
-
-	// config for Tempo
-	Tempo_Configuration();
-
 	// +++++++++++++++++ configure output pins ++++++++++++++++++++++++
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
@@ -213,6 +206,9 @@ void startUpConfigs(){
 	// Pins E0-3
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+	// turn on reset LED
+	GPIO_SetBits(GPIOB, GPIO_PIN_5);
 
 	// +++++++++++++++++ configure input pins ++++++++++++++++++++++++
 
@@ -267,6 +263,14 @@ void startUpConfigs(){
 		error_();
 	}
 
+	// Configure Eeprom
+	EEPROM_Configuration();
+	loadFromEeprom();		// Load the channel rack from the eeprom
+
+	// config for Tempo
+	Tempo_Configuration();
+
+	// ask user to select song to edit
 	select_beat();
 
 	//Turn off reset LED
