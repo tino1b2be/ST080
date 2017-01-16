@@ -113,6 +113,7 @@ bool channelRack[16][4][16]; 		// 16 channel racks with 4 instruments each with 
 uint8_t currentBeat = 0;			// Variable to indicate the current beat/instrumental being edited on the beat rack.
 bool resetLEDs = true;				// flag used to fresh the LEDs when switching modes. This flag will be checked by the UI_Task to check whether it should reset the LEDs or not
 bool UPDATE_LCD = true; 				// flag used to update LCD
+bool UPDATE_BEAT = true;			//flag used to update beat on LCD in playback mode
 bool UPDATE_TEMPO = true;
 uint16_t ComposerBuffer[DEFAULT_COMPOSER_BUFFERSIZE];		// Buffer used by the composer mode to push to the audio output interface
 uint16_t tempo = DEFAULT_TEMPO;
