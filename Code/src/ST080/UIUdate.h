@@ -17,6 +17,7 @@ bool LEDOnDelay(uint32_t milli);
 void clearLEDs();
 void updateModeLEDs();
 void updateInstrLEDs();
+
 /**
  * return the correct GPIO and GPIO_pin based on the given channel rack's pin
  * added by Hermann
@@ -156,6 +157,77 @@ bool LEDOnDelay(uint32_t milli) {
 	return true;
 }
 
+/**
+ * Refresh LED if there's a change in mode or
+ */
+void updateLCD() {
+	if(UPDATE_LCD || UPDATE_TEMPO || UPDATE_BEAT) {
+		UPDATE_TEMPO = false;
+		switch(MODE) {
+		case COMPOSER:
+			UPDATE_TEMPO = false;
+//			update the mode and instrument only if needed
+			if (UPDATE_LCD) {
+				//update the Instrument-Select Pad
+				lcd_flush_write(0, " Composer Mode");
+				switch(current_sample) {
+				case INSTR_1:
+					lcd_write(0, 1, "Open Hat");
+					break;
+				case INSTR_2:
+					lcd_write(0, 1, "Kick");
+					break;
+				case INSTR_3:
+					lcd_write(0, 1, "Cow Bell");
+					break;
+				case INSTR_4:
+					lcd_write(0, 1, "Clap");
+					break;
+				}
+				lcd_write(9, 1, "T: ");
+			}
+			uint8_t n = log10(tempo) + 1;
+			char *numberArray = calloc(n, sizeof(char));
+			itoa(tempo, numberArray, 10);
+			lcd_write(12, 1, numberArray);
+			if(tempo < 100)
+				lcd_write(14, 1, " ");
+	//		free memory
+			free(numberArray);
+			break;
+		case PLAYBACK:
+			UPDATE_BEAT = false;
+			lcd_flush_write(0, " Playback Mode");
+			uint8_t n_ = log10(currentBeat + 1) + 1;
+			char *numberArray_ = calloc(n_, sizeof(char));
+			itoa(currentBeat + 1, numberArray_, 10);
+			if (isChannelEmpty(currentBeat)) {
+				lcd_write(0, 1, "Beat ");
+				lcd_write(5, 1, numberArray_);
+				if(currentBeat < 9)
+					lcd_write(6, 1, " is empty");
+				else
+					lcd_write(7, 1, " is empty");
+			}
+			else {
+				lcd_write(0, 1, "Playing beat");
+				lcd_write(13, 1, numberArray_);
+				if(currentBeat < 10)
+					lcd_write(14, 1, " ");
+			}
+	//		free memory
+			free(numberArray_);
+			break;
+		case FREESTYLE:
+			lcd_flush_write(0, " Freestyle Mode");
+			lcd_write(4, 1, "Enjoy :)");
+			break;
+		}
+		UPDATE_LCD = false;
+	}
+}
+
+
 void clearLEDs() {
 	if(resetLEDs){
 		resetLEDs = false;
@@ -203,26 +275,10 @@ bool timeToWrite(){
 void vUITask(void * pvparameters){
 	while (true){
 		clearLEDs();
+		updateLCD();
 		updateModeLEDs();
 		switch(MODE){
 		case COMPOSER:
-			//update the Instrument-Select Pad
-			lcd_flush_write(0, " Composer Mode");
-			switch(current_sample) {
-			case INSTR_1:
-				lcd_write(0, 1, "Open Hat");
-				break;
-			case INSTR_2:
-				lcd_write(0, 1, "Kick");
-				break;
-			case INSTR_3:
-				lcd_write(0, 1, "Cow Bell");
-				break;
-			case INSTR_4:
-				lcd_write(0, 1, "Clap");
-				break;
-			}
-			lcd_write_tempo();
 			updateInstrLEDs();
 			// go through channel rack and set LED status based on channel rack pins
 			// NB Have to manually check each pin on the channel rack and update the corresponding GPIO pin
@@ -230,24 +286,17 @@ void vUITask(void * pvparameters){
 				updateLED(pin, channelRack[currentBeat][current_sample][pin], 0);
 			break;
 		case PLAYBACK:
-			lcd_flush_write(0, " Playback Mode");
-			int i;
-			for (i = 0; i < 16; ++i)
+			for (uint8_t i = 0; i < 16; ++i)
 				updateLED(i,i==currentBeat,0);
 			//LCD_funtion("Playing Song 1")
 			break;
 		case FREESTYLE:
-			if (timeToWrite()){
-				lcd_flush_write(0, " Freestyle Mode");
-				lcd_write(4, 1, "Enjoy :)");
-			}
-//			PAD_STATE[0] = true;
-//			reset the flag
-			STATE_CHANGED = false;
 			// TODO light up the corresponding LEDs for the freestyle pad depending on the status of the flags
 			// * use a global array of flags (four flags) which will be set by the IRQ and reset inside this function
 			// * LEDs must flash for a short period (200ms)
 			// * Can use a timer to count up to 200ms. NB TODO must carefully work out algorithm
+			//			reset the flag
+			STATE_CHANGED = false;
 			for(uint8_t instr = 0; instr < 4; ++instr) {
 				updateLED(instr, PAD_STATE[instr], 1);
 //				reset flag
@@ -264,12 +313,13 @@ void vUITask(void * pvparameters){
 
 			}
 			break;
-		case ERROR_MODE:
-			lcd_flush_write(0, "Error occurred");
-			lcd_write(0, 1, "Restarting...");
-			break;
+//		case ERROR_MODE:
+//			lcd_flush_write(0, "Error occurred");
+//			lcd_write(0, 1, "Restarting...");
+//			break;
 
 		case SAVE:
+			GPIO_SetBits(GPIOB, GPIO_PIN_4);
 			while(status){
 				updateLED(currentBeat,true,0);
 				lcd_flush_write(0, " Save Mode");
@@ -280,6 +330,7 @@ void vUITask(void * pvparameters){
 				lcd_flush_write(0, " Save Mode");
 				lcd_write(0, 1,"Select next song");
 			}
+			UPDATE_LCD = true;
 			break;
 		}
 		vTaskDelay(50);

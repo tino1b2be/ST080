@@ -9,7 +9,6 @@
 #define ST080_MODESTASK_H_
 
 #include "Utils080.h"
-#include "Eeprom.h"
 #include "AudioStuff.h"
 
 static void initVariables(void);			// Method to initialise and variables as needed.
@@ -190,9 +189,6 @@ void vModesTask(void * pvparameters)
 			else if(played_inst == 0)
 			{
 				// Do nothing
-			}
-			else{
-				error_();
 			}
 			played_inst = 0;
 			vTaskDelay(10);
