@@ -149,6 +149,7 @@ void updateLED(uint8_t pin, bool On, uint8_t type); // implemented in UIUdate
 LED_GPIO getGPIO(uint8_t pin, uint8_t type); // implemented in UIUdate
 void loadFromEeprom(void);
 void saveToEeprom(void);
+bool isChannelEmpty(uint8_t index);
 void lcd_write(uint8_t col_num, uint8_t row_num, char* msg);
 void select_beat(void);
 
@@ -474,6 +475,24 @@ void loadFromEeprom(){
 		}
 	} // end of for loops
 } // end of loadFromEeprom
+
+/**
+ * @brief	Check if a channel is empty
+ */
+bool isChannelEmpty(uint8_t index){
+	int j,k=0;
+	bool empty = true;
+	for (j=0;j<4;++j){
+		for (k=0;k<16;++k){
+			if(channelRack[4*16*index][j][k]!=0){
+				empty = false;
+				return empty;
+			}
+		}
+	}
+	return empty;
+}
+
 
 /**
   * @brief  Delay in ms

@@ -11,6 +11,7 @@
 #include "Utils080.h"
 
 void vGPIOTask(void * pvparameters);
+void updateVars();
 
 void vGPIOTask(void * pvparameters) {
 
