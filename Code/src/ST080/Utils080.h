@@ -89,6 +89,7 @@ void vApplicationMallocFailedHook(void) {
 #define FREESTYLE 3
 #define SAVE 4
 #define ERROR_MODE 5
+#define ENTER 6
 
 // Instrument Macros
 #define INSTR_1 0
@@ -113,6 +114,7 @@ bool channelRack[16][4][16]; 		// 16 channel racks with 4 instruments each with 
 uint8_t currentBeat = 0;			// Variable to indicate the current beat/instrumental being edited on the beat rack.
 bool resetLEDs = true;				// flag used to fresh the LEDs when switching modes. This flag will be checked by the UI_Task to check whether it should reset the LEDs or not
 bool UPDATE_LCD = true; 				// flag used to update LCD
+bool UPDATE_BEAT = true;			//flag used to update beat on LCD in playback mode
 bool UPDATE_TEMPO = true;
 uint16_t ComposerBuffer[DEFAULT_COMPOSER_BUFFERSIZE];		// Buffer used by the composer mode to push to the audio output interface
 uint16_t tempo = DEFAULT_TEMPO;
@@ -148,6 +150,7 @@ LED_GPIO getGPIO(uint8_t pin, uint8_t type); // implemented in UIUdate
 void loadFromEeprom(void);
 void saveToEeprom(void);
 void lcd_write(uint8_t col_num, uint8_t row_num, char* msg);
+void select_beat(void);
 
 // ==========================================================================================
 // ============================ Function Implementations =====================================
@@ -169,13 +172,6 @@ void startUpConfigs(){
 	GPIO_SetBits(GPIOB, GPIO_PIN_5);
 	lcd_write(4, 0, "WELCOME");
 	lcd_write(5, 1, "ST080");
-
-	// Configure Eeprom
-	EEPROM_Configuration();
-	loadFromEeprom();		// Load the channel rack from the eeprom
-
-	// config for Tempo
-	Tempo_Configuration();
 
 	// +++++++++++++++++ configure output pins ++++++++++++++++++++++++
 
@@ -210,6 +206,9 @@ void startUpConfigs(){
 	// Pins E0-3
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+	// turn on reset LED
+	GPIO_SetBits(GPIOB, GPIO_PIN_5);
 
 	// +++++++++++++++++ configure input pins ++++++++++++++++++++++++
 
@@ -263,6 +262,16 @@ void startUpConfigs(){
 		// failed initialising interrupts.
 		error_();
 	}
+
+	// Configure Eeprom
+	EEPROM_Configuration();
+	loadFromEeprom();		// Load the channel rack from the eeprom
+
+	// config for Tempo
+	Tempo_Configuration();
+
+	// ask user to select song to edit
+	select_beat();
 
 	//Turn off reset LED
 	GPIO_ResetBits(GPIOB, GPIO_PIN_5);
@@ -408,6 +417,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 	previous = current; // for debouncing
 }
 
+
 // Remap the LCD functions
 /**
  * Method to flush the LCD screen and write a new message on the specified row
@@ -474,6 +484,12 @@ void delay_ms(uint32_t milli)
 {
 	uint32_t delay = milli * 17612;              // approximate loops per ms at 168 MHz, Debug config
 	for(; delay != 0; delay--);
+}
+
+void select_beat(){
+	lcd_flush_write(1, "Select a song!");
+	lcd_write(5, 0, "ST080");
+	MODE=ENTER;
 }
 
 /**

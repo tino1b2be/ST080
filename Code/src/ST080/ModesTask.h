@@ -190,9 +190,6 @@ void vModesTask(void * pvparameters)
 			{
 				// Do nothing
 			}
-			else{
-				error_();
-			}
 			played_inst = 0;
 			vTaskDelay(10);
 		}

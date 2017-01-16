@@ -159,30 +159,40 @@ void vGPIOTask(void * pvparameters) {
 				// change to song number 1
 				currentBeat = 0;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1));
 				currentBeat = 1;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2));
 				currentBeat = 2;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3));
 				currentBeat = 3;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5));
 				currentBeat = 5;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			// Port D
@@ -191,18 +201,24 @@ void vGPIOTask(void * pvparameters) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4));
 				currentBeat = 4;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6)) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6));
 				currentBeat = 6;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7)) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7));
 				currentBeat = 7;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 
@@ -212,53 +228,69 @@ void vGPIOTask(void * pvparameters) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_8));
 				currentBeat = 8;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_9)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_9));
 				currentBeat = 9;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_10)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_10));
 				currentBeat = 10;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_11)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_11));
 				currentBeat = 11;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_12)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_12));
 				currentBeat = 12;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13));
 				currentBeat = 13;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14));
 				currentBeat = 14;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15));
 				currentBeat = 15;
 				status = true;
+//				flag to update beat number on the LCD
+				UPDATE_BEAT = true;
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			vTaskDelay(10);
 		}
-		while (MODE == SAVE)
+		while (MODE == SAVE || MODE == ENTER)
 		{
 			// read the GPIO pins to determine which song to edit on the channel rack
 			// add a delay
@@ -270,35 +302,30 @@ void vGPIOTask(void * pvparameters) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0));
 				// change to song number 1
 				currentBeat = 0;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1));
 				// change to song number 2
 				currentBeat = 1;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2));
 				// change to song number 3
 				currentBeat = 2;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3));
 				// change to song number 4
 				currentBeat = 3;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5));
 				currentBeat = 5;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 
 			// Port D
@@ -306,20 +333,17 @@ void vGPIOTask(void * pvparameters) {
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4)) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4));
 				currentBeat = 4;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6)) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6));
 				currentBeat = 6;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7)) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7));
 				currentBeat = 7;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 
 			// Port E
@@ -327,55 +351,53 @@ void vGPIOTask(void * pvparameters) {
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_8)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_8));
 				currentBeat = 8;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_9)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_9));
 				currentBeat = 9;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_10)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_10));
 				currentBeat = 10;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_11)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_11));
 				currentBeat = 11;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_12)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_12));
 				currentBeat = 12;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13));
 				currentBeat = 13;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14));
 				currentBeat = 14;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15));
 				currentBeat = 15;
-				vTaskDelay(20);
-				MODE = COMPOSER;
+				updateVars();
 			}
 			vTaskDelay(5);
 		}
 		vTaskDelay(50);
 	}
+}
+
+void updateVars(){
+	MODE = COMPOSER;
+	UPDATE_LCD = true;
+	GPIO_ResetBits(GPIOB, GPIO_PIN_4);
 }
 
 #endif /* GPIOTASK_H_ */
