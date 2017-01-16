@@ -1,4 +1,29 @@
 /*
+ * The MIT License (MIT)
+
+Copyright (c) 2015 Tinotenda Chemvura, John Odetokun, Othniel Konan, Herman Kouassi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+ */
+
+/*
  * UIUdate.h
  *
  *  Created on: Sep 27, 2016
@@ -291,10 +316,9 @@ void vUITask(void * pvparameters){
 			//LCD_funtion("Playing Song 1")
 			break;
 		case FREESTYLE:
-			// TODO light up the corresponding LEDs for the freestyle pad depending on the status of the flags
 			// * use a global array of flags (four flags) which will be set by the IRQ and reset inside this function
 			// * LEDs must flash for a short period (200ms)
-			// * Can use a timer to count up to 200ms. NB TODO must carefully work out algorithm
+			// * Can use a timer to count up to 200ms.
 			//			reset the flag
 			STATE_CHANGED = false;
 			for(uint8_t instr = 0; instr < 4; ++instr) {
@@ -313,10 +337,6 @@ void vUITask(void * pvparameters){
 
 			}
 			break;
-//		case ERROR_MODE:
-//			lcd_flush_write(0, "Error occurred");
-//			lcd_write(0, 1, "Restarting...");
-//			break;
 
 		case SAVE:
 			GPIO_SetBits(GPIOB, GPIO_PIN_4);
