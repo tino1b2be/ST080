@@ -329,7 +329,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 
 	// +++ debouncing logic (50 milliseconds) +++
 	current = tickTime;
-	if ((previous - current) < 50) {
+	if ((current - previous) < 50) {
 		previous = current;
 		return;
 	}
