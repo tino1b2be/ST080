@@ -195,14 +195,25 @@ void updateLCD() {
 			break;
 		case PLAYBACK:
 			UPDATE_BEAT = false;
-			lcd_flush_write(0, " Playback Mode");
-			lcd_write(0, 1, "Playing beat");
+			if (UPDATE_LCD)
+				lcd_flush_write(0, " Playback Mode");
 			uint8_t n_ = log10(currentBeat + 1) + 1;
 			char *numberArray_ = calloc(n_, sizeof(char));
 			itoa(currentBeat + 1, numberArray_, 10);
-			lcd_write(13, 1, numberArray_);
-			if(tempo < 10)
-				lcd_write(14, 1, " ");
+			if (isChannelEmpty(currentBeat)) {
+				lcd_write(0, 1, "Beat ");
+				lcd_write(5, 1, numberArray_);
+				if(currentBeat < 10)
+					lcd_write(6, 1, " is empty");
+				else
+					lcd_write(7, 1, " is empty");
+			}
+			else {
+				lcd_write(0, 1, "Playing beat");
+				lcd_write(13, 1, numberArray_);
+				if(currentBeat < 10)
+					lcd_write(14, 1, " ");
+			}
 	//		free memory
 			free(numberArray_);
 			break;
