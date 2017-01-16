@@ -10,10 +10,7 @@
 #ifndef AUDIOSTUFF_H_
 #define AUDIOSTUFF_H_
 
-
 #include "Utils080.h"
-#include "Tempo.h"
-
 
 #define AUDIO_FREQUENCY 11000
 #define DMA_FREQUENCY  (86000000/(2*AUDIO_FREQUENCY))
@@ -188,10 +185,15 @@ void TIM2_IRQHandler(void)
 		else index++;
 	}
 	uint16_t temp = Tempo_Convert();
-	float gradient = (170.0-30.0)/(4096.0);
-	uint16_t _tempo = (uint16_t) (gradient*(float)temp+30);
+	float gradient = (140.0-40.0)/(4096.0);
+	uint16_t _tempo = (uint16_t) (gradient*(float)temp+40);
 	TempoSetValue(_tempo);
-	tempo = _tempo;
+//	check if tempo has changed: then refresh LED
+//	added by Hermann
+	if (_tempo != tempo) {
+		UPDATE_TEMPO = true;
+		tempo = _tempo;
+	}
 }
 
 /*

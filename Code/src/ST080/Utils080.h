@@ -32,7 +32,7 @@
 #include "LCD/tm_stm32f4_hd44780.h"
 
 // EEprom library
-//#include "Eeprom.h"
+#include "Eeprom.h"
 
 // Tempo library
 #include "Tempo.h"
@@ -69,6 +69,16 @@ void vApplicationMallocFailedHook(void) {
 // ============================ Global Variables ============================================
 // ==========================================================================================
 
+// define task priorities
+#define MODES_TASK_PRIORITY 1
+#define UI_TASK_PRIORITY 2
+#define GPIO_TASK_PRIORITY 3
+
+// define task stack sizes
+#define MODES_STACK_SIZE 128
+#define UI_STACK_SIZE 128
+#define GPIO_STACK_SIZE 128
+
 // LCD dimensions
 #define LCD_COLUMNS 16
 #define LCD_ROWS 2
@@ -101,7 +111,9 @@ uint8_t played_inst = 0;			// variable used by the Freestyle mode to determine t
 uint16_t freestyle_samples [11][SAMPLE_SIZE]; // This will hold the samples of the different possible combinations
 bool channelRack[16][4][16]; 		// 16 channel racks with 4 instruments each with 16 beat channel
 uint8_t currentBeat = 0;			// Variable to indicate the current beat/instrumental being edited on the beat rack.
-bool resetLEDs = true;			// flag used to fresh the LEDs when switching modes. This flag will be checked by the UI_Task to check whether it should reset the LEDs or not
+bool resetLEDs = true;				// flag used to fresh the LEDs when switching modes. This flag will be checked by the UI_Task to check whether it should reset the LEDs or not
+bool UPDATE_LCD = true; 				// flag used to update LCD
+bool UPDATE_TEMPO = true;
 uint16_t ComposerBuffer[DEFAULT_COMPOSER_BUFFERSIZE];		// Buffer used by the composer mode to push to the audio output interface
 uint16_t tempo = DEFAULT_TEMPO;
 uint16_t drumKit1 [4][SAMPLE_SIZE] = {
@@ -133,57 +145,13 @@ void error_(void);					// function to flash the on-board LEDs when an error occu
 void lcd_flush_write(uint8_t row_num, char* msg);
 void updateLED(uint8_t pin, bool On, uint8_t type); // implemented in UIUdate
 LED_GPIO getGPIO(uint8_t pin, uint8_t type); // implemented in UIUdate
+void loadFromEeprom(void);
+void saveToEeprom(void);
+void lcd_write(uint8_t col_num, uint8_t row_num, char* msg);
 
 // ==========================================================================================
 // ============================ Function Implementations =====================================
 // ==========================================================================================
-
-/**
-  * @brief  Delay in ms
-  * @param  integer amount of milliseconds
-  * @retval None
-  */
-void delay_ms(uint32_t milli)
-{
-	uint32_t delay = milli * 17612;              // approximate loops per ms at 168 MHz, Debug config
-	for(; delay != 0; delay--);
-}
-
-/**
- * Function to flash the LEDs when an error occurs
- */
-void error_(void)
-{
-	MODE = ERROR_MODE;
-
-	/* Initialize LEDs */
-	STM_EVAL_LEDInit(LED3);
-	STM_EVAL_LEDInit(LED4);
-	STM_EVAL_LEDInit(LED5);
-	STM_EVAL_LEDInit(LED6);
-
-	/* Turn off some LEDs */
-	STM_EVAL_LEDOff(LED3);
-	STM_EVAL_LEDOff(LED4);
-	/* Turn on some LEDs */
-	STM_EVAL_LEDOn(LED5);
-	STM_EVAL_LEDOn(LED6);
-
-	lcd_flush_write(0, "ERROR!");
-
-	GPIO_SetBits(GPIOB, 6);
-	GPIO_SetBits(GPIOB, 7);
-	GPIO_SetBits(GPIOB, 8);
-	GPIO_SetBits(GPIOB, 9);
-
-	while(1){
-		delay_ms(500);
-		STM_EVAL_LEDToggle(LED3);
-		STM_EVAL_LEDToggle(LED4);
-		STM_EVAL_LEDToggle(LED5);
-		STM_EVAL_LEDToggle(LED6);
-	}
-}
 
 /**
  * Run start up configurations for the STM080. These include
@@ -192,6 +160,23 @@ void error_(void)
  * > EPROM and On-Board audio interface configutations
  */
 void startUpConfigs(){
+
+	// config for LCD
+	TM_HD44780_Init(LCD_COLUMNS, LCD_ROWS);
+	TM_HD44780_Clear();
+
+	//	turn on reset LED
+	GPIO_SetBits(GPIOB, GPIO_PIN_5);
+	lcd_write(4, 0, "WELCOME");
+	lcd_write(5, 1, "ST080");
+
+	// Configure Eeprom
+	EEPROM_Configuration();
+	loadFromEeprom();		// Load the channel rack from the eeprom
+
+	// config for Tempo
+	Tempo_Configuration();
+
 	// +++++++++++++++++ configure output pins ++++++++++++++++++++++++
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
@@ -279,25 +264,22 @@ void startUpConfigs(){
 		error_();
 	}
 
-	// config for Tempo
-	Tempo_Configuration();
-
-	// config for LCD
-	TM_HD44780_Init(LCD_COLUMNS, LCD_ROWS);
-	TM_HD44780_Clear();
+	//Turn off reset LED
+	GPIO_ResetBits(GPIOB, GPIO_PIN_5);
 
 	// initialise debugging LEDs
+
 	/* Initialize LEDs */
-	STM_EVAL_LEDInit(LED3);
-	STM_EVAL_LEDInit(LED4);
-	STM_EVAL_LEDInit(LED5);
-	STM_EVAL_LEDInit(LED6);
+//	STM_EVAL_LEDInit(LED3);
+//	STM_EVAL_LEDInit(LED4);
+//	STM_EVAL_LEDInit(LED5);
+//	STM_EVAL_LEDInit(LED6);
 
 	/* Turn off LEDs */
-	STM_EVAL_LEDOff(LED3);
-	STM_EVAL_LEDOff(LED4);
-	STM_EVAL_LEDOff(LED5);
-	STM_EVAL_LEDOff(LED6);
+//	STM_EVAL_LEDOff(LED3);
+//	STM_EVAL_LEDOff(LED4);
+//	STM_EVAL_LEDOff(LED5);
+//	STM_EVAL_LEDOff(LED6);
 
 }
 
@@ -323,6 +305,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		if (MODE == COMPOSER){
 			// Change the instrument on the channel rack to the first one
 			current_sample = INSTR_1;
+			UPDATE_LCD = true;
 		}
 		else if (MODE == FREESTYLE) {
 			PAD_STATE[0] = true;
@@ -338,6 +321,8 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		if (MODE == COMPOSER){
 			// change the instrument on the channel rack to the second one
 			current_sample = INSTR_2;
+			//update the instrument being edited on LCD
+			UPDATE_LCD = true;
 		}
 		else if (MODE == FREESTYLE) {
 			PAD_STATE[1] = true;
@@ -353,6 +338,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		if (MODE == COMPOSER){
 			// change the instrument on the channel rack to the third one
 			current_sample = INSTR_3;
+			UPDATE_LCD = true;
 		}
 		else if (MODE == FREESTYLE) {
 			PAD_STATE[2] = true;
@@ -368,6 +354,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		if (MODE == COMPOSER){
 			// change the instrument on the channel rack to the forth one
 			current_sample = INSTR_4;
+			UPDATE_LCD = true;
 		}
 		else if (MODE == FREESTYLE) {
 			PAD_STATE[3] = true;
@@ -383,6 +370,8 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 		MODE = COMPOSER;
 		status = true;
 		resetLEDs = true;
+//		update the Mode on LCD
+		UPDATE_LCD = true;
 	}
 
 	/* Handle external line 5 interrupts */
@@ -390,11 +379,15 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 	else if (GPIO_Pin == GPIO_Pin_5) {
 		MODE = PLAYBACK;
 		resetLEDs = true;
+//		update the Mode on LCD
+		UPDATE_LCD = true;
 	}
 
 	/* Handle external line 6 interrupts */
 	// switch to FREESTYLE MODE
 	else if (GPIO_Pin == GPIO_Pin_6) {
+//		update the Mode on LCD
+		UPDATE_LCD = true;
 		MODE = FREESTYLE;
 		resetLEDs = true;
 	}
@@ -406,6 +399,8 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 			MODE = SAVE;
 			status = true;
 			resetLEDs = true;
+	//		update the Mode on LCD
+			UPDATE_LCD = true;
 		}
 		// Save the channelRack Array to the EEPROM
 	}
@@ -425,6 +420,7 @@ void lcd_flush_write(uint8_t row_num, char* msg){
 	TM_HD44780_Clear();
 	TM_HD44780_Puts(0,row_num,msg);
 }
+
 /**
  *
  * @brief Method to add a new message on the specified column row
@@ -435,5 +431,84 @@ void lcd_flush_write(uint8_t row_num, char* msg){
  */
 void lcd_write(uint8_t col_num, uint8_t row_num, char* msg){
 	TM_HD44780_Puts(col_num,row_num,msg);
+}
+
+/*
+ * 	@brief	Saves the array "channelRack[][][]" to the eeprom, the size of this array is CHANNEL_RACK_SIZE
+ */
+void saveToEeprom(){
+	int i,j,k,l=0;
+	uint8_t temp = 0;
+	for (i = 0; i < 16; ++i) {
+		for (j = 0; j < 4; ++j) {
+			for (k = 0; k < 16; ++k, ++l) {
+				temp = (uint8_t) channelRack[i][j][k];
+				EEPROM_Write(l, temp);
+			}
+		}
+	} // end of for loops
+}// end of saveToEeprom
+
+/*
+ * @brief	Initializes the "channelRack[][][]" using data read from the eeprom
+ */
+void loadFromEeprom(){
+	int i, j, k, l = 0;
+	bool temp = false;
+	for (i = 0; i < 16; ++i) {
+		for (j = 0; j < 4; ++j) {
+			for (k = 0; k < 16; ++k, ++l) {
+				temp = (bool) EEPROM_Read(l);
+				channelRack[i][j][k] = temp;
+			}
+		}
+	} // end of for loops
+} // end of loadFromEeprom
+
+/**
+  * @brief  Delay in ms
+  * @param  integer amount of milliseconds
+  * @retval None
+  */
+void delay_ms(uint32_t milli)
+{
+	uint32_t delay = milli * 17612;              // approximate loops per ms at 168 MHz, Debug config
+	for(; delay != 0; delay--);
+}
+
+/**
+ * Function to flash the LEDs when an error occurs
+ */
+void error_(void)
+{
+	MODE = ERROR_MODE;
+
+	/* Initialize LEDs */
+	STM_EVAL_LEDInit(LED3);
+	STM_EVAL_LEDInit(LED4);
+	STM_EVAL_LEDInit(LED5);
+	STM_EVAL_LEDInit(LED6);
+
+	/* Turn off some LEDs */
+	STM_EVAL_LEDOff(LED3);
+	STM_EVAL_LEDOff(LED4);
+	/* Turn on some LEDs */
+	STM_EVAL_LEDOn(LED5);
+	STM_EVAL_LEDOn(LED6);
+
+	lcd_flush_write(0, "ERROR! Reset device");
+
+	GPIO_SetBits(GPIOB, 6);
+	GPIO_SetBits(GPIOB, 7);
+	GPIO_SetBits(GPIOB, 8);
+	GPIO_SetBits(GPIOB, 9);
+
+	while(1){
+		delay_ms(500);
+		STM_EVAL_LEDToggle(LED3);
+		STM_EVAL_LEDToggle(LED4);
+		STM_EVAL_LEDToggle(LED5);
+		STM_EVAL_LEDToggle(LED6);
+	}
 }
 #endif /* UTILS080_H_ */
