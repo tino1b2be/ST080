@@ -1,4 +1,29 @@
 /*
+ * The MIT License (MIT)
+
+Copyright (c) 2015 Tinotenda Chemvura, John Odetokun, Othniel Konan, Herman Kouassi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+ */
+
+/*
  * Utils080.h
  *
  *  Created on: Sep 26, 2016
@@ -149,6 +174,7 @@ void updateLED(uint8_t pin, bool On, uint8_t type); // implemented in UIUdate
 LED_GPIO getGPIO(uint8_t pin, uint8_t type); // implemented in UIUdate
 void loadFromEeprom(void);
 void saveToEeprom(void);
+bool isChannelEmpty(uint8_t index);
 void lcd_write(uint8_t col_num, uint8_t row_num, char* msg);
 void select_beat(void);
 
@@ -474,6 +500,24 @@ void loadFromEeprom(){
 		}
 	} // end of for loops
 } // end of loadFromEeprom
+
+/**
+ * @brief	Check if a channel is empty
+ */
+bool isChannelEmpty(uint8_t index){
+	int j,k=0;
+	bool empty = true;
+	for (j=0;j<4;++j){
+		for (k=0;k<16;++k){
+			if(channelRack[4*16*index][j][k]!=0){
+				empty = false;
+				return empty;
+			}
+		}
+	}
+	return empty;
+}
+
 
 /**
   * @brief  Delay in ms
