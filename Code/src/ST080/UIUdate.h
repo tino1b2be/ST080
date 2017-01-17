@@ -197,7 +197,7 @@ void updateLCD() {
 				lcd_flush_write(0, " Composer Mode");
 				switch(current_sample) {
 				case INSTR_1:
-					lcd_write(0, 1, "Open Hat");
+					lcd_write(0, 1, "Snare");
 					break;
 				case INSTR_2:
 					lcd_write(0, 1, "Kick");
@@ -206,7 +206,7 @@ void updateLCD() {
 					lcd_write(0, 1, "Cow Bell");
 					break;
 				case INSTR_4:
-					lcd_write(0, 1, "Clap");
+					lcd_write(0, 1, "O. H-hat");
 					break;
 				}
 				lcd_write(9, 1, "T: ");
