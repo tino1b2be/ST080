@@ -50,6 +50,7 @@ void vGPIOTask(void * pvparameters) {
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0));
 				// toggle pin 1
+
 				channelRack[currentBeat][current_sample][0] = channelRack[currentBeat][current_sample][0] == true ? false : true;
 				status = true;
 			}
@@ -132,7 +133,15 @@ void vGPIOTask(void * pvparameters) {
 				status = true;
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
-				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13));
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)){
+					if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
+						while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)){
+							lcd_flush_write(0, "   ST080");
+							UPDATE_LCD = true;
+						}
+					}
+				}
+
 				// toggle pin 14
 				channelRack[currentBeat][current_sample][13] = channelRack[currentBeat][current_sample][13] == true ? false : true;
 				status = true;
@@ -172,6 +181,16 @@ void vGPIOTask(void * pvparameters) {
 
 		while (MODE == FREESTYLE)
 		{
+			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
+					if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
+						while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
+							lcd_flush_write(0, "   ST080");
+							UPDATE_LCD = true;
+						}
+					}
+				}
+			}
 			// no GPIO functionality for this mode
 			vTaskDelay(50);
 		}
@@ -291,7 +310,13 @@ void vGPIOTask(void * pvparameters) {
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
-				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13));
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
+					if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
+						while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
+							lcd_flush_write(0, "   ST080");
+						}
+					}
+				}
 				currentBeat = 13;
 				status = true;
 //				flag to update beat number on the LCD

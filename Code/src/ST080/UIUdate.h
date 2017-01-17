@@ -237,7 +237,7 @@ void updateLCD() {
 			else {
 				lcd_write(0, 1, "Playing song");
 				lcd_write(13, 1, numberArray_);
-				if(currentBeat < 10)
+				if(currentBeat < 9)
 					lcd_write(14, 1, " ");
 			}
 	//		free memory
