@@ -127,6 +127,8 @@ void vApplicationMallocFailedHook(void) {
 #define DEFAULT_TEMPO 0 // define proper tempo
 #define CHANNEL_RACK_SIZE 1024
 
+SEMAPHORE_H flags_lock = NULL;
+
 bool PAD_STATE[4];  				//Global variable use to check the state of the Freestyle pad
 bool STATE_CHANGED;					//Global variable to check if there has been a change in Pad status
 uint8_t MODE = COMPOSER; 			// Global variable to e used to identify which mode the ST080 is currently in
@@ -329,7 +331,7 @@ void TM_EXTI_Handler(uint16_t GPIO_Pin) {
 
 	// +++ debouncing logic (50 milliseconds) +++
 	current = tickTime;
-	if ((current - previous) < 50) {
+	if ((current - previous) < 100) {
 		previous = current;
 		return;
 	}
@@ -506,16 +508,14 @@ void loadFromEeprom(){
  */
 bool isChannelEmpty(uint8_t index){
 	int j,k=0;
-	bool empty = true;
 	for (j=0;j<4;++j){
 		for (k=0;k<16;++k){
-			if(channelRack[4*16*index][j][k]!=0){
-				empty = false;
-				return empty;
+			if(channelRack[index][j][k]!=0){
+				return false;
 			}
 		}
 	}
-	return empty;
+	return true;
 }
 
 
