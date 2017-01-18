@@ -77,12 +77,18 @@ void vModesTask(void * pvparameters)
 				new_flag = false;
 			}
 
+			while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 			if (status || current_sample != previous_sample) {
 				flushBuffer(); // flush the buffer and add the samples again
+				// release the lock. addsamples is a long function.
+				xSemaphoreGive(semaphore_channel_rack_status);
 				addSamples();
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				status = false;
+				xSemaphoreGive(semaphore_channel_rack_status);
 			}
 			previous_sample = current_sample;
+			xSemaphoreGive(semaphore_channel_rack_status);
 			vTaskDelay(10);
 		}
 		new_flag = true; // set flag for the next iteration for composer
@@ -102,12 +108,17 @@ void vModesTask(void * pvparameters)
 				AudioComposerPlayback(tempo);
 				new_flag = false;
 			}
-
+			while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 			if (status) {
 				flushBuffer();
+				// release the lock. add samples is a long function.
+				xSemaphoreGive(semaphore_play);
 				addSamples();
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				status = false;
+				xSemaphoreGive(semaphore_play);
 			}
+			xSemaphoreGive(semaphore_play);
 			vTaskDelay(50);
 		}
 

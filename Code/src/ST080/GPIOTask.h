@@ -50,33 +50,54 @@ void vGPIOTask(void * pvparameters) {
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0));
 				// toggle pin 1
-
+				// acquire lock
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][0] = channelRack[currentBeat][current_sample][0] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1));
 				// toggle pin 2
+				// acquire lock
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][1] = channelRack[currentBeat][current_sample][1] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2));
 				// toggle pin 3
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][2] = channelRack[currentBeat][current_sample][2] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3));
 				// toggle pin 4
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][3] = channelRack[currentBeat][current_sample][3] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5));
 				// toggle pin 6
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][5] = channelRack[currentBeat][current_sample][5] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 
 			// Port D
@@ -84,20 +105,32 @@ void vGPIOTask(void * pvparameters) {
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4)) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4));
 				// toggle pin 5
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][4] = channelRack[currentBeat][current_sample][4] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6)) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6));
 				// toggle pin 7
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][6] = channelRack[currentBeat][current_sample][6] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7)) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7));
 				// toggle pin 8
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][7] = channelRack[currentBeat][current_sample][7] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 
 			// Port E
@@ -105,32 +138,52 @@ void vGPIOTask(void * pvparameters) {
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_8)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_8));
 				// toggle pin 9
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][8] = channelRack[currentBeat][current_sample][8] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_9)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_9));
 				// toggle pin 10
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][9] = channelRack[currentBeat][current_sample][9] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_10)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_10));
 				// toggle pin 11
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][10] = channelRack[currentBeat][current_sample][10] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_11)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_11));
 				// toggle pin 12
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][11] = channelRack[currentBeat][current_sample][11] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_12)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_12));
 				// toggle pin 13
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][12] = channelRack[currentBeat][current_sample][12] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)){
@@ -143,14 +196,22 @@ void vGPIOTask(void * pvparameters) {
 				}
 
 				// toggle pin 14
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][13] = channelRack[currentBeat][current_sample][13] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14));
 				// toggle pin 15
+				while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 				channelRack[currentBeat][current_sample][14] = channelRack[currentBeat][current_sample][14] == true ? false : true;
 				status = true;
+				// release lock
+				xSemaphoreGive(semaphore_channel_rack_status);
+				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
 				bool reset = false;
@@ -170,8 +231,12 @@ void vGPIOTask(void * pvparameters) {
 				if (!reset)
 				{
 					// toggle pin 16
+					while(xSemaphoreTake(semaphore_channel_rack_status, (portTickType) 50) == pdFALSE);
 					channelRack[currentBeat][current_sample][15] = channelRack[currentBeat][current_sample][15] == true ? false : true;
 					status = true;
+					// release lock
+					xSemaphoreGive(semaphore_channel_rack_status);
+					vTaskDelay(10); // delay to allow the Modes task to sum the samples
 				}
 			} // end of checking pin 16
 
@@ -202,68 +267,84 @@ void vGPIOTask(void * pvparameters) {
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0));
 				// change to song number 1
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 0;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 1;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 2;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 3;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5)) {
 				while (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 5;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			// Port D
 
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4)) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 4;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6)) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 6;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7)) {
 				while (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 7;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 
@@ -271,42 +352,52 @@ void vGPIOTask(void * pvparameters) {
 
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_8)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_8));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 8;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_9)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_9));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 9;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_10)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_10));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 10;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_11)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_11));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 11;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_12)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_12));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 12;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
@@ -317,26 +408,32 @@ void vGPIOTask(void * pvparameters) {
 						}
 					}
 				}
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 13;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 14;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
 				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15));
+				while(xSemaphoreTake(semaphore_play, (portTickType) 50) == pdFALSE);
 				currentBeat = 15;
 				status = true;
 //				flag to update beat number on the LCD
 				UPDATE_BEAT = true;
+				xSemaphoreGive(semaphore_play);
 				vTaskDelay(10); // delay to allow the Modes task to sum the samples
 			}
 			vTaskDelay(10);

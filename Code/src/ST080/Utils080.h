@@ -127,7 +127,8 @@ void vApplicationMallocFailedHook(void) {
 #define DEFAULT_TEMPO 0 // define proper tempo
 #define CHANNEL_RACK_SIZE 1024
 
-SEMAPHORE_H flags_lock = NULL;
+xSemaphoreHandle semaphore_channel_rack_status = NULL;
+xSemaphoreHandle semaphore_play = NULL;
 
 bool PAD_STATE[4];  				//Global variable use to check the state of the Freestyle pad
 bool STATE_CHANGED;					//Global variable to check if there has been a change in Pad status
@@ -191,6 +192,10 @@ void select_beat(void);
  * > EPROM and On-Board audio interface configutations
  */
 void startUpConfigs(){
+
+	// create semaphores
+	vSemaphoreCreateBinary(semaphore_channel_rack_status);
+	vSemaphoreCreateBinary(semaphore_play);
 
 	// config for LCD
 	TM_HD44780_Init(LCD_COLUMNS, LCD_ROWS);
