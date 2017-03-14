@@ -33,12 +33,12 @@ The ST-080 prototype will have the following features:
 Many features are missing from the prototype due to time and budget constraints but there is space for all of them to be added if development of this device is to continue. 
 
 ## Images of the final product
-![full](https://github.com/tino1b2be/ST080/blob/master/Docs/full.jpg)
-![front](https://github.com/tino1b2be/ST080/blob/master/Docs/IMG_3402.jpg)
-![side1](https://github.com/tino1b2be/ST080/blob/master/Docs/IMG_3401.jpg)
-![side2](https://github.com/tino1b2be/ST080/blob/master/Docs/IMG_3399.jpg)
-![lcd](https://github.com/tino1b2be/ST080/blob/master/Docs/IMG_3411.jpg)
-![buttons1](https://github.com/tino1b2be/ST080/blob/master/Docs/IMG_3409.jpg)
+![full](https://github.com/tino1b2be/ST080/raw/master/Docs/full.jpg)
+![front](https://github.com/tino1b2be/ST080/raw/master/Docs/IMG_3402.jpg)
+![side1](https://github.com/tino1b2be/ST080/raw/master/Docs/IMG_3401.jpg)
+![side2](https://github.com/tino1b2be/ST080/raw/master/Docs/IMG_3399.jpg)
+![lcd](https://github.com/tino1b2be/ST080/raw/master/Docs/IMG_3411.jpg)
+![buttons1](https://github.com/tino1b2be/ST080/raw/master/Docs/IMG_3409.jpg)
 
 ## Project Contributors
 * Tinotenda Chemvura (@tino1b2be)
