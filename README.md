@@ -1,6 +1,6 @@
 # [ST080](https://github.com/tino1b2be/ST080)
 
-The ST080 Dtum Machine is an Embedded Systems project that we did as part of EEE3074W course at UCT. We designed and built a prototype using concepts we had learnt in this course and other areas of our degree. The full report of the project can be viewed [here](https://github.com/tino1b2be/ST080/blob/master/Docs/Project_Report_Final.pdf)...and a video of the finished product [here](https://youtu.be/f0DpraNo41Q)
+The ST080 Drum Machine is an Embedded Systems project that we did as part of EEE3074W course at UCT. We designed and built a prototype using concepts we had learnt in this course and other areas of our degree. The full report of the project can be viewed [here](https://github.com/tino1b2be/ST080/blob/master/Docs/Project_Report_Final.pdf)...and a video of the finished product [here](https://youtu.be/f0DpraNo41Q)
 ## Background
 Make great beats on the move; where you choose: A couple of the main advantages of a drum machine. The Drum Machine, in the context of this project, is an instrument that incorporates a drum set (Or multiple drum sets) and a recording machine to imitate the sounds of a drum kit when pads are struck. Drum Machines are often used by musicians, DJs or in general people who may not necessarily know how to play drums but are, however looking for a drum effect in the musical project they are busy with.
 The aim of this project is to is conceptualize, design and implement a prototype drum machine that will demonstrate the full criteria of the EEE3074W design project.
@@ -53,7 +53,7 @@ Many features are missing from the prototype due to time and budget constraints 
 ## Project Contributors
 * Tinotenda Chemvura (@tino1b2be)
 * John Odetokun (@JohnOdetokun)
-* Herman Kouassi (@h-kouame)
+* Kouame Kouassi (@h-kouame)
 * Othniel Konan (@Kojey)
 
 ## License
