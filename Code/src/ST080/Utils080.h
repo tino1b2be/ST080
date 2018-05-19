@@ -317,6 +317,7 @@ void startUpConfigs(){
 //	STM_EVAL_LEDOff(LED4);
 //	STM_EVAL_LEDOff(LED5);
 //	STM_EVAL_LEDOff(LED6);
+//	MODE = COMPOSER;
 
 }
 
