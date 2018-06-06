@@ -176,6 +176,7 @@ void updateLED(uint8_t pin, bool On, uint8_t type); // implemented in UIUdate
 LED_GPIO getGPIO(uint8_t pin, uint8_t type); // implemented in UIUdate
 void loadFromEeprom(void);
 void saveToEeprom(void);
+void formatEeprom(void);
 bool isChannelEmpty(uint8_t index);
 void lcd_write(uint8_t col_num, uint8_t row_num, char* msg);
 void select_beat(void);
@@ -293,6 +294,7 @@ void startUpConfigs(){
 
 	// Configure Eeprom
 	EEPROM_Configuration();
+
 	loadFromEeprom();		// Load the channel rack from the eeprom
 
 	// config for Tempo
@@ -317,6 +319,7 @@ void startUpConfigs(){
 //	STM_EVAL_LEDOff(LED4);
 //	STM_EVAL_LEDOff(LED5);
 //	STM_EVAL_LEDOff(LED6);
+//	MODE = COMPOSER;
 
 }
 
@@ -482,6 +485,20 @@ void saveToEeprom(){
 			for (k = 0; k < 16; ++k, ++l) {
 				temp = (uint8_t) channelRack[i][j][k];
 				EEPROM_Write(l, temp);
+			}
+		}
+	} // end of for loops
+}// end of saveToEeprom
+
+/*
+ * 	@brief	Format the eeprom
+ */
+void formatEeprom(){
+	int i,j,k,l=0;
+	for (i = 0; i < 16; ++i) {
+		for (j = 0; j < 4; ++j) {
+			for (k = 0; k < 16; ++k, ++l) {
+				EEPROM_Write(l, 0);
 			}
 		}
 	} // end of for loops

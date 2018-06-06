@@ -152,6 +152,53 @@ void vGPIOTask(void * pvparameters) {
 				channelRack[currentBeat][current_sample][14] = channelRack[currentBeat][current_sample][14] == true ? false : true;
 				status = true;
 			}
+
+			// MOVE TO FREESTYLE MODE
+//			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
+//				bool reset = false;
+//				// reset logic. Reset if you press and hold Pin_16 + Pin_15 + Pin_14
+//				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
+//					if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
+//						while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)){
+//							if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
+//								flushRack();
+//								flushBuffer();
+//								reset = true;
+//								lcd_flush_write(0, "   DONE");
+//								break;
+//							}
+//						}
+//					}
+//				}
+//				if (!reset)
+//				{
+//					// toggle pin 16
+//					channelRack[currentBeat][current_sample][15] = channelRack[currentBeat][current_sample][15] == true ? false : true;
+//					status = true;
+//				}
+//			} // end of checking pin 16
+
+			vTaskDelay(10);
+
+		} // end of composer while loop
+
+		/*
+		 * FEATURE: Flush the LCD
+		 * */
+		while (MODE == FREESTYLE)
+		{
+			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
+				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
+					if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
+						while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
+							lcd_flush_write(0, "   LCD CLEARED");
+							UPDATE_LCD = true;
+						}
+					}
+				}
+			}
+			// no GPIO functionality for this mode
+
 			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_15)) {
 				bool reset = false;
 				// reset logic. Reset if you press and hold Pin_16 + Pin_15 + Pin_14
@@ -161,7 +208,9 @@ void vGPIOTask(void * pvparameters) {
 							if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
 								flushRack();
 								flushBuffer();
+								formatEeprom();
 								reset = true;
+								lcd_flush_write(0, "   EEPROM FLASHED");
 								break;
 							}
 						}
@@ -174,24 +223,6 @@ void vGPIOTask(void * pvparameters) {
 					status = true;
 				}
 			} // end of checking pin 16
-
-			vTaskDelay(10);
-
-		} // end of composer while loop
-
-		while (MODE == FREESTYLE)
-		{
-			if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
-				while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_13)) {
-					if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
-						while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14)) {
-							lcd_flush_write(0, "   ST080");
-							UPDATE_LCD = true;
-						}
-					}
-				}
-			}
-			// no GPIO functionality for this mode
 			vTaskDelay(50);
 		}
 
